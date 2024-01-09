@@ -16,6 +16,8 @@
 example text
 
 ### **Design**
+![](https://www.vappingo.com/word-blog/wp-content/uploads/2011/02/exclamation_mark.png)
+
 example text
 
 ### **Key Features**
