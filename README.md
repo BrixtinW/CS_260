@@ -19,9 +19,21 @@ Have you ever played a social game like Mafia or One Night Werewolf and been fru
 The game begins when everyone receives the same "secret word" except the Odd-One-Out who receives a similar but slightly different word. Starting with a random player determined by the application, each player takes turns clockwise, describing their "secret word" with another word while trying to avoid giving away their identity as the potential Odd-One-Out. The other players must use their detective skills to figure out who has a different word and vote on who they think the Odd-One-Out is. If they vote the Odd-One-Out, the Odd-One-Out has one chance to guess what everyone else's word is. If the Odd-One-Out guesses the word correctly or if they are never voted out, they win. If not, everyone else wins. 
 
 ### **Design**
-  ![](https://www.vappingo.com/word-blog/wp-content/uploads/2011/02/exclamation_mark.png)
+There are four main pages. The first displays the login where you enter your username.
+
+  ![Instructions page for the web app](Heading.jpg)
   
-example text
+  The second is the waiting room that the host creates and where players wait to start.
+  
+  ![Waiting room for the web app](2.jpg)
+  
+  The third is the page with the instructions that will detail how to play the game. this page can be checked in the middle of the game for reference.
+  
+  ![Instructions page for the web app](1.jpg)
+  
+  The last page is the game page that displays the Secret Word and the voting feature. 
+  
+  ![Main game page for the web app](3.jpg)
 
 ### **Key Features**
 The project will showcase the following features
