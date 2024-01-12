@@ -27,7 +27,7 @@ There are four main pages. The first displays the login where you enter your use
   
   ![Waiting room for the web app](2.jpg)
   
-  The third is the page with the instructions that will detail how to play the game. this page can be checked in the middle of the game for reference.
+  The third is the page with the instructions that will detail how to play the game. This page can be checked in the middle of the game for reference.
   
   ![Instructions page for the web app](1.jpg)
   
