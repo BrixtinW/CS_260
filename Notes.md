@@ -1,5 +1,7 @@
 ## WEBSITE IP ADDRESS:
-http://34.202.253.223
+http://odd-one-out.click
+
+`34.202.253.223`
 
 ## Accessing the Server on your Device
 command format:
