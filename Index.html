@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Tell browsers not to scale the viewport automatically -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Odd One Out</title>
+    <link rel="icon" href="favicon.ico" />
+  </head>
+  <body>
+    <!-- Use header, main, and footer elements to give semantic structure -->
+    <header>
+      <h1>Odd One Out</h1>
+
+      <!-- Navigation elements -->
+      <nav>
+        <!-- Menu is a semantic alternative to <ul> that represents an interaction -->
+        <menu>
+          <li><a href="index.html">Instructions</a></li>
+          <li><a href="play.html">Submit Secret Word Pairs</a></li>
+          <li><a href="scores.html">About</a></li>
+          <li><a href="about.html">Host Game</a></li>
+        </menu>
+      </nav>
+
+      <!-- Since we don't have the ability to style we use old style HTML to give some visual formatting -->
+      <hr />
+    </header>
+
+    <main>
+      <h1>Instructions</h1>
+      <p>The game begins when everyone receives the same "secret word" except the Odd-One-Out who receives a similar but slightly different word. Starting with a random player determined by the application, each player takes turns clockwise, describing their "secret word" with another word while trying to avoid giving away their identity as the potential Odd-One-Out. The other players must use their detective skills to figure out who has a different word and vote on who they think the Odd-One-Out is. If they vote the Odd-One-Out, the Odd-One-Out has one chance to guess what everyone else's word is. If the Odd-One-Out guesses the word correctly or if they are never voted out, they win. If not, everyone else wins. </p>
+      <form method="get" action="play.html">
+<!--         <label for="name">Name</label>
+        <input type="text" id="name" placeholder="Your name here" /> -->
+        <button type="submit">Host Game</button>
+      </form>
+    </main>
+
+    <footer>
+      <hr />
+      <span class="text-reset">Brixtin Walker</span>
+      <br />
+      <a href="https://github.com/BrixtinW/CS_260">GitHub</a>
+    </footer>
+  </body>
+</html>
