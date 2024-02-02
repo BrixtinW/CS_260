@@ -14,9 +14,10 @@
       <h1>Odd One Out</h1>
       <nav>
         <menu>
-          <li><a href="index.html">Instructions</a></li>
-          <li><a href="waitingRoom.html">Host Game</a></li>
-        </menu>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="waitingRoom.html">Host Game</a></li>
+            <li><a href="invitation.html">Join Game</a></li>
+          </menu>
       </nav>
       <hr />
     </header>
@@ -25,25 +26,46 @@
       <h1>Waiting For Players...</h1>
 
       <!-- Button to copy the link to the gameroom. NOT YET IMPLEMENTED -->
-      <button onclick="copyLink()">Copy Link</button>
+      <p>
+
+      </p>
+      
+      <table border="1" cellspacing="2" cellpadding="5">
+        <tr>
+            <th>
+                Code:
+            </th>
+        </tr>
+          <tr>
+              <td>
+                  XW6JH8
+                </td>
+            </tr>
+        </table>
+        
+
+        <table border="1" cellspacing="15" cellpadding="10">
+            <tr>
+                <th><img src="spy_96975.png" alt="Spy icon" width="150" height="150"></th>
+                <th><img src="spy_96975.png" alt="Spy icon" width="150" height="150"></th>
+                <th><img src="spy_96975.png" alt="Spy icon" width="150" height="150"></th>
+                <th><img src="spy_96975.png" alt="Spy icon" width="150" height="150"></th>
+            </tr>
+            <tr>
+                <td>Player 1</td>
+                <td>Player 2</td>
+                <td>Player 3</td>
+                <td>Player 4</td>
+            </tr>
+        </table>
 
       <form>
         <button type="submit">Start Game</button>
       </form>
 
+      <h2>Instructions</h2>
+      <p>The game begins when everyone receives the same "secret word" except the Odd-One-Out who receives a similar but slightly different word. Starting with a random player determined by the application, each player takes turns clockwise, describing their "secret word" with another word while trying to avoid giving away their identity as the potential Odd-One-Out. The other players must use their detective skills to figure out who has a different word and vote on who they think the Odd-One-Out is. If they vote the Odd-One-Out, the Odd-One-Out has one chance to guess what everyone else's word is. If the Odd-One-Out guesses the word correctly or if they are never voted out, they win. If not, everyone else wins. </p>
 
-      <h2>Submit Secret Word Pairs</h2>
-      <p>You have the chance to submite your own secret word pairs and help the Odd-One-Out community! Simply enter your word pair in the boxes below.</p>
-      <!-- <form method="get" action="play.html"> -->
-      <form>
-        <button type="submit">Submit Words</button>
-        <input type="text" id="name" placeholder="Enter first word" /> 
-        <input type="text" id="name" placeholder="Enter second word" /> 
-      </form>
-
-
-      <h2>About</h2>
-      <p>This page was completed by Brixtin Walker as a part of the course work for CS 260, Web Development.</p>
     </main>
     <!-- /////////////////////////////////////////////////////////////////////////////// -->
     <footer>
