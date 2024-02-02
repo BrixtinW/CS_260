@@ -2,7 +2,7 @@
 
 ### Progress
 - [x] Specification Deliverable
-- [ ] HTML Deliverable
+- [x] HTML Deliverable
 - [ ] CSS Deliverable
 - [ ] JavaScript Deliverable
 - [ ] Service Deliverable
@@ -44,7 +44,7 @@ The project will showcase the following features
 
 ### **Technologies**
 I will implement the following technologies:
-- **HTML** - Three HTML pages for hosting a game, joining a game, and voting on the Odd-One-Out.
+- **HTML** - Four HTML pages for hosting a game, joining a game, and voting on the Odd-One-Out.
 - **CSS** - Intuitive game display that fits well on mobile devices, featuring a game instructions tab, voting buttons, and a "secret word card". 
 - **JavaScript** - Manages players' votes and creates game rooms.
 - **Service** - Backend structure that helps in handling "secret word" choices, voting status, voting verdict, player status, and authentification.
@@ -52,9 +52,15 @@ I will implement the following technologies:
 - **WebSocket** - communicates players' votes and the voting verdict. 
 - **React** - Utilizes the React framework for effective design and a professional display.
 
-<!-- ## HTML Deliverable
+## HTML Deliverable
+- **HTML** - Four HTML pages; the home page; the join game page; the waiting room page; and the gameroom page.
+- **Links** - The Header tag links all four pages together as well as four other buttons that allow joining and hosting a game.
+- **Text** - Overview and an About section for the game are listed on the home page as well as Instructions on the waiting room page. 
+- **Images** - Spy images are included for each player's voting card as well as a spy icon on the tab for each page
+- **Database** - Stores the user's name, votes, and secret words in a database. Also accepts submissions for secret word pairs.
+- **WebSocket** - Will display the voting results as well as players' identities after the voting concludes.
 
-## CSS Deliverable
+<!-- ## CSS Deliverable
 
 ## JavaScript Deliverable
 
