@@ -2,14 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <!-- Tell browsers not to scale the viewport automatically -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>3 Odd One Out</title>
     <link rel="icon" href="spy_icon_205840.ico" />
   </head>
   <body>
     <!-- /////////////////////////////////////////////////////////////////////////////// -->
-    <!-- Use header, main, and footer elements to give semantic structure -->
     <header>
       <h1>Odd One Out</h1>
       <nav>
@@ -24,11 +22,6 @@
     <!-- /////////////////////////////////////////////////////////////////////////////// -->
     <main>
       <h1>Waiting For Players...</h1>
-
-      <!-- Button to copy the link to the gameroom. NOT YET IMPLEMENTED -->
-      <p>
-
-      </p>
       
       <table border="1" cellspacing="2" cellpadding="5">
         <tr>
@@ -43,7 +36,6 @@
             </tr>
         </table>
         
-
         <table border="1" cellspacing="15" cellpadding="10">
             <tr>
                 <th><img src="spy_96975.png" alt="Spy icon" width="150" height="150"></th>
@@ -64,8 +56,31 @@
       </form>
 
       <h2>Instructions</h2>
-      <p>The game begins when everyone receives the same "secret word" except the Odd-One-Out who receives a similar but slightly different word. Starting with a random player determined by the application, each player takes turns clockwise, describing their "secret word" with another word while trying to avoid giving away their identity as the potential Odd-One-Out. The other players must use their detective skills to figure out who has a different word and vote on who they think the Odd-One-Out is. If they vote the Odd-One-Out, the Odd-One-Out has one chance to guess what everyone else's word is. If the Odd-One-Out guesses the word correctly or if they are never voted out, they win. If not, everyone else wins. </p>
-
+      <li>
+        The game begins with a randomly chosen player and continues clockwise. Each player takes a turn to describe their secret word with a one or two-word clue, such as “Crunchy” for “Apple.”
+      </li>
+      <li>
+        After all players have given their clues, engage in a brief discussion period. Here, players exchange suspicions and opinions about who they think is the Odd One Out based on the clues given.
+      </li>
+      <li>
+        Next, each player casts a vote on their suspect for the Odd One Out by selecting that player's icon in the voting section. After the voting has finished, the player with the most votes is accused of being the Odd One Out.
+      </li>
+      <li>
+        If the majority correctly identifies the Odd One Out, the accused has one chance to guess the common secret word of the other players. If the Odd One Out guesses correctly, they win; if not, the group wins.
+      </li>
+      <li>
+        However, if the majority is incorrect, often likely in the first round, the wrongly accused player is eliminated from the game. The remaining players continue, giving new descriptions for the same word in subsequent rounds and voting again.
+      </li>
+      <li>
+        In each new round, players provide fresh clues for the same secret word.
+      </li>
+      <li>
+        This continues with players giving new, one or two-word descriptions. The rounds of clue-giving and voting repeat, with players being eliminated for incorrect accusations of being the Odd One Out.
+      </li>
+      <li>
+        The game continues in this manner until the Odd One Out is either caught or successfully guesses the common secret word when caught.
+      </li>
+      <p>Note: The aim for the Odd One Out is to remain undetected until they are the last person remaining. However, if the Odd One Out is sure they know the common word, they could opt to get caught and then correctly guess the common word, thereby winning the game.</p>
     </main>
     <!-- /////////////////////////////////////////////////////////////////////////////// -->
     <footer>
@@ -74,7 +89,6 @@
       <br />
       <a href="https://github.com/BrixtinW/CS_260">GitHub</a>
     </footer>
-
-    
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
   </body>
 </html>
