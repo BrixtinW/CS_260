@@ -8,10 +8,7 @@
     <link rel="icon" href="spy_icon_205840.ico" />
   </head>
   <body>
-
-
-
-    
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
     <!-- Use header, main, and footer elements to give semantic structure -->
     <header>
       <h1>Odd One Out</h1>
@@ -21,8 +18,6 @@
         <!-- Menu is a semantic alternative to <ul> that represents an interaction -->
         <menu>
           <li><a href="index.html">Instructions</a></li>
-          <li><a href="submitSecretWordPairs.html">Submit Secret Word Pairs</a></li>
-          <li><a href="about.html">About</a></li>
           <li><a href="waitingRoom.html">Host Game</a></li>
         </menu>
       </nav>
@@ -30,37 +25,36 @@
       <!-- Since we don't have the ability to style we use old style HTML to give some visual formatting -->
       <hr />
     </header>
-
-
-
-
-
-
-
-
-
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
     <main>
       <h1>Instructions</h1>
       <p>The game begins when everyone receives the same "secret word" except the Odd-One-Out who receives a similar but slightly different word. Starting with a random player determined by the application, each player takes turns clockwise, describing their "secret word" with another word while trying to avoid giving away their identity as the potential Odd-One-Out. The other players must use their detective skills to figure out who has a different word and vote on who they think the Odd-One-Out is. If they vote the Odd-One-Out, the Odd-One-Out has one chance to guess what everyone else's word is. If the Odd-One-Out guesses the word correctly or if they are never voted out, they win. If not, everyone else wins. </p>
-      <form method="get" action="play.html">
-<!--         <label for="name">Name</label>
-        <input type="text" id="name" placeholder="Your name here" /> -->
+      <p>If you're ready to join in the fun, paste in the url to access the gameroom or press the button below to host a new game.</p>
+      <form>
         <button type="submit">Host Game</button>
       </form>
+
+
+      <h2>Submit Secret Word Pairs</h2>
+      <p>You have the chance to submite your own secret word pairs and help the Odd-One-Out community! Simply enter your word pair in the boxes below.</p>
+      <!-- <form method="get" action="play.html"> -->
+      <form>
+        <button type="submit">Submit Words</button>
+        <input type="text" id="name" placeholder="Enter first word" /> 
+        <input type="text" id="name" placeholder="Enter second word" /> 
+      </form>
+
+
+      <h2>About</h2>
+      <p>This page was completed by Brixtin Walker as a part of the course work for CS 260, Web Development.</p>
     </main>
-
-
-
-
-
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
     <footer>
       <hr />
       <span class="text-reset">Brixtin Walker</span>
       <br />
       <a href="https://github.com/BrixtinW/CS_260">GitHub</a>
     </footer>
-
-
 
 
   </body>

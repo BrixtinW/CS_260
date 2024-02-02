@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Tell browsers not to scale the viewport automatically -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3 Odd One Out</title>
+    <link rel="icon" href="spy_icon_205840.ico" />
+  </head>
+  <body>
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
+    <!-- Use header, main, and footer elements to give semantic structure -->
+    <header>
+      <h1>Odd One Out</h1>
+      <nav>
+        <menu>
+          <li><a href="index.html">Instructions</a></li>
+          <li><a href="waitingRoom.html">Host Game</a></li>
+        </menu>
+      </nav>
+      <hr />
+    </header>
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
+    <main>
+      <h1>Waiting For Players...</h1>
+
+      <!-- Button to copy the link to the gameroom. NOT YET IMPLEMENTED -->
+      <button onclick="copyLink()">Copy Link</button>
+
+      <form>
+        <button type="submit">Start Game</button>
+      </form>
+
+
+      <h2>Submit Secret Word Pairs</h2>
+      <p>You have the chance to submite your own secret word pairs and help the Odd-One-Out community! Simply enter your word pair in the boxes below.</p>
+      <!-- <form method="get" action="play.html"> -->
+      <form>
+        <button type="submit">Submit Words</button>
+        <input type="text" id="name" placeholder="Enter first word" /> 
+        <input type="text" id="name" placeholder="Enter second word" /> 
+      </form>
+
+
+      <h2>About</h2>
+      <p>This page was completed by Brixtin Walker as a part of the course work for CS 260, Web Development.</p>
+    </main>
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
+    <footer>
+      <hr />
+      <span class="text-reset">Brixtin Walker</span>
+      <br />
+      <a href="https://github.com/BrixtinW/CS_260">GitHub</a>
+    </footer>
+
+    
+  </body>
+</html>
