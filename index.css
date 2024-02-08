@@ -1,0 +1,115 @@
+/* header {
+    justify-content: flex-end;
+} */
+
+h1, h2 {
+    padding: 30px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo {
+    padding-left: 30px;
+    padding-top: 15px;
+    padding-bottom: 5px;
+    font-size: 60px;
+  /*   font-family: 'Black Ops One', sans-serif; */
+    color: #c41616;
+    border: 2px solid #c41616; /* Add a red border */
+    transform: rotate(-8deg); 
+    height: 60px;
+    border-radius: 5px; /* Rounded corners with a radius of 10 pixels */
+  }
+  
+  
+  body {
+    font-family: 'Special Elite', cursive;
+    margin: 0;
+  }
+  
+  main {
+    padding-top: 20vh;
+    background-color: #f0ae67;
+    color: #453721;
+    height: 100vh;
+  }
+  
+  header {
+    position: fixed;
+    top: 0;
+    background-color: #453721;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 120px;
+    width: 100vw;
+  }
+  
+  footer{
+    background-color: #453721;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+  }
+  
+  footer a{
+    text-decoration: none;
+    color: white;
+    padding-bottom: 20px; 
+  }
+  
+  .footer-info{
+    padding-top: 15px;
+  }
+  
+  nav {
+    display: flex;
+    padding: 10px;
+    text-decoration: none;
+    align-items: center;
+  }
+  
+  header a {
+    text-decoration: none;
+    color: white;
+    padding-right: 30px;
+  }
+  
+  p{
+    margin: 0;
+  }
+  
+  /* .welcome {
+    animation-name: welcome-message;
+    animation-duration: 3s;
+    font-size: 60px;
+  } */
+  
+  .welcome {
+  /*     position: relative; */
+      top: 50%;  
+      width: 24em;
+      margin: 0 auto;
+      border-right: 2px solid rgba(255,255,255,.75);
+  /*     font-size: 180%; */
+  /*     text-align: center; */
+      white-space: nowrap;
+      overflow: hidden;
+      transform: translateY(-50%);    
+  }
+  
+  /* Animation */
+  /* .anim-typewriter{
+    animation: typewriter 4s steps(44) 1s 1 normal both,
+               blinkTextCursor 500ms steps(44) infinite normal;
+  } */
+  
+  /* https://codepen.io/blackfrom80s/pen/ogoxLw */
+  
+  /* The typing effect */
+  @keyframes typewriter{
+    from{width: 0;}
+    to{width: 24em;}
+  }

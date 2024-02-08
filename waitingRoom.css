@@ -1,0 +1,75 @@
+/* header {
+    justify-content: flex-end;
+} */
+
+h1, h2 {
+    padding: 30px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* p {
+    padding-left: 30px;
+  } */
+  
+  .logo {
+    padding-left: 30px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 60px;
+    font-family: 'Black Ops One', sans-serif;
+    color: white;
+  }
+  
+  
+  body {
+    font-family: 'Special Elite', cursive;
+    margin: 0;
+  }
+  
+  main {
+    background-color: #f0ae67;
+    color: #453721;
+  }
+  
+  header {
+    background-color: #453721;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  footer{
+    background-color: #453721;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+  }
+  
+  footer a{
+    text-decoration: none;
+    color: white;
+    padding-bottom: 30px; 
+  }
+  
+  .text-reset{
+    padding-top: 15px;
+  }
+  
+  nav {
+    display: flex;
+    padding: 10px;
+    text-decoration: none;
+    align-items: center;
+  }
+  
+  header a {
+    text-decoration: none;
+    color: white;
+    padding-right: 30px;
+  }
+  
+  p{
+    margin: 0;
+  }
