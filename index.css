@@ -1,6 +1,3 @@
-/* header {
-    justify-content: flex-end;
-} */
 
 h1, h2 {
     padding: 30px;
@@ -9,30 +6,61 @@ h1, h2 {
     align-items: center;
   }
   
-  .logo {
-    padding-left: 30px;
-    padding-top: 15px;
-    padding-bottom: 5px;
-    font-size: 60px;
-  /*   font-family: 'Black Ops One', sans-serif; */
-    color: #c41616;
-    border: 2px solid #c41616; /* Add a red border */
-    transform: rotate(-8deg); 
-    height: 60px;
-    border-radius: 5px; /* Rounded corners with a radius of 10 pixels */
+  #logo {
+      padding-left: 3vw; 
+      padding-right: 3vw;
+      padding-top: 1.5vh; 
+      padding-bottom: 0.5vh; 
+      font-size: calc(3vw + 1.5vh); 
+      color: #c41616;
+      border: 2px solid #c41616; 
+      transform: rotate(-8deg); 
+      border-radius: 5px; 
+      white-space: nowrap; 
+      max-width: 50vw;
   }
   
   
   body {
-    font-family: 'Special Elite', cursive;
+    font-family: 'Special Elite', cursive !important;
+    margin: 0;
+  }
+  
+  h1, h2 {
+    padding: 30px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+  }
+  
+  #logo {
+      padding-left: 3vw; 
+      padding-right: 3vw;
+      padding-top: 1.5vh; 
+      padding-bottom: 0.5vh; 
+      font-size: calc(3vw + 1.5vh); 
+      color: #c41616;
+      border: 2px solid #c41616; 
+      transform: rotate(-8deg); 
+      border-radius: 5px; 
+      white-space: nowrap; 
+      max-width: 50vw;
+  
+  }
+  
+  
+  body {
+    font-family: 'Special Elite', cursive !important;
     margin: 0;
   }
   
   main {
-    padding-top: 20vh;
-    background-color: #f0ae67;
+    padding-top: 15vh;
+    background-color: #f0bf7f;
     color: #453721;
-    height: 100vh;
+    height: 100%;
+    padding-bottom: 10vh;
+    
   }
   
   header {
@@ -42,8 +70,9 @@ h1, h2 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 120px;
+    height: 15vh;
     width: 100vw;
+    z-index: 1000;
   }
   
   footer{
@@ -52,6 +81,8 @@ h1, h2 {
     flex-direction: column;
     align-items: center;
     color: white;
+    bottom: 0;
+    
   }
   
   footer a{
@@ -69,6 +100,7 @@ h1, h2 {
     padding: 10px;
     text-decoration: none;
     align-items: center;
+    font-size: calc(1vw + 1vh);
   }
   
   header a {
@@ -77,39 +109,422 @@ h1, h2 {
     padding-right: 30px;
   }
   
-  p{
+  p {
+    padding: 3vw;
+    display: flex;
+    align-items: center;
+  }
+  
+  li {
+    padding: 1vh 3vw;
+    display: flex;
+    align-items: center;
+  }
+  
+  .instructions {
+    list-style-type: decimal;
+  }
+  
+  #pitch{
+    
+    justify-content: center;
+   background-color: #453721;
+    color: #f0bf7f;
+  /*   width: 30%; */
+    border: 2px solid #453721; 
+    padding: 30px;
+  }
+  
+  #guide{
+    
+    justify-content: center;
+   
+  }
+  
+  form {
+    display: flex;
+    justify-content: center;
+    margin-top: 4vh;
+    margin-bottom: 4vh;
+  }
+  
+  .button {
+    border: 2px solid #c41616;
+    background-color: transparent; 
+    color: #c41616; 
+    font-family: 'Special Elite', cursive;
+    padding: 10px 20px; 
+    font-size: 18px; 
+    cursor: pointer; 
+    outline: none; 
+    transition: all 0.5s ease; 
+    border-radius: 5px; 
+    margin: 1vw;
+  }
+  
+  
+  .button:hover {
+    color: white; 
+    background-color: #c41616; 
+  }
+  
+  .textbox{
+    border: 2px solid #c41616;
+    background-color: transparent; 
+    color: #c41616; 
+    font-family: 'Special Elite', cursive;
+    padding: 10px 20px; 
+    font-size: 18px; 
+    outline: none; 
+    border-radius: 5px; 
+    margin: 1vw;
+  }
+  
+  input[type="text"]::placeholder {
+    color: #c41616; 
+  }
+  
+  #code-display {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    
+    border: 1px solid black;
+    margin: 20px;
+  }
+  
+  #display-characters {
+    display: flex;
+    justify-content: center;
+  }
+  
+  #welcome{
+    color: #c41616;
+    justify-content: center;
+    font-size: 7vw;
+    padding-top: 15%;
+    padding-bottom: 7vh;
     margin: 0;
+    background-image: url('https://t3.ftcdn.net/jpg/01/05/23/22/360_F_105232285_dpObeZlCA5hT58c6IZ5sQqTzR1flnK5G.jpg'); 
+      background-size: cover; 
+      background-position: center; 
   }
   
-  /* .welcome {
-    animation-name: welcome-message;
-    animation-duration: 3s;
-    font-size: 60px;
-  } */
+  /* background #f0bf7f */
+  /* darkerBackground #d9a35d */
   
-  .welcome {
-  /*     position: relative; */
-      top: 50%;  
-      width: 24em;
-      margin: 0 auto;
-      border-right: 2px solid rgba(255,255,255,.75);
-  /*     font-size: 180%; */
-  /*     text-align: center; */
-      white-space: nowrap;
-      overflow: hidden;
-      transform: translateY(-50%);    
+  .tab {
+    background-color: #d9a35d;
+    margin-bottom: 0;
+    border-radius: 20px 20px 0 0;
   }
   
-  /* Animation */
-  /* .anim-typewriter{
-    animation: typewriter 4s steps(44) 1s 1 normal both,
-               blinkTextCursor 500ms steps(44) infinite normal;
-  } */
-  
-  /* https://codepen.io/blackfrom80s/pen/ogoxLw */
-  
-  /* The typing effect */
-  @keyframes typewriter{
-    from{width: 0;}
-    to{width: 24em;}
+  .folder{
+    background: linear-gradient(to bottom, #d9a35d, #f0bf7f); 
   }
+  
+  #overview{
+    width: 19vw;
+    margin-left: 20px;
+    margin-right: 20px;
+    justify-content: center;
+  }
+  
+  #SSWP {
+    width: 30vw;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+  }
+  
+  #about{
+    width: 19vw;
+    margin-left: auto;
+    margin-right: 20px;
+    justify-content: center;
+    display: flex;
+    right: 0;
+  }
+  
+  #wordPairInstructions {
+    justify-content: center;
+  }
+  
+  #aboutParagraph {
+    justify-content: right;
+  }
+  
+  .smallPage{
+    display: flex;
+      flex-direction: column; 
+      justify-content: center; 
+      height: 100vh; 
+  }
+  main {
+    padding-top: 15vh;
+    background-color: #f0bf7f;
+    color: #453721;
+    height: 100%;
+    padding-bottom: 10vh;
+    
+  }
+  
+  header {
+    position: fixed;
+    top: 0;
+    background-color: #453721;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 15vh;
+    width: 100vw;
+  }
+  
+  footer{
+    background-color: #453721;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    bottom: 0;
+    
+  }
+  
+  footer a{
+    text-decoration: none;
+    color: white;
+    padding-bottom: 20px; 
+  }
+  
+  .footer-info{
+    padding-top: 15px;
+  }
+  
+  nav {
+    display: flex;
+    padding: 10px;
+    text-decoration: none;
+    align-items: center;
+    font-size: calc(1vw + 1vh);
+  }
+  
+  header a {
+    text-decoration: none;
+    color: white;
+    padding-right: 30px;
+  }
+  
+  p {
+    padding: 3vw;
+    display: flex;
+    align-items: center;
+  }
+  
+  li {
+    padding: 1vh 3vw;
+    display: flex;
+    align-items: center;
+  }
+  
+  .instructions {
+    list-style-type: decimal;
+  }
+  
+  #pitch{
+    
+    justify-content: center;
+   background-color: #453721;
+    color: #f0bf7f;
+  /*   width: 30%; */
+    border: 2px solid #453721; 
+    padding: 30px;
+  }
+  
+  #guide{
+    
+    justify-content: center;
+   
+  }
+  
+  form {
+    display: flex;
+    justify-content: center;
+    margin-top: 4vh;
+    margin-bottom: 4vh;
+  }
+  
+  .button {
+    border: 2px solid #c41616;
+    background-color: transparent; 
+    color: #c41616; 
+    font-family: 'Special Elite', cursive;
+    padding: 10px 20px; 
+    font-size: 18px; 
+    cursor: pointer; 
+    outline: none; 
+    transition: all 0.5s ease; 
+    border-radius: 5px; 
+    margin: 1vw;
+  }
+  
+  
+  .button:hover {
+    color: white; 
+    background-color: #c41616; 
+  }
+  
+  .textbox{
+    border: 2px solid #c41616;
+    background-color: transparent; 
+    color: #c41616; 
+    font-family: 'Special Elite', cursive;
+    padding: 10px 20px; 
+    font-size: 18px; 
+    outline: none; 
+    border-radius: 5px; 
+    margin: 1vw;
+  }
+  
+  input[type="text"]::placeholder {
+    color: #c41616; 
+  }
+  
+  #code-display {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    
+    border: 1px solid black;
+    margin: 20px;
+  }
+  
+  #display-characters {
+    display: flex;
+    justify-content: center;
+  }
+  
+  #welcome{
+    color: #c41616;
+    justify-content: center;
+    font-size: 7vw;
+    padding-top: 15%;
+    padding-bottom: 7vh;
+    margin: 0;
+    background-image: url('https://t3.ftcdn.net/jpg/01/05/23/22/360_F_105232285_dpObeZlCA5hT58c6IZ5sQqTzR1flnK5G.jpg'); 
+      background-size: cover; 
+      background-position: center; 
+  }
+  
+  /* background #f0bf7f */
+  /* darkerBackground #d9a35d */
+  
+  .tab {
+    background-color: #d9a35d;
+    margin-bottom: 0;
+    border-radius: 20px 20px 0 0;
+    
+  }
+  
+  .folder{
+    background: linear-gradient(to bottom, #d9a35d, #f0bf7f); 
+  }
+  
+  #overview{
+    width: 19vw;
+    margin-left: 20px;
+    margin-right: 20px;
+    justify-content: center;
+  }
+  
+  #SSWP {
+    width: 30vw;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+  }
+  
+  #about{
+    width: 19vw;
+    margin-left: auto;
+    margin-right: 20px;
+    justify-content: center;
+    display: flex;
+    right: 0;
+  }
+  
+  #wordPairInstructions {
+    justify-content: center;
+  }
+  
+  #aboutParagraph {
+    justify-content: right;
+  }
+  
+  #joinGame{
+    display: flex;
+      flex-direction: column; 
+      justify-content: center; 
+      height: 100vh; 
+  }
+  
+  
+  
+  article {
+    position: relative;
+    border-radius: 16px;
+    background: #453721;
+    overflow: hidden;
+  }
+  
+  article h2 {
+    margin: 0 0 18px 0;
+    font-size: 1.9rem;
+    letter-spacing: 0.06em;
+    color: #c41616;
+  }
+  
+  figure {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  article img {
+    max-width: 100%;
+    background-color: #d9a35d;
+  }
+  
+  .article-body {
+    padding: 24px;
+  }
+  
+  .articles {
+    display: grid;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+  }
+  
+  #gameRoomCode {
+    margin-top: 0;
+  }
+  
+  table {
+    display: flex;
+    justify-content: center;
+    border: none;
+    margin: 10vh;
+  }
+  
+  table th, td {
+    border: 2px solid #c41616;
+    border-radius: 5px; 
+    color: black;
+    padding: 10px 20px; 
+    font-size: 2rem;
+  }
+  
