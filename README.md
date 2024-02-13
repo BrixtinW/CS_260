@@ -3,7 +3,7 @@
 ### Progress
 - [x] Specification Deliverable
 - [x] HTML Deliverable
-- [ ] CSS Deliverable
+- [x] CSS Deliverable
 - [ ] JavaScript Deliverable
 - [ ] Service Deliverable
 - [ ] Database/Login Deliverable
