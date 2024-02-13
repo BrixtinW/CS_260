@@ -58,11 +58,17 @@ I will implement the following technologies:
 - **Text** - Overview and an About section for the game are listed on the home page as well as Instructions on the waiting room page. 
 - **Images** - Spy images are included for each player's voting card as well as a spy icon on the tab for each page
 - **Database** - Stores the user's name, votes, and secret words in a database. Also accepts submissions for secret word pairs.
-- **WebSocket** - Will display the voting results as well as players' identities after the voting concludes.
+- **WebSocket** - Will display the voting results and players' identities after the voting concludes.
 
-<!-- ## CSS Deliverable
+## CSS Deliverable
+- **Prerequisites** - Simon CSS deployed, link to GitHub on every page, and notes in README.md file completed.
+- **Organization** - Header, Footer, and main content organized and formatted.
+- **Text** - Text elements formatted and special fonts imported
+- **Images** - Spy images included on the home page and player cards as well as a spicon on the tab
+- **Responsive Design** - Animated buttons as well as a dynamic window display for varying monitor sizes.
+- **Navigation** - Navigation through the header and the buttons. Styled for clarity.
 
-## JavaScript Deliverable
+<!-- ## JavaScript Deliverable
 
 ## Service Deliverable
 
