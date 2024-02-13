@@ -115,6 +115,7 @@
   
   form {
     display: flex;
+    flex: 1;
     justify-content: center;
     margin-top: 4vh;
     margin-bottom: 4vh;
@@ -123,6 +124,7 @@
   .button {
     border: 2px solid #c41616;
     background-color: transparent; 
+    text-decoration: none;
     color: #c41616; 
     font-family: 'Special Elite', cursive;
     padding: 10px 20px; 
@@ -132,6 +134,8 @@
     transition: all 0.5s ease; 
     border-radius: 5px; 
     margin: 1vw;
+
+    max-width: 100vw;
   }
   
   
@@ -239,7 +243,6 @@
       justify-content: center; 
       height: 100vh; 
   }
-  
   
   
   article {
