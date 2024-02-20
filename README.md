@@ -3,7 +3,7 @@
 ### Progress
 - [x] Specification Deliverable
 - [x] HTML Deliverable
-- [ ] CSS Deliverable
+- [x] CSS Deliverable
 - [ ] JavaScript Deliverable
 - [ ] Service Deliverable
 - [ ] Database/Login Deliverable
@@ -60,9 +60,15 @@ I will implement the following technologies:
 - **Database** - Stores the user's name, votes, and secret words in a database. Also accepts submissions for secret word pairs.
 - **WebSocket** - Will display the voting results as well as players' identities after the voting concludes.
 
-<!-- ## CSS Deliverable
+ ## CSS Deliverable
+- **Prerequisites** - Simon CSS deployed, link to GitHub in the footer, git commits spread throughout the assignment period and notes in README.md file completed
+- **Organization** - Header, footer, and main content completed
+- **Navigation** - Navigation through links in the header and the buttons on the page
+- **Resizing** - Window and elements responsive to resizing
+- **Images** - Includes images on the home page, character icons, and the spicon on the tab. 
+- **Text** - Text content with imported fonts and detailed instructions on the game. 
 
-## JavaScript Deliverable
+<!-- ## JavaScript Deliverable
 
 ## Service Deliverable
 
