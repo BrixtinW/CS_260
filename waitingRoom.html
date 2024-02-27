@@ -84,21 +84,37 @@
     <!-- /////////////////////////////////////////////////////////////////////////////// -->
 
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Prompt for player name
-        var playerName = prompt("Please enter your player name:");
-        
+document.addEventListener("DOMContentLoaded", function() {
+    // Prompt for player name
+    var playerName = prompt("Please enter your player name:");
+
+    // Retrieve existing player names array from sessionStorage
+    var playerNames = JSON.parse(sessionStorage.getItem("playerNames")) || [];
+
+    // Check if playerName is not empty and user has not clicked cancel
+    if (playerName && playerName.trim() !== "") {
+        // Add playerName to the playerNames array
+        playerNames.push(playerName);
+
+        // Store updated playerNames array back to sessionStorage
+        sessionStorage.setItem("playerNames", JSON.stringify(playerNames));
+
         // Create a new div element
         var newItem = document.createElement("div");
         newItem.classList.add("item"); // Add the "item" class to the new div
         newItem.textContent = playerName; // Set the text content of the new div to the player's name
-        
+
         // Get the carousel container
         var carousel = document.getElementById("carousel");
-        
+
         // Append the new item to the carousel
         carousel.appendChild(newItem);
-    });
+    } else {
+        // Handle case where player name is empty or canceled
+        console.error("Player name is empty or canceled");
+    }
+});
+
 
   </script>
   <script src="index.js"></script>

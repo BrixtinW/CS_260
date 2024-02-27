@@ -1,23 +1,3 @@
-document.addEventListener("DOMContentLoaded", function() {
-    // Get the host game button
-    var hostGameButton = document.getElementById("hostGameButton");
-
-    // Add click event listener to the host game button
-    hostGameButton.addEventListener("click", function(event) {
-        // Navigate to the waiting room page
-        window.location.href = "waitingRoom.html";
-    });
-});
-
-
-
-
-
-
-
-
-
-
 
 
 function loadGameRoom() {
