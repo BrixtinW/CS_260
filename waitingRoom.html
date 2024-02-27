@@ -24,55 +24,26 @@
       <h1>Waiting For Players...</h1>
     
 
-      <h2>Game Room Code:</h2>
+      <!-- <h2>Game Room Code:</h2>
     <form id="gameRoomCode">
         <button class="button">X4JK2U</button>
-      </form>
+      </form> -->
 
       
- <section class="articles">
-  <article>
 
-    <div class="article-wrapper">
-      <figure>
-        <img src="https://www.svgrepo.com/show/323336/spy.svg" alt="" />
-      </figure>
-      <div class="article-body">
-        <h2>Player 1</h2>
-      </div>
-    </div>
-    
-  </article>
-  <article>
-
-    <div class="article-wrapper">
-      <figure>
-        <img src="https://www.svgrepo.com/show/323336/spy.svg" alt="" />
-      </figure>
-      <div class="article-body">
-        <h2>Player 2</h2>
-      </div>
-    </div>
-    
-  </article>
-  <article>
-
-    <div class="article-wrapper">
-      <figure>
-        <img src="https://www.svgrepo.com/show/323336/spy.svg" alt="" />
-      </figure>
-      <div class="article-body">
-        <h2>Player 3</h2>
-      </div>
-    </div>
-    
-  </article>
-</section>
+  <div id="carousel">
+    <!-- DIV ELEMENTS INSERTED HERE -->
+    <div class="item"> TEST </div>
+    <div class="item"> TEST </div>
+    <div class="item"> TEST </div>
+    <div class="item"> TEST </div>
+  </div>
       
       
 
-      <form action="gameroom.html" method="get">
-        <a href="gameRoom.html" class="button">Start Game</a>   
+      <form>
+        <a href="#" class="button" id="startGame" onclick="loadGameRoom()">Start Game</a>
+  
       </form>
 
       <h2>Instructions</h2>
@@ -111,5 +82,25 @@
       <a href="https://github.com/BrixtinW/CS_260">GitHub</a>
     </footer>
     <!-- /////////////////////////////////////////////////////////////////////////////// -->
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Prompt for player name
+        var playerName = prompt("Please enter your player name:");
+        
+        // Create a new div element
+        var newItem = document.createElement("div");
+        newItem.classList.add("item"); // Add the "item" class to the new div
+        newItem.textContent = playerName; // Set the text content of the new div to the player's name
+        
+        // Get the carousel container
+        var carousel = document.getElementById("carousel");
+        
+        // Append the new item to the carousel
+        carousel.appendChild(newItem);
+    });
+
+  </script>
+  <script src="index.js"></script>
   </body>
 </html>

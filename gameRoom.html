@@ -32,64 +32,9 @@
             </tr>
             </table>
 
-<!--             <table border="1" cellspacing="5" cellpadding="10">
-                <tr>
-                    <th colspan="4">
-                        Select the Odd One Out
-                    </th>
-                </tr>
-                <tr>
-                    <th><img src="spy_96975.png" alt="Spy icon" width="50" height="50"></th>
-                    <th><img src="spy_96975.png" alt="Spy icon" width="50" height="50"></th>
-                    <th><img src="spy_96975.png" alt="Spy icon" width="50" height="50"></th>
-                    <th><img src="spy_96975.png" alt="Spy icon" width="50" height="50"></th>
-                </tr>
-                <tr>
-                    <td>Player 1</td>
-                    <td>Player 2</td>
-                    <td>Player 3</td>
-                    <td>Player 4</td>
-                </tr>
-            </table> -->
-
-      <section class="articles">
-          <article>
-
-            <div class="article-wrapper">
-              <figure>
-                <img src="https://www.svgrepo.com/show/323336/spy.svg" alt="" />
-              </figure>
-              <div class="article-body">
-                <h2>Player 1</h2>
-              </div>
+            <div id="carousel">
+              <!-- DIV ELEMENTS INSERTED HERE -->
             </div>
-
-          </article>
-          <article>
-
-            <div class="article-wrapper">
-              <figure>
-                <img src="https://www.svgrepo.com/show/323336/spy.svg" alt="" />
-              </figure>
-              <div class="article-body">
-                <h2>Player 2</h2>
-              </div>
-            </div>
-
-          </article>
-          <article>
-
-            <div class="article-wrapper">
-              <figure>
-                <img src="https://www.svgrepo.com/show/323336/spy.svg" alt="" />
-              </figure>
-              <div class="article-body">
-                <h2>Player 3</h2>
-              </div>
-            </div>
-
-          </article>
-        </section>
       
             <form><button class="button">Submit Vote</button></form>
     </main>
@@ -102,5 +47,28 @@
       <a href="https://github.com/BrixtinW/CS_260">GitHub</a>
     </footer>
     <!-- /////////////////////////////////////////////////////////////////////////////// -->
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Retrieve copied divs from localStorage
+        var copiedDivs = JSON.parse(sessionStorage.getItem("copiedDivs"));
+
+        console.log(copiedDivs)
+        
+        // Get the target div on the current page
+        var targetDiv = document.getElementById("carousel");
+        
+        // Append the copied divs to the target div
+        if (copiedDivs) {
+            copiedDivs.forEach(function(div) {
+                targetDiv.appendChild(div);
+            });
+        }
+        
+        // Clear the copiedDivs from localStorage (optional)
+        localStorage.removeItem("copiedDivs");
+    });
+
+  </script>
   </body>
 </html>
