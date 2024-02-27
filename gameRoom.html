@@ -26,13 +26,13 @@
                 <th>
                     Your Secret Word:
                 </th>
-                 <td>
-                      Octopus
+                 <td id="secretWordDisplay">
+                      
                     </td>
             </tr>
             </table>
 
-            <div id="carousel">
+            <div id="carousel" action="onclick">
               <!-- DIV ELEMENTS INSERTED HERE -->
             </div>
       
@@ -49,62 +49,70 @@
     <!-- /////////////////////////////////////////////////////////////////////////////// -->
 
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Retrieve player names array from sessionStorage
-        var playerNames = JSON.parse(localStorage.getItem("playerNames")) || [];
+    let voteMap = new Map();
 
-        // Get the target div on the current page
+    document.addEventListener("DOMContentLoaded", function() {
+        var playerNames = JSON.parse(localStorage.getItem("playerNames")) || [];
+        var myName = JSON.parse(localStorage.getItem("myName")) || [];
+        
+
         var targetDiv = document.getElementById("carousel");
 
-        // Create a new div element for each player name and append it to the target div
         playerNames.forEach(function(playerName) {
-            // Create a new div element
             var newItem = document.createElement("div");
-            newItem.classList.add("item"); // Add the "item" class to the new div
-            newItem.textContent = playerName; // Set the text content of the new div to the player's name
+            newItem.classList.add("item"); 
+            newItem.textContent = playerName; 
 
-            // Append the new item to the target div
+            newItem.addEventListener("click", function() {
+            selectPlayer(myName, playerName);
+        });
+
             targetDiv.appendChild(newItem);
+
         });
 
 
         const wordPairs = [
-          ["Squid", "Octopus"],
-          ["Squid", "Octopus"],
-          ["Squid", "Octopus"], 
-          ["Squid", "Octopus"],
-          ["Squid", "Octopus"],
-          ["Squid", "Octopus"],
-          ["Squid", "Octopus"],
-          ["Squid", "Octopus"],
-          ["Squid", "Octopus"],
-          ["Squid", "Octopus"],
-          ["Squid", "Octopus"],
-          ["Squid", "Octopus"],
-          ["Squid", "Octopus"],
-          ["Squid", "Octopus"],
-          ["Squid", "Octopus"],
-          ["Squid", "Octopus"],
-          ["Squid", "Octopus"],]
+          ["butterfly", "Octopus"],
+          ["ground", "Octopus"],
+          ["hahaha", "Octopus"], 
+          ["I", "Octopus"],
+          ["Don't", "Octopus"],
+          ["Know", "Octopus"],
+          ["What", "Octopus"],
+          ["WOrds", "Octopus"],
+          ["To", "Octopus"],
+          ["Put", "Octopus"],
+          ["In", "Octopus"],
+          ["Here", "Octopus"],
+          ["But", "Octopus"],
+          ["This", "Octopus"],
+          ["Works", "Octopus"],
+          ["so", "Octopus"],
+          ["Far!!", "Octopus"],]
 
         const randomNum = Math.floor(Math.random() * wordPairs.length); 
-
-        console.log(randomNum)
-
         const secretWord = wordPairs[randomNum][0];
 
-        console.log(secretWord)
 
+        var secretWordDisplay= document.getElementById("secretWordDisplay");
+        secretWordDisplay.textContent = secretWord;
 
     });
 
     
 
     window.addEventListener("beforeunload", function(event) {
-        // Clear sessionStorage
         localStorage.clear();
     });
 
+
+    function selectPlayer(myName, playerName){
+    voteMap.set(myName, playerName);
+    console.log(myName, "votes for", playerName)
+}
+
   </script>
+  // <script src="index.js"></script> 
   </body>
 </html>

@@ -20,25 +20,7 @@ function loadGameRoom() {
 };
 
 
-
-
-wordPairs = [
-    ["Squid", "Octopus"],
-    ["Squid", "Octopus"],
-    ["Squid", "Octopus"], 
-    ["Squid", "Octopus"],
-    ["Squid", "Octopus"],
-    ["Squid", "Octopus"],
-    ["Squid", "Octopus"],
-    ["Squid", "Octopus"],
-    ["Squid", "Octopus"],
-    ["Squid", "Octopus"],
-    ["Squid", "Octopus"],
-    ["Squid", "Octopus"],
-    ["Squid", "Octopus"],
-    ["Squid", "Octopus"],
-    ["Squid", "Octopus"],
-    ["Squid", "Octopus"],
-    ["Squid", "Octopus"],]
-
-localStorage.setItem("wordPairs", JSON.stringify(wordPairs));
+// function selectPlayer(myName, playerName){
+//     voteMap.set(myName, playerName);
+//     console.log(myName, "votes for", playerName)
+// }
