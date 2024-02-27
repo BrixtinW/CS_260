@@ -18,3 +18,27 @@ function loadGameRoom() {
         // Navigate to the next page
         window.location.href = "gameRoom.html";
 };
+
+
+
+
+wordPairs = [
+    ["Squid", "Octopus"],
+    ["Squid", "Octopus"],
+    ["Squid", "Octopus"], 
+    ["Squid", "Octopus"],
+    ["Squid", "Octopus"],
+    ["Squid", "Octopus"],
+    ["Squid", "Octopus"],
+    ["Squid", "Octopus"],
+    ["Squid", "Octopus"],
+    ["Squid", "Octopus"],
+    ["Squid", "Octopus"],
+    ["Squid", "Octopus"],
+    ["Squid", "Octopus"],
+    ["Squid", "Octopus"],
+    ["Squid", "Octopus"],
+    ["Squid", "Octopus"],
+    ["Squid", "Octopus"],]
+
+localStorage.setItem("wordPairs", JSON.stringify(wordPairs));

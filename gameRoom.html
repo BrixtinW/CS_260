@@ -51,7 +51,7 @@
     <script>
     document.addEventListener("DOMContentLoaded", function() {
         // Retrieve player names array from sessionStorage
-        var playerNames = JSON.parse(sessionStorage.getItem("playerNames")) || [];
+        var playerNames = JSON.parse(localStorage.getItem("playerNames")) || [];
 
         // Get the target div on the current page
         var targetDiv = document.getElementById("carousel");
@@ -66,8 +66,44 @@
             // Append the new item to the target div
             targetDiv.appendChild(newItem);
         });
+
+
+        const wordPairs = [
+          ["Squid", "Octopus"],
+          ["Squid", "Octopus"],
+          ["Squid", "Octopus"], 
+          ["Squid", "Octopus"],
+          ["Squid", "Octopus"],
+          ["Squid", "Octopus"],
+          ["Squid", "Octopus"],
+          ["Squid", "Octopus"],
+          ["Squid", "Octopus"],
+          ["Squid", "Octopus"],
+          ["Squid", "Octopus"],
+          ["Squid", "Octopus"],
+          ["Squid", "Octopus"],
+          ["Squid", "Octopus"],
+          ["Squid", "Octopus"],
+          ["Squid", "Octopus"],
+          ["Squid", "Octopus"],]
+
+        const randomNum = Math.floor(Math.random() * wordPairs.length); 
+
+        console.log(randomNum)
+
+        const secretWord = wordPairs[randomNum][0];
+
+        console.log(secretWord)
+
+
     });
 
+    
+
+    window.addEventListener("beforeunload", function(event) {
+        // Clear sessionStorage
+        localStorage.clear();
+    });
 
   </script>
   </body>
