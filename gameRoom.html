@@ -84,23 +84,23 @@
 
 
         const wordPairs = [
-          ["butterfly", "Octopus"],
-          ["ground", "Octopus"],
-          ["hahaha", "Octopus"], 
-          ["I", "Octopus"],
-          ["Don't", "Octopus"],
-          ["Know", "Octopus"],
-          ["What", "Octopus"],
-          ["WOrds", "Octopus"],
-          ["To", "Octopus"],
-          ["Put", "Octopus"],
-          ["In", "Octopus"],
-          ["Here", "Octopus"],
-          ["But", "Octopus"],
-          ["This", "Octopus"],
-          ["Works", "Octopus"],
-          ["so", "Octopus"],
-          ["Far!!", "Octopus"],]
+          ["1", "Octopus"],
+          ["2", "Octopus"],
+          ["3", "Octopus"], 
+          ["4", "Octopus"],
+          ["5", "Octopus"],
+          ["6", "Octopus"],
+          ["7", "Octopus"],
+          ["8", "Octopus"],
+          ["9", "Octopus"],
+          ["10", "Octopus"],
+          ["11", "Octopus"],
+          ["12", "Octopus"],
+          ["13", "Octopus"],
+          ["14", "Octopus"],
+          ["15", "Octopus"],
+          ["16", "Octopus"],
+          ["17!!", "Octopus"],]
 
         const randomNum = Math.floor(Math.random() * wordPairs.length); 
         const secretWord = wordPairs[randomNum][0];
@@ -141,12 +141,44 @@
       tiePlayers.push(key);
     }
 });
-    if (tiePlayers.length == 0){
-      console.log( `${highestPlayer} voted out!`);
+      if (tiePlayers.length == 0){
+        console.log( `${highestPlayer} voted out!`);
+            // Retrieve player names from local storage
+      var playerNames = JSON.parse(localStorage.getItem("playerNames")) || [];
+
+      // Find the index of the name you want to delete
+      var indexToDelete = playerNames.indexOf(highestPlayer);
+
+      // Check if the name exists in the array
+      if (indexToDelete !== -1) {
+          // Remove the name from the array
+          playerNames.splice(indexToDelete, 1);
+
+          // Update local storage with the modified array
+          localStorage.setItem("playerNames", JSON.stringify(playerNames));
+
+          // Reload the page
+          location.reload();
+      } else {
+          // Name not found in the array
+          console.error("Name not found in local storage");
+      }
+
     } else {
       console.log( `tie between ${highestPlayer} and ${tiePlayers}`)
     }
     console.log(voteMap)
+
+
+
+
+
+
+
+
+
+
+
 
   }
 
