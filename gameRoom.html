@@ -36,7 +36,7 @@
               <!-- DIV ELEMENTS INSERTED HERE -->
             </div>
       
-            <form><button class="button">Submit Vote</button></form>
+            <form><button class="button" onclick="readTheVotes()" >Submit Vote</button></form>
     </main>
     <!-- /////////////////////////////////////////////////////////////////////////////// -->
     <footer>
@@ -50,6 +50,8 @@
 
     <script>
     let voteMap = new Map();
+    let selected = false;
+
 
     document.addEventListener("DOMContentLoaded", function() {
         var playerNames = JSON.parse(localStorage.getItem("playerNames")) || [];
@@ -59,13 +61,21 @@
         var targetDiv = document.getElementById("carousel");
 
         playerNames.forEach(function(playerName) {
-            var newItem = document.createElement("div");
-            newItem.classList.add("item"); 
-            newItem.textContent = playerName; 
+        var newItem = document.createElement("div");
+        newItem.classList.add("item"); 
+        newItem.textContent = playerName; 
+        newItem.dataset.selected = "false"; 
+        voteMap.set(playerName, 0);
 
-            newItem.addEventListener("click", function() {
-            selectPlayer(myName, playerName);
-            newItem.classList.toggle("selected");
+        newItem.addEventListener("click", function() {
+          newItem.classList.toggle("selected")
+            if (newItem.dataset.selected == "false") {
+                newItem.dataset.selected = "true";
+                selectPlayer(playerName, 1);
+            } else {
+                newItem.dataset.selected = "false";
+                selectPlayer(playerName, -1);
+            }
         });
 
             targetDiv.appendChild(newItem);
@@ -108,12 +118,40 @@
     });
 
 
-    function selectPlayer(myName, playerName){
-    voteMap.set(myName, playerName);
-    console.log(myName, "votes for", playerName)
+    function selectPlayer(playerName, increment) {
+    voteMap.set(playerName, (voteMap.get(playerName)) + increment);
+    console.log(playerName, "has", voteMap.get(playerName), "votes!");
+    console.log(voteMap);
 }
 
+  function readTheVotes(){
+    event.preventDefault();
+
+    let highestVote = 0;
+    let highestPlayer = null;
+    let tiePlayers = [];
+
+    voteMap.forEach(function(value, key) {
+    console.log("Key:", key, "Value:", value);
+    if (value > highestVote){
+      highestVote = value;
+      highestPlayer = key;
+      tiePlayers = [];
+    } else if (value == highestVote){
+      tiePlayers.push(key);
+    }
+});
+    if (tiePlayers.length == 0){
+      console.log( `${highestPlayer} voted out!`);
+    } else {
+      console.log( `tie between ${highestPlayer} and ${tiePlayers}`)
+    }
+    console.log(voteMap)
+
+  }
+
+
   </script>
-  // <script src="index.js"></script> 
+ <script src="index.js"></script> 
   </body>
 </html>
