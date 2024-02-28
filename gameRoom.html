@@ -27,12 +27,12 @@
                     Your Secret Word:
                 </th>
                  <td id="secretWordDisplay">
-                      
+                      <!-- Secret Word Generated Here -->
                     </td>
             </tr>
             </table>
 
-            <div id="carousel" action="onclick">
+            <div id="carousel">
               <!-- DIV ELEMENTS INSERTED HERE -->
             </div>
       
@@ -65,6 +65,7 @@
 
             newItem.addEventListener("click", function() {
             selectPlayer(myName, playerName);
+            newItem.classList.toggle("selected");
         });
 
             targetDiv.appendChild(newItem);
@@ -103,7 +104,7 @@
     
 
     window.addEventListener("beforeunload", function(event) {
-        localStorage.clear();
+        // localStorage.clear();
     });
 
 
