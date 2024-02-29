@@ -74,6 +74,7 @@ I will implement the following technologies:
 - **DataBase** - User information, as well as game state (voting, number of players) will be stored in the DataBase
 - **WebSocket** - This will be very important later. For now, I just included 3 default players in the waiting room and the game room. Eventually, it will display everyone together in a session. 
 - **Voting Logic** - In the game room you can click on players to vote them out. The player with the highest votes will be voted out, and the round will continue. When you select your own name, you are kicked out of the session.  
+- **Local Storage** - Local storge is cleaned when you access the home page, and the Submit Secret Words button and the textboxes on the home page help determine the words that show up in the gameroom. 
 
   
 <!--## Service Deliverable
