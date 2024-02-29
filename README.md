@@ -4,7 +4,7 @@
 - [x] Specification Deliverable
 - [x] HTML Deliverable
 - [x] CSS Deliverable
-- [ ] JavaScript Deliverable
+- [x] JavaScript Deliverable
 - [ ] Service Deliverable
 - [ ] Database/Login Deliverable
 - [ ] WebSocket Deliverable
@@ -68,9 +68,15 @@ I will implement the following technologies:
 - **Images** - Includes images on the home page, character icons, and the spicon on the tab. 
 - **Text** - Text content with imported fonts and detailed instructions on the game. 
 
-<!-- ## JavaScript Deliverable
+## JavaScript Deliverable
+- **Prerequisites** - Simon JavaScript deployed, link to GitHub in the footer, git commits spread throughout the assignment period and notes in README.md file completed
+- **Login** - Sign-in and Registration are implemented through the Sign-in button or in the header.
+- **DataBase** - User information, as well as game state (voting, number of players) will be stored in the DataBase
+- **WebSocket** - This will be very important later. For now, I just included 3 default players in the waiting room and the game room. Eventually, it will display everyone together in a session. 
+- **Voting Logic** - In the game room you can click on players to vote them out. The player with the highest votes will be voted out, and the round will continue. When you select your own name, you are kicked out of the session.  
 
-## Service Deliverable
+  
+<!--## Service Deliverable
 
 ## Database Deliverable
 
