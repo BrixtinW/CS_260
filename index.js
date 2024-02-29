@@ -1,5 +1,3 @@
-
-// document.addEventListener("DOMContentLoaded", function() {
     localStorage.clear();
 
     let users = [
@@ -12,9 +10,3 @@
 
     localStorage.setItem("usersData", JSON.stringify(users));
     console.log(localStorage)
-// })
-
-// function selectPlayer(myName, playerName){
-//     voteMap.set(myName, playerName);
-//     console.log(myName, "votes for", playerName)
-// }

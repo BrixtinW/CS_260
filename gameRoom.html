@@ -32,9 +32,6 @@
             </table>
 
             <div id="carousel">
-              <!-- <div class="item">Other Player 1</div>
-              <div class="item">Other Player 2</div>
-              <div class="item">Other Player 3</div> -->
               <!-- DIV ELEMENTS INSERTED HERE -->
             </div>
       
@@ -139,18 +136,17 @@
 });
       if (tiePlayers.length == 0){
         console.log( `${highestPlayer} voted out!`);
-            // Retrieve player names from local storage
+
       var playerNames = JSON.parse(localStorage.getItem("playerNames")) || [];
 
-      // Find the index of the name you want to delete
+
       var indexToDelete = playerNames.indexOf(highestPlayer);
 
-      // Check if the name exists in the array
+
       if (indexToDelete !== -1) {
-          // Remove the name from the array
+
           playerNames.splice(indexToDelete, 1);
 
-          // Update local storage with the modified array
           localStorage.setItem("playerNames", JSON.stringify(playerNames));
 
 
@@ -161,15 +157,12 @@
           }
 
 
-          // Reload the page
           location.reload();
       } else {
-          // Name not found in the array
           console.error("Name not found in local storage");
       }
 
     } else {
-      // console.log( `tie between ${highestPlayer} and ${tiePlayers}`)
       alert(`tie between ${highestPlayer} and ${tiePlayers}`)
     }
     console.log(voteMap)
