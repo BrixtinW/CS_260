@@ -27,3 +27,8 @@ ENDSSH
 # Step 2
 printf "\n----> Copy the distribution package to the target.\n"
 scp -r -i "$key" * ubuntu@$hostname:services/$service/public
+
+
+
+# Command for deployment script:
+# ./deployFiles.sh -k ~/Desktop/BYU/BYU_Production.pem -h odd-one-out.click -s startup

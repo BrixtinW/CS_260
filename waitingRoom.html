@@ -14,9 +14,8 @@
      <header>
       <h1 id= logo>Odd One Out</h1>
       <nav>
-          <a href="index.html">Home</a>
-          <a href="waitingRoom.html">Host Game</a>
-          <a href="invitation.html">Join Game</a>
+        <a href="index.html">Home</a>
+        <a href="invitation.html">Sign In</a>
       </nav>
     </header>
     <!-- /////////////////////////////////////////////////////////////////////////////// -->
@@ -27,13 +26,16 @@
       
 
   <div id="carousel">
+    <!-- <div class="item">Other Player 1</div>
+    <div class="item">Other Player 2</div>
+    <div class="item">Other Player 3</div> -->
     <!-- DIV ELEMENTS INSERTED HERE -->
   </div>
       
       
 
       <form>
-        <a href="#" class="button" id="startGame" onclick="loadGameRoom()">Start Game</a>
+        <a class="button" id="startGame" onclick="loadGameRoom()">Start Game</a>
   
       </form>
 
@@ -75,10 +77,24 @@
     <!-- /////////////////////////////////////////////////////////////////////////////// -->
 
     <script>
+
+        var users = JSON.parse(localStorage.getItem("usersData"));
+        console.log("users", users)
+
+addName("Other Player 1")
+addName("Other Player 2")
+addName("Other Player 3")
+
+
 document.addEventListener("DOMContentLoaded", function() {
  
     var playerName = prompt("Please enter your player name:");
 
+    addName(playerName)
+
+});
+
+function addName(playerName){
     var playerNames = JSON.parse(localStorage.getItem("playerNames")) || [];
 
     if (playerName && playerName.trim() !== "") {
@@ -86,6 +102,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
         localStorage.setItem("playerNames", JSON.stringify(playerNames));
         localStorage.setItem("myName", JSON.stringify(playerName));
+
+        console.log("playerNames", playerNames)
 
  
         var newItem = document.createElement("div");
@@ -96,14 +114,35 @@ document.addEventListener("DOMContentLoaded", function() {
 
         carousel.appendChild(newItem);
 
+
+    
+
     } else {
 
         console.error("Player name is empty or canceled");
-    }
-});
 
+    }
+  }
+
+
+  function loadGameRoom() {
+
+console.log("BUTTON PRESSED BUT NOTHING HAPPENED?????")
+
+
+    var carouselDivs = document.querySelectorAll("#carousel .item");
+    var copiedDivs = [];
+    carouselDivs.forEach(function(div) {
+        var copiedDiv = div.cloneNode(true);
+        copiedDivs.push(copiedDiv);
+    });
+
+    sessionStorage.setItem("copiedDivs", JSON.stringify(copiedDivs));
+
+    window.location.href = "gameRoom.html";
+};
 
   </script>
-  <script src="index.js"></script>
+  <!-- <script src="index.js"></script> -->
   </body>
 </html>

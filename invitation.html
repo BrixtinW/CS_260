@@ -15,19 +15,20 @@
       <h1 id= logo>Odd One Out</h1>
       <nav>
           <a href="index.html">Home</a>
-          <a href="waitingRoom.html">Host Game</a>
-          <a href="invitation.html">Join Game</a>
+          <a href="invitation.html">Sign In</a>
       </nav>
     </header>
     <!-- /////////////////////////////////////////////////////////////////////////////// -->
     <main class="smallPage">
-      <h1>Join Game</h1>
-      <p>Please enter the game room code and your name below</p>
-    
+      <h1>Sign in</h1>
+      <!-- <p>Please enter the game room code and your name below</p> -->
+      <p>Enter your information and sign in if you've played Odd One Out previouly, or register if its your first time.</p>
+
       <form>
-        <a href="waitingRoom.html" class="button">Start Game</a>   
-        <input type="text" class="textbox" placeholder="Enter game code" /> 
-        <input type="text" class="textbox" placeholder="Enter player name" /> 
+        <a class="button" onclick="authenticate()">Sign In</a>   
+        <a class="button" onclick="registerUser()">Register</a>   
+        <input type="text" class="textbox" id="username" placeholder="Enter username" /> 
+        <input type="text" class="textbox" id="password" placeholder="Enter password" /> 
       </form>
     </main>
     <!-- /////////////////////////////////////////////////////////////////////////////// -->
@@ -39,5 +40,39 @@
       <a href="https://github.com/BrixtinW/CS_260">GitHub</a>
     </footer>
     <!-- /////////////////////////////////////////////////////////////////////////////// -->
+    <script>
+        var users = JSON.parse(localStorage.getItem("usersData"));
+
+        function authenticate() {
+            let usernameInput = document.getElementById("username").value;
+            let passwordInput = document.getElementById("password").value;
+
+            let user = users.find(user => user.username === usernameInput && user.password === passwordInput);
+
+            if (user) {
+                alert("Login successful!");
+                window.location.href = "waitingRoom.html";
+                // Redirect to waiting room or do something else
+            } else {
+                alert("Invalid username or password");
+            }
+        }
+
+        function registerUser() {
+            let usernameInput = document.getElementById("username").value;
+            let passwordInput = document.getElementById("password").value;
+
+            // Check if username already exists
+            if (users.some(user => user.username === usernameInput)) {
+                alert("Username already exists. Please choose a different one.");
+            } else {
+                // Add user to the database
+                users.push({ username: usernameInput, password: passwordInput });
+                localStorage.setItem("usersData", JSON.stringify(users));
+                alert("Registration successful!");
+                window.location.href = "waitingRoom.html";
+            }
+        }
+    </script>
   </body>
 </html>

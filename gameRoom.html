@@ -14,9 +14,8 @@
      <header>
       <h1 id= logo>Odd One Out</h1>
       <nav>
-          <a href="index.html">Home</a>
-          <a href="waitingRoom.html">Host Game</a>
-          <a href="invitation.html">Join Game</a>
+        <a href="index.html">Home</a>
+        <a href="invitation.html">Sign In</a>
       </nav>
     </header>
     <!-- /////////////////////////////////////////////////////////////////////////////// -->
@@ -33,6 +32,9 @@
             </table>
 
             <div id="carousel">
+              <!-- <div class="item">Other Player 1</div>
+              <div class="item">Other Player 2</div>
+              <div class="item">Other Player 3</div> -->
               <!-- DIV ELEMENTS INSERTED HERE -->
             </div>
       
@@ -51,11 +53,11 @@
     <script>
     let voteMap = new Map();
     let selected = false;
-
+    var myName = JSON.parse(localStorage.getItem("myName")) || "MY NAME FEATURE NOT WORKING";
 
     document.addEventListener("DOMContentLoaded", function() {
         var playerNames = JSON.parse(localStorage.getItem("playerNames")) || [];
-        var myName = JSON.parse(localStorage.getItem("myName")) || [];
+        var myName = JSON.parse(localStorage.getItem("myName"));
         
 
         var targetDiv = document.getElementById("carousel");
@@ -113,9 +115,9 @@
 
     
 
-    window.addEventListener("beforeunload", function(event) {
-        // localStorage.clear();
-    });
+    // window.addEventListener("beforeunload", function(event) {
+    //     localStorage.clear();
+    // });
 
 
     function selectPlayer(playerName, increment) {
@@ -157,6 +159,13 @@
           // Update local storage with the modified array
           localStorage.setItem("playerNames", JSON.stringify(playerNames));
 
+
+          if (highestPlayer == myName) {
+            alert("you were voted out!")
+            localStorage.clear();
+          }
+
+
           // Reload the page
           location.reload();
       } else {
@@ -165,7 +174,8 @@
       }
 
     } else {
-      console.log( `tie between ${highestPlayer} and ${tiePlayers}`)
+      // console.log( `tie between ${highestPlayer} and ${tiePlayers}`)
+      alert(`tie between ${highestPlayer} and ${tiePlayers}`)
     }
     console.log(voteMap)
 
@@ -184,6 +194,5 @@
 
 
   </script>
- <script src="index.js"></script> 
   </body>
 </html>
