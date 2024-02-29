@@ -81,32 +81,23 @@
 
         });
 
+        
 
-        const wordPairs = [
-          ["1", "Octopus"],
-          ["2", "Octopus"],
-          ["3", "Octopus"], 
-          ["4", "Octopus"],
-          ["5", "Octopus"],
-          ["6", "Octopus"],
-          ["7", "Octopus"],
-          ["8", "Octopus"],
-          ["9", "Octopus"],
-          ["10", "Octopus"],
-          ["11", "Octopus"],
-          ["12", "Octopus"],
-          ["13", "Octopus"],
-          ["14", "Octopus"],
-          ["15", "Octopus"],
-          ["16", "Octopus"],
-          ["17!!", "Octopus"],]
 
-        const randomNum = Math.floor(Math.random() * wordPairs.length); 
-        const secretWord = wordPairs[randomNum][0];
+
+        var secretWordPairs = JSON.parse(localStorage.getItem("secretWordPairs")) || ["THIS DIDNT WORK", "ERROR"];
+
+        const randomNum = Math.floor(Math.random() * secretWordPairs.length); 
+        const secretWord = secretWordPairs[randomNum][0];
 
 
         var secretWordDisplay= document.getElementById("secretWordDisplay");
         secretWordDisplay.textContent = secretWord;
+
+
+        
+
+
 
     });
 
@@ -137,6 +128,9 @@
       if (tiePlayers.length == 0){
         console.log( `${highestPlayer} voted out!`);
 
+
+
+
       var playerNames = JSON.parse(localStorage.getItem("playerNames")) || [];
 
 
@@ -150,17 +144,14 @@
           localStorage.setItem("playerNames", JSON.stringify(playerNames));
 
 
-          if (highestPlayer == myName) {
-            alert("you were voted out!")
-            localStorage.clear();
+
+        if (highestPlayer == myName) {
+            alert("you were voted out!");
             window.location.href = "index.html";
-          }
-
-
+          } else {
           location.reload();
-      } else {
-          console.error("Name not found in local storage");
-      }
+          }
+      } 
 
     } else {
       alert(`tie between ${highestPlayer} and ${tiePlayers}`)
