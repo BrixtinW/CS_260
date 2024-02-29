@@ -113,12 +113,6 @@
 
     });
 
-    
-
-    // window.addEventListener("beforeunload", function(event) {
-    //     localStorage.clear();
-    // });
-
 
     function selectPlayer(playerName, increment) {
     voteMap.set(playerName, (voteMap.get(playerName)) + increment);
@@ -163,6 +157,7 @@
           if (highestPlayer == myName) {
             alert("you were voted out!")
             localStorage.clear();
+            window.location.href = "index.html";
           }
 
 
