@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap">
+    <title>Odd One Out</title>
+    <link rel="icon" href="spy_icon_205840.ico" />
+    <link rel="stylesheet" href="index.css">
+  </head>
+  <body>
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
+     <header>
+      <h1 id= logo>Odd One Out</h1>
+      <nav>
+          <a href="index.html">Home</a>
+          <a href="invitation.html">Sign In</a>
+      </nav>
+    </header>
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
+    <main class="smallPage">
+      <h1>Sign in</h1>
+      <!-- <p>Please enter the game room code and your name below</p> -->
+      <p>Enter your information and sign in if you've played Odd One Out previouly, or register if its your first time.</p>
+
+      <form>
+        <a class="button" onclick="authenticate()">Sign In</a>   
+        <a class="button" onclick="registerUser()">Register</a>   
+        <input type="text" class="textbox" id="username" placeholder="Enter username" /> 
+        <input type="text" class="textbox" id="password" placeholder="Enter password" /> 
+      </form>
+    </main>
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
+    <footer>
+      <span class="footer-info">Brixtin Walker</span>
+      <span class="footer-info">brixtinlwalker@gmail.com</span>
+      <span class="footer-info">CS 260</span>
+      <br />
+      <a href="https://github.com/BrixtinW/CS_260">GitHub</a>
+    </footer>
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
+    <script>
+        var users = JSON.parse(localStorage.getItem("usersData"));
+
+        function authenticate() {
+            let usernameInput = document.getElementById("username").value;
+            let passwordInput = document.getElementById("password").value;
+
+            let user = users.find(user => user.username === usernameInput && user.password === passwordInput);
+
+            if (user) {
+                alert("Login successful!");
+                window.location.href = "waitingRoom.html";
+            } else {
+                alert("Invalid username or password");
+            }
+        }
+
+        function registerUser() {
+            let usernameInput = document.getElementById("username").value;
+            let passwordInput = document.getElementById("password").value;
+
+            if (users.some(user => user.username === usernameInput)) {
+                alert("Username already exists. Please choose a different one.");
+            } else {
+                users.push({ username: usernameInput, password: passwordInput });
+                localStorage.setItem("usersData", JSON.stringify(users));
+                alert("Registration successful!");
+                window.location.href = "waitingRoom.html";
+            }
+        }
+    </script>
+  </body>
+</html>

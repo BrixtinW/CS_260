@@ -1,0 +1,15 @@
+{
+  "name": "odd-one-out",
+  "version": "1.0.0",
+  "description": "### Progress - [x] Specification Deliverable - [x] HTML Deliverable - [x] CSS Deliverable - [x] JavaScript Deliverable - [ ] Service Deliverable - [ ] Database/Login Deliverable - [ ] WebSocket Deliverable - [ ] React Deliverable",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.3"
+  }
+}

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap">
+    <title>Odd One Out</title>
+    <link rel="icon" href="spy_icon_205840.ico" />
+    <link rel="stylesheet" href="index.css">
+  </head>
+  <body>
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
+     <header>
+      <h1 id= logo>Odd One Out</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="invitation.html">Sign In</a>
+      </nav>
+    </header>
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
+    <main>
+      <h1>Waiting For Players...</h1>
+  
+  <div id="carousel">
+    <!-- DIV ELEMENTS INSERTED HERE -->
+  </div>
+    
+
+      <form>
+        <a class="button" id="startGame" onclick="loadGameRoom()">Start Game</a>
+  
+      </form>
+
+      <h2>Instructions</h2>
+      <li class="instructions">
+        The game begins with a randomly chosen player and continues clockwise. Each player takes a turn to describe their secret word with a one or two-word clue, such as “Crunchy” for “Apple.”
+      </li>
+      <li>
+        After all players have given their clues, engage in a brief discussion period. Here, players exchange suspicions and opinions about who they think is the Odd One Out based on the clues given.
+      </li>
+      <li class="instructions">
+        Next, each player casts a vote on their suspect for the Odd One Out by selecting that player's icon in the voting section. After the voting has finished, the player with the most votes is accused of being the Odd One Out.
+      </li>
+      <li class="instructions">
+        If the majority correctly identifies the Odd One Out, the accused has one chance to guess the common secret word of the other players. If the Odd One Out guesses correctly, they win; if not, the group wins.
+      </li>
+      <li class="instructions">
+        However, if the majority is incorrect, often likely in the first round, the wrongly accused player is eliminated from the game. The remaining players continue, giving new descriptions for the same word in subsequent rounds and voting again.
+      </li>
+      <li class="instructions">
+        In each new round, players provide fresh clues for the same secret word.
+      </li>
+      <li class="instructions">
+        This continues with players giving new, one or two-word descriptions. The rounds of clue-giving and voting repeat, with players being eliminated for incorrect accusations of being the Odd One Out.
+      </li>
+      <li class="instructions">
+        The game continues in this manner until the Odd One Out is either caught or successfully guesses the common secret word when caught.
+      </li>
+      <p>Note: The aim for the Odd One Out is to remain undetected until they are the last person remaining. However, if the Odd One Out is sure they know the common word, they could opt to get caught and then correctly guess the common word, thereby winning the game.</p>
+    </main>
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
+    <footer>
+      <span class="footer-info">Brixtin Walker</span>
+      <span class="footer-info">brixtinlwalker@gmail.com</span>
+      <span class="footer-info">CS 260</span>
+      <br />
+      <a href="https://github.com/BrixtinW/CS_260">GitHub</a>
+    </footer>
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
+
+    <script>
+
+        var users = JSON.parse(localStorage.getItem("usersData"));
+        console.log("users", users)
+
+addName("Other Player 1")
+addName("Other Player 2")
+addName("Other Player 3")
+
+
+document.addEventListener("DOMContentLoaded", function() {
+ 
+    var playerName = prompt("Please enter your player name:");
+
+    addName(playerName)
+
+});
+
+function addName(playerName){
+    var playerNames = JSON.parse(localStorage.getItem("playerNames")) || [];
+
+    if (playerName && playerName.trim() !== "") {
+        playerNames.push(playerName);
+
+        localStorage.setItem("playerNames", JSON.stringify(playerNames));
+        localStorage.setItem("myName", JSON.stringify(playerName));
+
+        console.log("playerNames", playerNames)
+
+ 
+        var newItem = document.createElement("div");
+        newItem.classList.add("item"); 
+        newItem.textContent = playerName; 
+
+        var carousel = document.getElementById("carousel");
+
+        carousel.appendChild(newItem);
+
+
+    
+
+    } else {
+
+        console.error("Player name is empty or canceled");
+
+    }
+  }
+
+
+  function loadGameRoom() {
+
+console.log("BUTTON PRESSED BUT NOTHING HAPPENED?????")
+
+
+    var carouselDivs = document.querySelectorAll("#carousel .item");
+    var copiedDivs = [];
+    carouselDivs.forEach(function(div) {
+        var copiedDiv = div.cloneNode(true);
+        copiedDivs.push(copiedDiv);
+    });
+
+    sessionStorage.setItem("copiedDivs", JSON.stringify(copiedDivs));
+
+    window.location.href = "gameRoom.html";
+};
+
+  </script>
+  </body>
+</html>

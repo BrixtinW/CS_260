@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap">
+    <title>Odd One Out</title>
+    <link rel="icon" href="spy_icon_205840.ico" />
+    <link rel="stylesheet" href="index.css">
+  </head>
+  <body>
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
+     <header>
+      <h1 id= logo>Odd One Out</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="invitation.html">Sign In</a>
+      </nav>
+    </header>
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
+    <main class="smallPage">
+        <table border="1" cellspacing="2" cellpadding="5" >
+            <tr>
+                <th>
+                    Your Secret Word:
+                </th>
+                 <td id="secretWordDisplay">
+                      <!-- Secret Word Generated Here -->
+                    </td>
+            </tr>
+            </table>
+
+            <div id="carousel">
+              <!-- DIV ELEMENTS INSERTED HERE -->
+            </div>
+      
+            <form><button class="button" onclick="readTheVotes()" >Submit Vote</button></form>
+    </main>
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
+    <footer>
+      <span class="footer-info">Brixtin Walker</span>
+      <span class="footer-info">brixtinlwalker@gmail.com</span>
+      <span class="footer-info">CS 260</span>
+      <br />
+      <a href="https://github.com/BrixtinW/CS_260">GitHub</a>
+    </footer>
+    <!-- /////////////////////////////////////////////////////////////////////////////// -->
+
+    <script>
+    let voteMap = new Map();
+    let selected = false;
+    var myName = JSON.parse(localStorage.getItem("myName")) || "MY NAME FEATURE NOT WORKING";
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var playerNames = JSON.parse(localStorage.getItem("playerNames")) || [];
+        var myName = JSON.parse(localStorage.getItem("myName"));
+        
+
+        var targetDiv = document.getElementById("carousel");
+
+        playerNames.forEach(function(playerName) {
+        var newItem = document.createElement("div");
+        newItem.classList.add("item"); 
+        newItem.textContent = playerName; 
+        newItem.dataset.selected = "false"; 
+        voteMap.set(playerName, 0);
+
+        newItem.addEventListener("click", function() {
+          newItem.classList.toggle("selected")
+            if (newItem.dataset.selected == "false") {
+                newItem.dataset.selected = "true";
+                selectPlayer(playerName, 1);
+            } else {
+                newItem.dataset.selected = "false";
+                selectPlayer(playerName, -1);
+            }
+        });
+
+            targetDiv.appendChild(newItem);
+
+        });
+
+        
+
+
+
+        var secretWordPairs = JSON.parse(localStorage.getItem("secretWordPairs")) || ["THIS DIDNT WORK", "ERROR"];
+
+        const randomNum = Math.floor(Math.random() * secretWordPairs.length); 
+        const secretWord = secretWordPairs[randomNum][0];
+
+
+        var secretWordDisplay= document.getElementById("secretWordDisplay");
+        secretWordDisplay.textContent = secretWord;
+
+
+        
+
+
+
+    });
+
+
+    function selectPlayer(playerName, increment) {
+    voteMap.set(playerName, (voteMap.get(playerName)) + increment);
+    console.log(playerName, "has", voteMap.get(playerName), "votes!");
+    console.log(voteMap);
+}
+
+  function readTheVotes(){
+    event.preventDefault();
+
+    let highestVote = 0;
+    let highestPlayer = null;
+    let tiePlayers = [];
+
+    voteMap.forEach(function(value, key) {
+    console.log("Key:", key, "Value:", value);
+    if (value > highestVote){
+      highestVote = value;
+      highestPlayer = key;
+      tiePlayers = [];
+    } else if (value == highestVote){
+      tiePlayers.push(key);
+    }
+});
+      if (tiePlayers.length == 0){
+        console.log( `${highestPlayer} voted out!`);
+
+
+
+
+      var playerNames = JSON.parse(localStorage.getItem("playerNames")) || [];
+
+
+      var indexToDelete = playerNames.indexOf(highestPlayer);
+
+
+      if (indexToDelete !== -1) {
+
+          playerNames.splice(indexToDelete, 1);
+
+          localStorage.setItem("playerNames", JSON.stringify(playerNames));
+
+
+
+        if (highestPlayer == myName) {
+            alert("you were voted out!");
+            window.location.href = "index.html";
+          } else {
+          location.reload();
+          }
+      } 
+
+    } else {
+      alert(`tie between ${highestPlayer} and ${tiePlayers}`)
+    }
+    console.log(voteMap)
+
+
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+  </script>
+  </body>
+</html>
