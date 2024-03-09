@@ -71,6 +71,37 @@
 
     <script>
 
+// https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=%3C%22${google.com}%22%3E
+    const currentUrl = window.location.href;
+
+    // Function to fetch the QR code image from the API
+    async function fetchQRCode(url) {
+        try {
+            const response = await fetch(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=%3C%22${currentUrl}%22%3E`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch QR code');
+            }
+            const qrCodeImage = await response.blob();
+            return URL.createObjectURL(qrCodeImage);
+        } catch (error) {
+            console.error('Error fetching QR code:', error);
+            return null;
+        }
+    }
+
+    // Function to display the QR code in the div element
+    async function displayQRCode() {
+        const qrCodeUrl = await fetchQRCode(currentUrl);
+        if (qrCodeUrl) {
+            document.getElementById("qrcode").innerHTML = `<img src="${qrCodeUrl}" alt="QR Code" />`;
+        } else {
+            document.getElementById("qrcode").innerHTML = 'Failed to fetch QR code';
+        }
+    }
+
+    // Call the displayQRCode function when the page loads
+    displayQRCode();
+
         var users = JSON.parse(localStorage.getItem("usersData"));
         console.log("users", users)
 
