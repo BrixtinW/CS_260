@@ -348,3 +348,21 @@
   .item.selected {
     background-color: #eed5af; 
   }
+
+  .waiting {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  #qrcode {
+    margin: 2vw;
+    border: 5px solid black;
+    width: 150px;
+    height: 150px;
+    border-radius: 5px;
+  }
+
+  #gameRoomCode {
+    display: flex;
+    align-items: center;
+  }

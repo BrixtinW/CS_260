@@ -23,11 +23,15 @@ apiRouter.post('/gameroom', (req, res) => {
   });
 
   apiRouter.post('/addPlayer', (req, res) => {
-    addPlayer(req.body, votes);
-    res.send(addedPlayer);
+    addPlayer(req.body);
   });
 
   apiRouter.get('/players', (_req, res) => {
+    res.send(players);
+  });
+
+//   NOT DONE
+  apiRouter.get('/login', (_req, res) => {
     res.send(players);
   });
 
@@ -49,7 +53,11 @@ apiRouter.post('/generateOddOneOut', (req, res) => {
     generateOddOneOut(req.body);
   });
 
-
+//   NOT DONE
+  apiRouter.post('/register', (req, res) => {
+    votes = updateVotes(req.body, votes);
+    res.send(scores);
+  });
 
 
 // Return the application's default page if the path is unknown
@@ -119,15 +127,18 @@ function generateOddOneOut(reqBody){
 }
 
 function createGameRoom() {
+    console.log("this function was called!")
     const code = generateGameRoomCode()
     const[groupWord, oddWord] = organizeSecretWords();
     games[code] = new GameRoom(code, groupWord, oddWord);
-    return code;
+    console.log(games[code].toString());
+    return JSON.stringify(code);
 }
 
 function generateGameRoomCode() {
     const uuid = randomUUID();
     const code = uuid.replace(/-/g, '').substring(0, 6);
+    console.log(games[code]);
     return code;
   }
 
@@ -139,6 +150,7 @@ function generateGameRoomCode() {
 
     games[code].players.push(name);
     games[code].votes.set(name, 0);
+    console.log(games[code]);
  }
 
 

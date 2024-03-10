@@ -8,16 +8,16 @@
     console.log(users);
 
 
-    let secretWordPairs = [
-        ["secret", "Octopus"],
-        ["word", "Octopus"],
-        ["pairs", "Octopus"]]
+    // let secretWordPairs = [
+    //     ["secret", "Octopus"],
+    //     ["word", "Octopus"],
+    //     ["pairs", "Octopus"]]
 
-    console.log(secretWordPairs);
+    // console.log(secretWordPairs);
 
 
     localStorage.setItem("usersData", JSON.stringify(users));
-    localStorage.setItem("secretWordPairs", JSON.stringify(secretWordPairs));
+    // localStorage.setItem("secretWordPairs", JSON.stringify(secretWordPairs));
     console.log(localStorage)
 
 
