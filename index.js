@@ -27,14 +27,27 @@ apiRouter.post('/gameroom', (req, res) => {
     res.send(addedPlayer);
   });
 
-apiRouter.get('/verdict', (_req, res) => {
-  res.send(votes);
-});
+  apiRouter.get('/players', (_req, res) => {
+    res.send(players);
+  });
+
+  apiRouter.get('/votes', (_req, res) => {
+    res.send(votes);
+  });
+
+  apiRouter.get('/secretWord', (req, res) => {
+    secretWord = getSecretWord(req.body);
+    res.send(secretWord);
+  });
 
 apiRouter.post('/vote', (req, res) => {
   votes = updateVotes(req.body, votes);
   res.send(scores);
 });
+
+apiRouter.post('/generateOddOneOut', (req, res) => {
+    generateOddOneOut(req.body);
+  });
 
 
 
@@ -48,12 +61,67 @@ app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
 
+class GameRoom {
 
-votes = {}
+    constructor(code, groupWord, oddWord){
+        this.players = []
+        this.oddOneOutIndex = 0;
+        this.groupWord = groupWord;
+        this.oddWord = oddWord;
+        this.code = code;
+        this.votes = {}
+        this.readyToStartGame = false;
+    }
+
+    toString(){
+        if(this.readyToStartGame){
+            return `\tPlayers = ${this.players}\n\toddOneOut = ${players[this.oddOneOutIndex]}\n\tGame Room Code = ${this.code}\n\tVotes = ${this.votes}`;
+        } else {
+            return `\tPlayers = ${this.players}\n\toddOneOut = Not Yet Determined!\n\tGame Room Code = ${this.code}\n\tVotes = ${this.votes}`;
+        }
+    }
+
+    generateOddOneOutIndex(){
+        const randomNum = Math.floor(Math.random() * this.players.length); 
+        this.oddOneOutIndex = randomNum;
+    }
+
+}
+
+
+    games = {}
+
+let secretWordPairs = [
+    ["Squid", "Octopus"],
+    ["Queen", "Princess"],
+    ["Trophy", "Medal"]]
+
+
+async function getSecretWord(reqBody){
+    console.log(reqBody)
+    var json = JSON.parse(reqBody);
+    const code = json.code;
+    const name = json.name;
+    await games[code].readyToStartGame == true;
+    if (games[code].players[oddOneOutIndex] == name){
+        return games[code].oddWord;
+    } else {
+        return games[code].groupWord;
+    }
+}
+
+function generateOddOneOut(reqBody){
+    console.log(reqBody)
+    var json = JSON.parse(reqBody);
+    const code = json.code;
+    games[code].generateOddOneOutIndex();
+    games[code].readyToStartGame = true;
+}
 
 function createGameRoom() {
     const code = generateGameRoomCode()
-    votes[code] = {};
+    const[groupWord, oddWord] = organizeSecretWords();
+    games[code] = new GameRoom(code, groupWord, oddWord);
     return code;
 }
 
@@ -67,7 +135,21 @@ function generateGameRoomCode() {
     console.log(reqBody)
     var json = JSON.parse(reqBody);
     const code = json.code;
-    const name = json.name
+    const name = json.name;
 
-    votes[code][name] = 0;
+    games[code].players.push(name);
+    games[code].votes.set(name, 0);
+ }
+
+
+
+ function organizeSecretWords(){
+
+    const randomNum = Math.floor(Math.random() * secretWordPairs.length); 
+    return [secretWordPairs[randomNum][0], secretWordPairs[randomNum][1]];
+
+
+
+
+
  }

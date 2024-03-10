@@ -48,32 +48,48 @@
     <!-- /////////////////////////////////////////////////////////////////////////////// -->
 
     <script>
-    let voteMap = new Map();
+
+
+
+
+
     let selected = false;
     var myName = JSON.parse(localStorage.getItem("myName")) || "MY NAME FEATURE NOT WORKING";
+    let currentVote = null;
 
-    document.addEventListener("DOMContentLoaded", function() {
-        var playerNames = JSON.parse(localStorage.getItem("playerNames")) || [];
-        var myName = JSON.parse(localStorage.getItem("myName"));
-        
+
+    async function loadPlayers() {
+      try {
+        // Get the latest high scores from the service
+        const response = await fetch('/players');
+        players = await response.json();
+
+        console.log(players)
 
         var targetDiv = document.getElementById("carousel");
 
-        playerNames.forEach(function(playerName) {
+        players.forEach(function(playerName) {
         var newItem = document.createElement("div");
         newItem.classList.add("item"); 
         newItem.textContent = playerName; 
         newItem.dataset.selected = "false"; 
-        voteMap.set(playerName, 0);
 
         newItem.addEventListener("click", function() {
-          newItem.classList.toggle("selected")
-            if (newItem.dataset.selected == "false") {
+          if (newItem.dataset.selected == "false") {
+            var allDivs = document.querySelectorAll(".item div")
+
+            allDivs.forEach(function(div){
+              if (div.dataset.selected = "true"){
+                div.classList.toggle("selected");
+              }
+
+            })
+                currentVote = newItem.textContent;
+                newItem.classList.toggle("selected")
                 newItem.dataset.selected = "true";
-                selectPlayer(playerName, 1);
             } else {
                 newItem.dataset.selected = "false";
-                selectPlayer(playerName, -1);
+                newItem.classList.toggle("selected")
             }
         });
 
@@ -81,25 +97,36 @@
 
         });
 
+        return players
+
+        // Save the scores in case we go offline in the future
+        // localStorage.setItem('scores', JSON.stringify(scores));
+      } catch {
+        console.log("there was an error. Unable to connect to the server!!!")
+
+        return myName;
         
+      }
+
+    }
+
+    async function loadSecretWord(){
+        const response = await fetch('/secretWord');
+        secretWord = await response.json();
+
+        console.log(secretWord)
+
+        var secretWordDisplay = document.getElementById("secretWordDisplay");
+        secretWordDisplay.textContent = secretWord; 
+    }
+
+    
+      var myName = JSON.parse(localStorage.getItem("myName"));
+      let players = loadPlayers();
+      loadSecretWord();
 
 
 
-        var secretWordPairs = JSON.parse(localStorage.getItem("secretWordPairs")) || ["THIS DIDNT WORK", "ERROR"];
-
-        const randomNum = Math.floor(Math.random() * secretWordPairs.length); 
-        const secretWord = secretWordPairs[randomNum][0];
-
-
-        var secretWordDisplay= document.getElementById("secretWordDisplay");
-        secretWordDisplay.textContent = secretWord;
-
-
-        
-
-
-
-    });
 
 
     function selectPlayer(playerName, increment) {
