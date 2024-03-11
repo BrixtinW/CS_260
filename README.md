@@ -5,7 +5,7 @@
 - [x] HTML Deliverable
 - [x] CSS Deliverable
 - [x] JavaScript Deliverable
-- [ ] Service Deliverable
+- [x] Service Deliverable
 - [ ] Database/Login Deliverable
 - [ ] WebSocket Deliverable
 - [ ] React Deliverable
@@ -69,15 +69,23 @@ I will implement the following technologies:
 - **Text** - Text content with imported fonts and detailed instructions on the game. 
 
 ## JavaScript Deliverable
-- **Prerequisites** - Simon JavaScript deployed, link to GitHub in the footer, git commits spread throughout the assignment period and notes in README.md file completed
+- **Prerequisites** - Simon JavaScript deployed, link to GitHub in the footer, git commits spread throughout the assignment period and notes in README.md file completed.
 - **Login** - Sign-in and Registration are implemented through the Sign-in button or in the header.
 - **DataBase** - User information, as well as game state (voting, number of players) will be stored in the DataBase
 - **WebSocket** - This will be very important later. For now, I just included 3 default players in the waiting room and the game room. Eventually, it will display everyone together in a session. 
 - **Voting Logic** - In the game room you can click on players to vote them out. The player with the highest votes will be voted out, and the round will continue. When you select your own name, you are kicked out of the session.  
-- **Local Storage** - Local storge is cleaned when you access the home page, and the Submit Secret Words button and the textboxes on the home page help determine the words that show up in the gameroom. 
+- **Local Storage** - Local storge is cleaned when you access the home page, and the Submit Secret Words button and the textboxes on the home page help determine the words that show up in the gameroom.
+
+## Service Deliverable
+- **Prerequisites** - all prerequisites completed.
+- **Node.js and Express** - Node.js and Express HTTP service created to allow hosting on a server and backend/frontend design.
+- **Express Static Middleware** - Used to serve up static HTML, CSS and JavaScript files to the frontend.
+- **Third Party Endpoints** - WaitingRoom.HTML calls a third-party API to generate a QR code with the current URL so that people can join the game by scanning it.
+- **Backend Endpoints** - Endpoints created for creating a game room, adding a player, getting a list of all players in the game instance, logging in, getting the final votes, getting the secret words, submitting a vote, generating the OddOneOut, and registering.
+- **Frontend Calls Endpoints** - All the endpoints are called from the frontend using the fetch function.
 
   
-<!--## Service Deliverable
+<!--
 
 ## Database Deliverable
 
