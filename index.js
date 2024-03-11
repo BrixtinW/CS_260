@@ -1,3 +1,4 @@
+const { group } = require('console');
 const { randomUUID } = require('crypto');
 const express = require('express');
 const app = express();
@@ -17,7 +18,7 @@ app.use(`/api`, apiRouter);
 
 
 
-apiRouter.post('/gameroom', (req, res) => {
+apiRouter.get('/gameroom', (req, res) => {
     gameRoomCode = createGameRoom();
     res.send(gameRoomCode);
   });
@@ -31,8 +32,9 @@ apiRouter.post('/gameroom', (req, res) => {
   });
 
 //   NOT DONE
-  apiRouter.get('/login', (_req, res) => {
-    res.send(players);
+  apiRouter.post('/login', (_req, res) => {
+    var userExists = getUser(_req.body)
+    res.send(userExists);
   });
 
   apiRouter.get('/votes', (_req, res) => {
@@ -55,8 +57,7 @@ apiRouter.post('/generateOddOneOut', (req, res) => {
 
 //   NOT DONE
   apiRouter.post('/register', (req, res) => {
-    votes = updateVotes(req.body, votes);
-    res.send(scores);
+    createUser(req.body);
   });
 
 
@@ -77,15 +78,15 @@ class GameRoom {
         this.groupWord = groupWord;
         this.oddWord = oddWord;
         this.code = code;
-        this.votes = {}
+        this.votes = new Map();
         this.readyToStartGame = false;
     }
 
     toString(){
         if(this.readyToStartGame){
-            return `\tPlayers = ${this.players}\n\toddOneOut = ${players[this.oddOneOutIndex]}\n\tGame Room Code = ${this.code}\n\tVotes = ${this.votes}`;
+            return `\tPlayers = ${this.players}\n\toddOneOut = ${players[this.oddOneOutIndex]}\n\tGame Room Code = ${this.code}\n\tVotes = ${this.votes}\n\tgroupWord = ${this.groupWord}\n\toddWord = ${this.oddWord}\n\tready to start: ${this.readyToStartGame}`;
         } else {
-            return `\tPlayers = ${this.players}\n\toddOneOut = Not Yet Determined!\n\tGame Room Code = ${this.code}\n\tVotes = ${this.votes}`;
+            return `\tPlayers = ${this.players}\n\toddOneOut = Not Yet Determined!\n\tGame Room Code = ${this.code}\n\tVotes = ${this.votes}\n\tgroupWord = ${this.groupWord}\n\toddWord = ${this.oddWord}\n\tready to start: ${this.readyToStartGame}`;
         }
     }
 
@@ -96,8 +97,11 @@ class GameRoom {
 
 }
 
-
-    games = {}
+    const users = new Map([
+        ['user1', 'pass1'],
+        ['user2', 'pass2']
+    ]);
+    const games = new Map();
 
 let secretWordPairs = [
     ["Squid", "Octopus"],
@@ -107,61 +111,67 @@ let secretWordPairs = [
 
 async function getSecretWord(reqBody){
     console.log(reqBody)
-    var json = JSON.parse(reqBody);
-    const code = json.code;
-    const name = json.name;
-    await games[code].readyToStartGame == true;
-    if (games[code].players[oddOneOutIndex] == name){
-        return games[code].oddWord;
+    const code = reqBody.code;
+    const name = reqBody.name;
+    await games.get(code).readyToStartGame == true;
+    if (games.get(code).players[oddOneOutIndex] == name){
+        return games.get(code).oddWord;
     } else {
-        return games[code].groupWord;
+        return games.get(code).groupWord;
     }
 }
 
 function generateOddOneOut(reqBody){
     console.log(reqBody)
-    var json = JSON.parse(reqBody);
-    const code = json.code;
-    games[code].generateOddOneOutIndex();
-    games[code].readyToStartGame = true;
+    const code = reqBody.code;
+    games.get(code).generateOddOneOutIndex();
+    games.get(code).readyToStartGame = true;
 }
 
 function createGameRoom() {
-    console.log("this function was called!")
     const code = generateGameRoomCode()
     const[groupWord, oddWord] = organizeSecretWords();
-    games[code] = new GameRoom(code, groupWord, oddWord);
-    console.log(games[code].toString());
+    console.log(groupWord);
+    console.log(oddWord)
+    console.log(code)
+    games.set(code, new GameRoom(code, groupWord, oddWord));
+    console.log(games.get(code).toString());
     return JSON.stringify(code);
 }
 
 function generateGameRoomCode() {
     const uuid = randomUUID();
     const code = uuid.replace(/-/g, '').substring(0, 6);
-    console.log(games[code]);
     return code;
   }
 
  function addPlayer(reqBody, votes){
     console.log(reqBody)
-    var json = JSON.parse(reqBody);
-    const code = json.code;
-    const name = json.name;
+    const code = reqBody.code;
+    const name = reqBody.name;
 
-    games[code].players.push(name);
-    games[code].votes.set(name, 0);
-    console.log(games[code]);
+    games.get(code).players.push(name);
+    games.get(code).votes.set(name, 0);
+    console.log(games.get(code));
+ }
+
+ function getUser(reqBody) {
+    console.log(reqBody)
+    const username = reqBody.username;
+    const password = reqBody.password;
+    return users.get(username) == password;
+ }
+
+ function createUser(reqBody) {
+     console.log(reqBody)
+    const username = reqBody.username;
+    const password = reqBody.password;
+    users.get(username) = password;
+    console.log(users)
  }
 
 
-
  function organizeSecretWords(){
-
     const randomNum = Math.floor(Math.random() * secretWordPairs.length); 
     return [secretWordPairs[randomNum][0], secretWordPairs[randomNum][1]];
-
-
-
-
-
  }

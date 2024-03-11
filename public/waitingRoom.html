@@ -110,20 +110,25 @@
 
 document.addEventListener("DOMContentLoaded", async function() {
  
+  await displayGameRoomCode().then(code => {
     var playerName = prompt("Please enter your player name:");
-
-    const code = await displayGameRoomCode();
-
     addName(playerName, code);
-    addName("Other Player 1", code)
-    addName("Other Player 2", code)
-    addName("Other Player 3", code)
+}).then(() => {
+    return addName("Other Player 1", code);
+}).then(() => {
+    return addName("Other Player 2", code);
+}).then(() => {
+    return addName("Other Player 3", code);
+}).catch(error => {
+    console.error("An error occurred:", error);
+});
+
 
 });
 
 async function fetchGameRoomCode() {
   try {
-    const response = await fetch('/gameroom');
+    const response = await fetch('/api/gameroom');
     if (!response.ok) {
       throw new Error('Failed to fetch game room code');
     }
@@ -147,13 +152,12 @@ async function displayGameRoomCode() {
 
 async function addName(playerName, gameRoomCode) {
 
-
       const postData = {
         name: playerName,
         code: gameRoomCode
       };
 
-      fetch('/addPlayer', {
+      fetch('/api/addPlayer', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

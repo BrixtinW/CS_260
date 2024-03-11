@@ -61,7 +61,7 @@
     async function loadPlayers() {
       try {
         // Get the latest high scores from the service
-        const response = await fetch('/players');
+        const response = await fetch('/api/players');
         players = await response.json();
 
         console.log(players)
@@ -111,7 +111,7 @@
     }
 
     async function loadSecretWord(){
-        const response = await fetch('/secretWord');
+        const response = await fetch('/api/secretWord');
         secretWord = await response.json();
 
         console.log(secretWord)

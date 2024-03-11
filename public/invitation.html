@@ -41,35 +41,76 @@
     </footer>
     <!-- /////////////////////////////////////////////////////////////////////////////// -->
     <script>
-        var users = JSON.parse(localStorage.getItem("usersData"));
 
         function authenticate() {
             let usernameInput = document.getElementById("username").value;
             let passwordInput = document.getElementById("password").value;
 
-            let user = users.find(user => user.username === usernameInput && user.password === passwordInput);
+            const postData = {
+              "username": `${usernameInput}`,
+              "password": `${passwordInput}`
+            };
 
-            if (user) {
+            const userExists = fetch('/api/login', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(postData)
+            })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+              return response.json();
+            })
+            .then(data => {
+              console.log('Player logged in called:', data);
+
+              if (data) {
                 alert("Login successful!");
                 window.location.href = "waitingRoom.html";
             } else {
                 alert("Invalid username or password");
             }
+
+            })
+            .catch(error => {
+              console.error('Error adding player:', error);
+            });
         }
 
         function registerUser() {
             let usernameInput = document.getElementById("username").value;
             let passwordInput = document.getElementById("password").value;
 
-            if (users.some(user => user.username === usernameInput)) {
-                alert("Username already exists. Please choose a different one.");
-            } else {
-                users.push({ username: usernameInput, password: passwordInput });
-                localStorage.setItem("usersData", JSON.stringify(users));
-                alert("Registration successful!");
+            const postData = {
+              "username": `${usernameInput}`,
+              "password": `${passwordInput}`
+            };
+
+            fetch('/api/register', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(postData)
+            })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+              return response.json();
+            })
+            .then(data => {
+              console.log('Player registered successfully:', data);
+            })
+            .catch(error => {
+              console.error('Error adding player:', error);
+            });
                 window.location.href = "waitingRoom.html";
             }
-        }
+        
     </script>
   </body>
 </html>
