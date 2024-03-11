@@ -76,7 +76,7 @@ I will implement the following technologies:
 - **Voting Logic** - In the game room you can click on players to vote them out. The player with the highest votes will be voted out, and the round will continue. When you select your own name, you are kicked out of the session.  
 - **Local Storage** - Local storge is cleaned when you access the home page, and the Submit Secret Words button and the textboxes on the home page help determine the words that show up in the gameroom.
 
-- ## Service Deliverable
+## Service Deliverable
 - **Prerequisites** - all prerequisites completed.
 - **Node.js and Express** - Node.js and Express HTTP service created to allow hosting on a server and backend/frontend design.
 - **Express Static Middleware** - Used to serve up static HTML, CSS and JavaScript files to the frontend.
