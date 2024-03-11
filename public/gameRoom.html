@@ -50,11 +50,11 @@
     <script>
 
 
+// implement vote, votes, secretWord and players API
 
-
-
-    let selected = false;
-    var myName = JSON.parse(localStorage.getItem("myName")) || "MY NAME FEATURE NOT WORKING";
+    const code = localStorage.getItem('code')
+    // let selected = false;
+    var myName = JSON.parse(localStorage.getItem("myName"));
     let currentVote = null;
 
 
@@ -98,26 +98,46 @@
         });
 
         return players
-
-        // Save the scores in case we go offline in the future
-        // localStorage.setItem('scores', JSON.stringify(scores));
       } catch {
         console.log("there was an error. Unable to connect to the server!!!")
-
         return myName;
-        
       }
 
     }
 
     async function loadSecretWord(){
-        const response = await fetch('/api/secretWord');
-        secretWord = await response.json();
+        // const response = await fetch('/api/secretWord');
+        // secretWord = await response.json();
 
-        console.log(secretWord)
+        const postData = {
+        name: myName,
+        code: code
+      };
+
+      fetch('/api/secretWord', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(postData)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('secret Word obtained:', data);
 
         var secretWordDisplay = document.getElementById("secretWordDisplay");
         secretWordDisplay.textContent = secretWord; 
+
+
+      })
+      .catch(error => {
+        console.error('Error adding player:', error);
+      });
     }
 
     
@@ -129,63 +149,61 @@
 
 
 
-    function selectPlayer(playerName, increment) {
-    voteMap.set(playerName, (voteMap.get(playerName)) + increment);
-    console.log(playerName, "has", voteMap.get(playerName), "votes!");
-    console.log(voteMap);
-}
+//     function selectPlayer(playerName, increment) {
+//     voteMap.set(playerName, (voteMap.get(playerName)) + increment);
+//     console.log(playerName, "has", voteMap.get(playerName), "votes!");
+//     console.log(voteMap);
+// }
 
-  function readTheVotes(){
-    event.preventDefault();
+//   function readTheVotes(){
+//     event.preventDefault();
 
-    let highestVote = 0;
-    let highestPlayer = null;
-    let tiePlayers = [];
+//     let highestVote = 0;
+//     let highestPlayer = null;
+//     let tiePlayers = [];
 
-    voteMap.forEach(function(value, key) {
-    console.log("Key:", key, "Value:", value);
-    if (value > highestVote){
-      highestVote = value;
-      highestPlayer = key;
-      tiePlayers = [];
-    } else if (value == highestVote){
-      tiePlayers.push(key);
-    }
-});
-      if (tiePlayers.length == 0){
-        console.log( `${highestPlayer} voted out!`);
-
-
-
-
-      var playerNames = JSON.parse(localStorage.getItem("playerNames")) || [];
-
-
-      var indexToDelete = playerNames.indexOf(highestPlayer);
-
-
-      if (indexToDelete !== -1) {
-
-          playerNames.splice(indexToDelete, 1);
-
-          localStorage.setItem("playerNames", JSON.stringify(playerNames));
+//     voteMap.forEach(function(value, key) {
+//     console.log("Key:", key, "Value:", value);
+//     if (value > highestVote){
+//       highestVote = value;
+//       highestPlayer = key;
+//       tiePlayers = [];
+//     } else if (value == highestVote){
+//       tiePlayers.push(key);
+//     }
+// });
+//       if (tiePlayers.length == 0){
+//         console.log( `${highestPlayer} voted out!`);
 
 
 
-        if (highestPlayer == myName) {
-            alert("you were voted out!");
-            window.location.href = "index.html";
-          } else {
-          location.reload();
-          }
-      } 
 
-    } else {
-      alert(`tie between ${highestPlayer} and ${tiePlayers}`)
-    }
-    console.log(voteMap)
+//       var playerNames = JSON.parse(localStorage.getItem("playerNames")) || [];
 
 
+//       var indexToDelete = playerNames.indexOf(highestPlayer);
+
+
+//       if (indexToDelete !== -1) {
+
+//           playerNames.splice(indexToDelete, 1);
+
+//           localStorage.setItem("playerNames", JSON.stringify(playerNames));
+
+
+
+//         if (highestPlayer == myName) {
+//             alert("you were voted out!");
+//             window.location.href = "index.html";
+//           } else {
+//           location.reload();
+//           }
+//       } 
+
+//     } else {
+//       alert(`tie between ${highestPlayer} and ${tiePlayers}`)
+//     }
+//     console.log(voteMap)
 
 
 
@@ -196,7 +214,9 @@
 
 
 
-  }
+
+
+  // }
 
 
   </script>

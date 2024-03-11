@@ -102,23 +102,22 @@
 
     displayQRCode();
 
-        var users = JSON.parse(localStorage.getItem("usersData"));
-        console.log("users", users)
-
+        
 
 
 
 document.addEventListener("DOMContentLoaded", async function() {
  
   await displayGameRoomCode().then(code => {
+
+    localStorage.setItem("code", code);
+
     var playerName = prompt("Please enter your player name:");
+    localStorage.setItem("myName", playerName);
     addName(playerName, code);
-}).then(() => {
-    return addName("Other Player 1", code);
-}).then(() => {
-    return addName("Other Player 2", code);
-}).then(() => {
-    return addName("Other Player 3", code);
+    addName("Other Player 1", code);
+    addName("Other Player 2", code);
+    addName("Other Player 3", code);
 }).catch(error => {
     console.error("An error occurred:", error);
 });
@@ -193,14 +192,28 @@ async function addName(playerName, gameRoomCode) {
 console.log("BUTTON PRESSED BUT NOTHING HAPPENED?????")
 
 
-    // var carouselDivs = document.querySelectorAll("#carousel .item");
-    // var copiedDivs = [];
-    // carouselDivs.forEach(function(div) {
-    //     var copiedDiv = div.cloneNode(true);
-    //     copiedDivs.push(copiedDiv);
-    // });
+const postData = {
+              "code": `${localStorage.getItem('code')}`,
+            };
 
-    // sessionStorage.setItem("copiedDivs", JSON.stringify(copiedDivs));
+            fetch('/api/generateOddOneOut', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(postData)
+            })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+              return response.json();
+            })
+            .catch(error => {
+              console.error('Error adding player:', error);
+            });
+
+
 
     window.location.href = "gameRoom.html";
 };

@@ -113,12 +113,14 @@ async function getSecretWord(reqBody){
     console.log(reqBody)
     const code = reqBody.code;
     const name = reqBody.name;
-    await games.get(code).readyToStartGame == true;
-    if (games.get(code).players[oddOneOutIndex] == name){
-        return games.get(code).oddWord;
-    } else {
-        return games.get(code).groupWord;
-    }
+    console.log(games.get(code).oddOneOutIndex);
+        if( games.get(code).readyToStartGame == true){
+            if (games.get(code).players[oddOneOutIndex] == name){
+                return games.get(code).oddWord;
+            } else {
+                return games.get(code).groupWord;
+            }
+        }
 }
 
 function generateOddOneOut(reqBody){
@@ -166,7 +168,7 @@ function generateGameRoomCode() {
      console.log(reqBody)
     const username = reqBody.username;
     const password = reqBody.password;
-    users.get(username) = password;
+    users.set(username, password);
     console.log(users)
  }
 
