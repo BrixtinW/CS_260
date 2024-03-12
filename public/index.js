@@ -10,7 +10,7 @@
         let word2 = document.getElementById("word2").value;
 
         // secretWordPairs.push([word1, word2])
-        // localStorage.setItem("secretWordPairs", JSON.stringify(secretWordPairs));
+        localStorage.setItem("secretWordPairs", JSON.stringify(secretWordPairs));
 
         
 

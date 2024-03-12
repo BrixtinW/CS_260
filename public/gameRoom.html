@@ -53,16 +53,35 @@
 // implement vote, votes, secretWord and players API
 
     const code = localStorage.getItem('code')
-    // let selected = false;
-    var myName = JSON.parse(localStorage.getItem("myName"));
+    var myName = localStorage.getItem("myName");
+    console.log(myName);
     let currentVote = null;
 
 
     async function loadPlayers() {
       try {
-        // Get the latest high scores from the service
-        const response = await fetch('/api/players');
-        players = await response.json();
+
+        const postData = {
+        code: code
+      };
+
+       const players = await fetch('/api/players', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(postData)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .catch(error => {
+        console.error('Error adding player:', error);
+      });
+
 
         console.log(players)
 
@@ -81,6 +100,7 @@
             allDivs.forEach(function(div){
               if (div.dataset.selected = "true"){
                 div.classList.toggle("selected");
+                vote = div.textContent;
               }
 
             })
@@ -88,8 +108,9 @@
                 newItem.classList.toggle("selected")
                 newItem.dataset.selected = "true";
             } else {
+                currentVote = newItem.textContent;
                 newItem.dataset.selected = "false";
-                newItem.classList.toggle("selected")
+                newItem.classList.toggle("selected");
             }
         });
 
@@ -105,57 +126,99 @@
 
     }
 
-    async function loadSecretWord(){
-        // const response = await fetch('/api/secretWord');
-        // secretWord = await response.json();
-
-        const postData = {
-        name: myName,
-        code: code
+async function loadSecretWord() {
+    try {
+      const postData = {
+          name: myName,
+          code: code
       };
 
-      fetch('/api/secretWord', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(postData)
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log('secret Word obtained:', data);
-
-        var secretWordDisplay = document.getElementById("secretWordDisplay");
-        secretWordDisplay.textContent = secretWord; 
-
-
-      })
-      .catch(error => {
-        console.error('Error adding player:', error);
+      const response = await fetch('/api/secretWord', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(postData)
       });
-    }
+
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+
+      const secretWord = await response.text(); 
+
+      console.log('Secret word obtained:', secretWord);
+      var secretWordDisplay = document.getElementById("secretWordDisplay");
+      secretWordDisplay.textContent = secretWord; 
+  } catch (error) {
+      console.error('Error loading secret word:', error);
+  }
+}
+
 
     
-      var myName = JSON.parse(localStorage.getItem("myName"));
       let players = loadPlayers();
       loadSecretWord();
 
 
 
+  async function readTheVotes(){
+
+    event.preventDefault();
+
+    const postData = {
+          vote: currentVote,
+          voter: myName,
+          code: code
+      };
+
+      const response = await fetch('/api/vote', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(postData)
+      });
+
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+
+      let verdict = await response.json();
+
+      if (verdict.gameOver == true){
+        alert("Game Over");
+        window.location.href = "waitingRoom.html";
+      } else if (verdict.winners == null ){
+        return 
+      } else {
+      const carousel = document.getElementById('carousel');
+
+      for (const winner of verdict.winners){
+
+        carousel.childNodes.forEach(child => {
+
+            if (child.nodeType === 1 && child.tagName.toLowerCase() === 'div' && child.textContent == winner) {
+
+                console.log(child.textContent);
+                child.remove();
+            }
+        });
+
+        if (winner == myName){
+          alert("you were voted out!");
+          window.location.href = "waitingRoom.html";
+        }
+
+        // make the button 
+
+      }
+    }
 
 
-//     function selectPlayer(playerName, increment) {
-//     voteMap.set(playerName, (voteMap.get(playerName)) + increment);
-//     console.log(playerName, "has", voteMap.get(playerName), "votes!");
-//     console.log(voteMap);
-// }
 
-//   function readTheVotes(){
+
+  }
 //     event.preventDefault();
 
 //     let highestVote = 0;

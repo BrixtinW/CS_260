@@ -113,6 +113,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     localStorage.setItem("code", code);
 
     var playerName = prompt("Please enter your player name:");
+    console.log("myName: ", playerName)
     localStorage.setItem("myName", playerName);
     addName(playerName, code);
     addName("Other Player 1", code);

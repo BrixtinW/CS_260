@@ -27,11 +27,10 @@ apiRouter.get('/gameroom', (req, res) => {
     addPlayer(req.body);
   });
 
-  apiRouter.get('/players', (_req, res) => {
-    res.send(players);
+  apiRouter.post('/players', (req, res) => {
+    res.send(games.get(req.body.code).players);
   });
 
-//   NOT DONE
   apiRouter.post('/login', (_req, res) => {
     var userExists = getUser(_req.body)
     res.send(userExists);
@@ -41,21 +40,25 @@ apiRouter.get('/gameroom', (req, res) => {
     res.send(votes);
   });
 
-  apiRouter.get('/secretWord', (req, res) => {
+  apiRouter.post('/secretWord', (req, res) => {
     secretWord = getSecretWord(req.body);
+    console.log(secretWord);
     res.send(secretWord);
   });
 
 apiRouter.post('/vote', (req, res) => {
-  votes = updateVotes(req.body, votes);
-  res.send(scores);
+  const winners = updateVotes(req.body);
+  console.log(winners);
+  console.log(games.get(req.body.code).gameOver);
+  jsonObj = JSON.stringify({"winners": winners, "gameOver": games.get(req.body.code).gameOver})
+  console.log(jsonObj)
+  res.send(jsonObj)
 });
 
 apiRouter.post('/generateOddOneOut', (req, res) => {
     generateOddOneOut(req.body);
   });
 
-//   NOT DONE
   apiRouter.post('/register', (req, res) => {
     createUser(req.body);
   });
@@ -80,6 +83,7 @@ class GameRoom {
         this.code = code;
         this.votes = new Map();
         this.readyToStartGame = false;
+        this.gameOver = false;
     }
 
     toString(){
@@ -109,15 +113,18 @@ let secretWordPairs = [
     ["Trophy", "Medal"]]
 
 
-async function getSecretWord(reqBody){
+function getSecretWord(reqBody){
     console.log(reqBody)
     const code = reqBody.code;
     const name = reqBody.name;
     console.log(games.get(code).oddOneOutIndex);
         if( games.get(code).readyToStartGame == true){
-            if (games.get(code).players[oddOneOutIndex] == name){
+            console.log(games.get(code).players[games.get(code).oddOneOutIndex])
+            if (games.get(code).players[games.get(code).oddOneOutIndex] == name){
+                console.log(games.get(code).oddWord)
                 return games.get(code).oddWord;
             } else {
+                console.log(games.get(code).groupWord)
                 return games.get(code).groupWord;
             }
         }
@@ -153,8 +160,7 @@ function generateGameRoomCode() {
     const name = reqBody.name;
 
     games.get(code).players.push(name);
-    games.get(code).votes.set(name, 0);
-    console.log(games.get(code));
+    console.log(games.get(code).toString());
  }
 
  function getUser(reqBody) {
@@ -177,3 +183,58 @@ function generateGameRoomCode() {
     const randomNum = Math.floor(Math.random() * secretWordPairs.length); 
     return [secretWordPairs[randomNum][0], secretWordPairs[randomNum][1]];
  }
+
+ function updateVotes(requestBody){
+    let winners = null;
+    const voter = requestBody.voter;
+    const vote = requestBody.vote;
+    const code = requestBody.code;
+    games.get(code).votes.set(voter, vote);
+    console.log(games.get(code).votes);
+    if (games.get(code).players.length >= Map.size){
+        winners = readTheVotes(code);
+        for (const winner of winners) {
+            if (games.get(code).players[games.get(code).oddOneOutIndex] == winner) { 
+                games.get(code).gameOver = true; 
+            } else {
+            const oddOneOut = games.get(code).players[games.get(code).oddOneOutIndex]
+            games.get(code).players = games.get(code).filter(value => value !== winner);
+            games.get(code).vote.clear();
+            for (let i = 0; i < games.get(code).players.size; i++){
+                if (games.get(code).players[i] == oddOneOut){
+                    games.get(code).oddOneOutIndex = i;
+                }
+            }
+            }
+        }
+    }
+    return winners;
+}
+
+
+function readTheVotes(code){
+    // Create a map to tally up the votes
+    const voteCounts = new Map();
+    
+    // Iterate over the entries of the votes map
+    for (const [player, votedFor] of games.get(code).votes) {
+        // Iterate over the voted players
+        for (const votedPlayer of votedFor.values()) {
+            // Increment the vote count for the voted player
+            const count = voteCounts.get(votedPlayer);
+            voteCounts.set(votedPlayer, count + 1);
+        }
+    }
+    
+    // Find the player(s) with the highest vote count
+    const maxVotes = Math.max(...voteCounts.values());
+    const winners = [];
+    for (const [player, votes] of voteCounts) {
+        if (votes === maxVotes) {
+            winners.push(player);
+        }
+    }
+    
+    // Return the winner(s)
+    return winners.length === 1 ? winners[0] : winners;
+}
