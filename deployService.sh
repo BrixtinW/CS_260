@@ -46,3 +46,6 @@ ENDSSH
 # Step 5
 printf "\n----> Removing local copy of the distribution package\n"
 rm -rf dist
+
+
+# ./deployService.sh -k ~/Desktop/BYU/BYU_Production.pem -h odd-one-out.click -s startup
