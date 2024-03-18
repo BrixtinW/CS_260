@@ -81,7 +81,7 @@ I will implement the following technologies:
 - **Node.js and Express** - Node.js and Express HTTP service created to allow hosting on a server and backend/frontend design.
 - **Express Static Middleware** - Used to serve up static HTML, CSS and JavaScript files to the frontend.
 - **Third Party Endpoints** - WaitingRoom.HTML calls a third-party API to generate a QR code with the current URL so that people can join the game by scanning it.
-- **Backend Endpoints** - Endpoints created for creating a game room, adding a player, getting a list of all players in the game instance, logging in, getting the final votes, getting the secret words, submitting a vote, generating the OddOneOut, and registering.
+- **Backend Endpoints** - Endpoints created for creating a game room, adding a player, getting a list of all players in the game instance, logging in, getting the final votes, getting the secret words, submitting a vote, generating the OddOneOut, and registering. Voting is no longer fully funcitonal because you need Websocket to run through all players' votes, but the endpoint is prepped for that step.
 - **Frontend Calls Endpoints** - All the endpoints are called from the frontend using the fetch function.
 
   
