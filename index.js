@@ -1,6 +1,10 @@
 const { group } = require('console');
 const { randomUUID } = require('crypto');
 const express = require('express');
+const uuid = require('uuid');
+const bcrypt = require('bcrypt');
+const cookieParser = require('cookie-parser');
+// import { insertUser, findUser } from './database.mjs';
 const app = express();
 
 // The service port. In production the frontend code is statically hosted by the service on the same port.
@@ -8,6 +12,9 @@ const port = process.argv.length > 2 ? process.argv[2] : 3000;
 
 // JSON body parsing using built-in middleware
 app.use(express.json());
+
+// Use the cookie parser middleware
+app.use(cookieParser());
 
 // Serve up the frontend static content hosting
 app.use(express.static('public'));
@@ -36,6 +43,21 @@ apiRouter.get('/gameroom', (req, res) => {
     res.send(userExists);
   });
 
+  apiRouter.post('/register', async (req, res) => {
+    if (await getUser(req.body.username)) {
+      res.status(409).send({ msg: 'Existing user' });
+    } else {
+      const user = await createUser(req.body.username, req.body.password);
+
+      // Set the cookie
+      setAuthCookie(res, user.token);
+
+      res.send({
+        id: user._id,
+      });
+    }
+  });
+
   apiRouter.get('/votes', (_req, res) => {
     res.send(votes);
   });
@@ -57,10 +79,6 @@ apiRouter.post('/vote', (req, res) => {
 
 apiRouter.post('/generateOddOneOut', (req, res) => {
     generateOddOneOut(req.body);
-  });
-
-  apiRouter.post('/register', (req, res) => {
-    createUser(req.body);
   });
 
 
@@ -101,10 +119,10 @@ class GameRoom {
 
 }
 
-    const users = new Map([
-        ['user1', 'pass1'],
-        ['user2', 'pass2']
-    ]);
+    // const users = new Map([
+    //     ['user1', 'pass1'],
+    //     ['user2', 'pass2']
+    // ]);
     const games = new Map();
 
 let secretWordPairs = [
@@ -163,19 +181,23 @@ function generateGameRoomCode() {
     console.log(games.get(code).toString());
  }
 
- function getUser(reqBody) {
-    console.log(reqBody)
-    const username = reqBody.username;
-    const password = reqBody.password;
-    return users.get(username) == password;
+ async function getUser(username) {
+    // const password = reqBody.password;
+    return collection.findOne({ username: username });
  }
 
- function createUser(reqBody) {
-     console.log(reqBody)
-    const username = reqBody.username;
-    const password = reqBody.password;
-    users.set(username, password);
-    console.log(users)
+ async function createUser(username, password) {
+
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    const user = {
+        username: username,
+        password: passwordHash,
+        token: uuid.v4()
+      };
+      return collection.insertOne(user);
+
+      return user;
  }
 
 
@@ -238,3 +260,56 @@ function readTheVotes(code){
     // Return the winner(s)
     return winners.length === 1 ? winners[0] : winners;
 }
+
+// ///////////////////////////////////////// DATABASE CODE /////////////////////////////////////////////////
+
+
+
+const { MongoClient } = require('mongodb');
+const config = require('./dbConfig.json');
+
+const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}`;
+const client = new MongoClient(url);
+const db = client.db('OddOneOut');
+const collection = db.collection('Users');
+
+(async function testConnection() {
+  await client.connect();
+  await db.command({ ping: 1 });
+})().catch((ex) => {
+  console.log(`Unable to connect to database with ${url} because ${ex.message}`);
+  process.exit(1);
+});
+
+// THE PREVIOUS CODE PINGS THE DATABASE TO TEST AND SEE IF THERE IS A CONNECTION. "If that fails then either the connection string is incorrect, the credentials are invalid, or the network is not working. "
+
+async function insertUser(username, password) {
+  const user = {
+    username: username,
+    password: password
+  }
+
+  await collection.insertOne(user);
+}
+
+async function findUser(username, password) {
+
+  const query = { username: 'Condo', password: { $lt: 2 } };
+  const options = {
+    sort: { score: -1 },
+    limit: 10,
+  };
+
+  const cursor = collection.find(query, options);
+  const rentals = await cursor.toArray();
+  rentals.forEach((i) => console.log(i));
+
+}
+
+function setAuthCookie(res, authToken) {
+    res.cookie('token', authToken, {
+      secure: true,
+      httpOnly: true,
+      sameSite: 'strict',
+    });
+  }
