@@ -16,6 +16,7 @@
       <nav>
         <a href="index.html">Home</a>
         <a onclick="playGame()">Play Game</a>
+        <a onclick="logout()">Log Out</a>
       </nav>
     </header>
     <!-- /////////////////////////////////////////////////////////////////////////////// -->
@@ -239,6 +240,26 @@ function playGame() {
             console.error('Error checking user login status:', error);
         });
     }
+
+    function logout() {
+    fetch('/logout', {
+        method: 'GET',
+        credentials: 'same-origin' // Include cookies in the request
+    })
+    .then(response => {
+        if (response.ok) {
+            // Redirect user to the homepage or login page upon successful logout
+            window.location.href = '/';
+        } else {
+            // Handle logout error, e.g., display error message to user
+            console.error('Logout failed:', response.statusText);
+        }
+    })
+    .catch(error => {
+        console.error('Error logging out:', error);
+    });
+}
+
 
   </script>
   </body>

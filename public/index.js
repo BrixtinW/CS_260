@@ -29,6 +29,7 @@
         })
         .then(response => {
             if (response.ok) {
+                console.log(response.status);
                 // If user is logged in, navigate to waitingRoom.html
                 window.location.href = 'waitingRoom.html';
             } else {
@@ -40,3 +41,4 @@
             console.error('Error checking user login status:', error);
         });
     }
+

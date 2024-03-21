@@ -63,12 +63,22 @@ apiRouter.get('/gameroom', (req, res) => {
 //     // Use the authToken as needed
 // });
 
+app.get('/logout', (req, res) => {
+
+    res.clearCookie('token');
+
+    res.send('Authentication token deleted successfully.');
+});
+
+
 
 /////////////////////  THIS GET ENDPOINT IS NEVER CALLED /////////////////////////////////
     app.get('/user', async (req, res) => {
         authToken = req.cookies['token'];
+        console.log(authToken);
         const user = await collection.findOne({ token: authToken });
         if (user) {
+        console.log(user);
         res.send({ username: user.username });
         return;
         }
@@ -152,10 +162,6 @@ class GameRoom {
 
 }
 
-    // const users = new Map([
-    //     ['user1', 'pass1'],
-    //     ['user2', 'pass2']
-    // ]);
     const games = new Map();
 
 let secretWordPairs = [
@@ -215,7 +221,6 @@ function generateGameRoomCode() {
  }
 
  async function getUser(username) {
-    // const password = reqBody.password;
     return collection.findOne({ username: username });
  }
 
@@ -229,8 +234,6 @@ function generateGameRoomCode() {
         token: uuid.v4()
       };
       return collection.insertOne(user);
-
-      return user;
  }
 
 
@@ -268,20 +271,17 @@ function generateGameRoomCode() {
 
 
 function readTheVotes(code){
-    // Create a map to tally up the votes
     const voteCounts = new Map();
     
-    // Iterate over the entries of the votes map
+
     for (const [player, votedFor] of games.get(code).votes) {
-        // Iterate over the voted players
         for (const votedPlayer of votedFor.values()) {
-            // Increment the vote count for the voted player
             const count = voteCounts.get(votedPlayer);
             voteCounts.set(votedPlayer, count + 1);
         }
     }
     
-    // Find the player(s) with the highest vote count
+
     const maxVotes = Math.max(...voteCounts.values());
     const winners = [];
     for (const [player, votes] of voteCounts) {
