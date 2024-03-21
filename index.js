@@ -49,19 +49,6 @@ apiRouter.get('/gameroom', (req, res) => {
     }
     res.status(401).send({ msg: 'Unauthorized' });
   });
-//   (_req, res) => {
-//     var userExists = getUser(_req.body)
-//     res.send(userExists);
-//   });
-
-// app.get('/route', (req, res) => {
-//     // Access the cookie named 'auth' from the request object
-//     const authToken = req.cookies.auth;
-//     if (authToken){
-//         const user = await getAuthenticatedUser(authToken);
-//     }
-//     // Use the authToken as needed
-// });
 
 app.get('/logout', (req, res) => {
 

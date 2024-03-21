@@ -98,17 +98,16 @@
             })
             .then(response => {
               if (!response.ok) {
-                throw new Error('Network response was not ok');
+                alert("User already exists")
+                
+              } else {
+                window.location.href = "waitingRoom.html";
               }
               return response.json();
             })
             .then(data => {
               console.log('Player registered successfully:', data);
             })
-            .catch(error => {
-              console.error('Error adding player:', error);
-            });
-                window.location.href = "waitingRoom.html";
             }
 
 
