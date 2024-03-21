@@ -81,6 +81,17 @@
     color: white;
     padding-right: 30px;
   }
+
+  a:not([href]):not([class]), a:not([href]):not([class]):hover {
+    text-decoration: none;
+    color: white;
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+/* a:not([href]):not([class]):hover {
+  color: white;
+  text-decoration: none;
+  cursor: pointer; /* Change cursor to pointer on hover */ 
   
   p {
     padding: 3vw;
@@ -257,7 +268,7 @@
     overflow: hidden;
   }
   
-  article h2 {
+  article h2 { 
     margin: 0 0 18px 0;
     font-size: 1.9rem;
     letter-spacing: 0.06em;
