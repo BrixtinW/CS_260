@@ -38,10 +38,43 @@ apiRouter.get('/gameroom', (req, res) => {
     res.send(games.get(req.body.code).players);
   });
 
-  apiRouter.post('/login', (_req, res) => {
-    var userExists = getUser(_req.body)
-    res.send(userExists);
+  apiRouter.post('/login',  async (req, res) => {
+    const user = await getUser(req.body.username);
+    if (user) {
+      if (await bcrypt.compare(req.body.password, user.password)) {
+        setAuthCookie(res, user.token);
+        res.send({ id: user._id });
+        return;
+      }
+    }
+    res.status(401).send({ msg: 'Unauthorized' });
   });
+//   (_req, res) => {
+//     var userExists = getUser(_req.body)
+//     res.send(userExists);
+//   });
+
+// app.get('/route', (req, res) => {
+//     // Access the cookie named 'auth' from the request object
+//     const authToken = req.cookies.auth;
+//     if (authToken){
+//         const user = await getAuthenticatedUser(authToken);
+//     }
+//     // Use the authToken as needed
+// });
+
+
+/////////////////////  THIS GET ENDPOINT IS NEVER CALLED /////////////////////////////////
+    app.get('/user', async (req, res) => {
+        authToken = req.cookies['token'];
+        const user = await collection.findOne({ token: authToken });
+        if (user) {
+        res.send({ username: user.username });
+        return;
+        }
+        res.status(401).send({ msg: 'Unauthorized' });
+    });
+    /////////////////////  THIS GET ENDPOINT IS NEVER CALLED /////////////////////////////////
 
   apiRouter.post('/register', async (req, res) => {
     if (await getUser(req.body.username)) {
@@ -283,28 +316,21 @@ const collection = db.collection('Users');
 
 // THE PREVIOUS CODE PINGS THE DATABASE TO TEST AND SEE IF THERE IS A CONNECTION. "If that fails then either the connection string is incorrect, the credentials are invalid, or the network is not working. "
 
-async function insertUser(username, password) {
-  const user = {
-    username: username,
-    password: password
-  }
+// async function insertUser(username, password) {
+//   const user = {
+//     username: username,
+//     password: password
+//   }
 
-  await collection.insertOne(user);
-}
+//   await collection.insertOne(user);
+// }
 
-async function findUser(username, password) {
 
-  const query = { username: 'Condo', password: { $lt: 2 } };
-  const options = {
-    sort: { score: -1 },
-    limit: 10,
-  };
+//   const cursor = collection.find(query, options);
+//   const rentals = await cursor.toArray();
+//   rentals.forEach((i) => console.log(i));
 
-  const cursor = collection.find(query, options);
-  const rentals = await cursor.toArray();
-  rentals.forEach((i) => console.log(i));
-
-}
+// }
 
 function setAuthCookie(res, authToken) {
     res.cookie('token', authToken, {
@@ -313,3 +339,7 @@ function setAuthCookie(res, authToken) {
       sameSite: 'strict',
     });
   }
+
+//   async function getAuthenticatedUser(authToken){
+//     return collection.findOne({ token: authToken });
+//   }
