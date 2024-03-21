@@ -309,7 +309,7 @@ async function loadSecretWord() {
     .then(response => {
         if (response.ok) {
             // Redirect user to the homepage or login page upon successful logout
-            window.location.href = '/';
+            window.location.href = 'index.html';
         } else {
             // Handle logout error, e.g., display error message to user
             console.error('Logout failed:', response.statusText);

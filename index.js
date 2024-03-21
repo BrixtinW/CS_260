@@ -71,8 +71,6 @@ app.get('/logout', (req, res) => {
 });
 
 
-
-/////////////////////  THIS GET ENDPOINT IS NEVER CALLED /////////////////////////////////
     app.get('/user', async (req, res) => {
         authToken = req.cookies['token'];
         console.log(authToken);
@@ -84,7 +82,6 @@ app.get('/logout', (req, res) => {
         }
         res.status(401).send({ msg: 'Unauthorized' });
     });
-    /////////////////////  THIS GET ENDPOINT IS NEVER CALLED /////////////////////////////////
 
   apiRouter.post('/register', async (req, res) => {
     if (await getUser(req.body.username)) {
