@@ -114,7 +114,7 @@ app.use((_req, res) => {
   res.sendFile('index.html', { root: 'public' });
 });
 
-const httpService = app.listen(port, () => {
+const httpServer = app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
 
@@ -198,12 +198,13 @@ function generateGameRoomCode() {
     return code;
   }
 
- function addPlayer(reqBody, votes){
+ function addPlayer(reqBody){
     console.log(reqBody)
     const code = reqBody.code;
     const name = reqBody.name;
 
     games.get(code).players.push(name);
+    // send message to update each players html with the correct names. index all sesssions with the game room code. update every connection in the gameroom with that message. 
     console.log(games.get(code).toString());
  }
 
@@ -314,7 +315,6 @@ function setAuthCookie(res, authToken) {
 
 //////////////////////////////////////////// WEBSOCKET CODE /////////////////////////////////////////////////
 
-// function peerProxy(httpServer) {
   // Create a websocket object
   const wss = new WebSocketServer({ noServer: true });
 
@@ -326,7 +326,7 @@ function setAuthCookie(res, authToken) {
   });
 
   // Keep track of all the connections so we can forward messages
-  let connections = {};
+  let connections = [];
 
   wss.on('connection', (ws) => {
     const connection = { id: uuid.v4(), alive: true, ws: ws };
@@ -368,4 +368,3 @@ function setAuthCookie(res, authToken) {
       }
     });
   }, 10000);
-// }

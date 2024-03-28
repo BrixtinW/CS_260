@@ -60,7 +60,7 @@
             })
             .then(response => {
               if (!response.ok) {
-                throw new Error('Network response was not ok');
+                alert("Invalid username or password");
               }
               return response.json();
             })
@@ -68,8 +68,28 @@
               console.log('Player logged in called:', data);
 
               if (data) {
-                alert("Login successful!");
-                window.location.href = "waitingRoom.html";
+                var playerName = prompt("Please enter your player name:");
+                localStorage.setItem("myName", playerName);
+
+
+                const currentUrl = window.location.href;
+                const urlParams = new URLSearchParams(currentUrl);
+                const codeVariable = urlParams.get('code');
+
+                // Check if the codeVariable exists
+                if (codeVariable) {
+                    // Construct the new URL with the code variable
+                    let newUrl = currentUrl.replace('/invitation.html', '/waitingRoom.html');
+                    newUrl += '?code=' + encodeURIComponent(codeVariable);
+
+                    // Navigate to the new URL
+                    window.location.href = newUrl;
+                } else {
+                    // Navigate to waitingRoom.html
+                    window.location.href = 'waitingRoom.html';
+                }
+
+                
             } else {
                 alert("Invalid username or password");
             }
@@ -101,7 +121,29 @@
                 alert("User already exists")
                 
               } else {
-                window.location.href = "waitingRoom.html";
+                var playerName = prompt("Please enter your player name:");
+                localStorage.setItem("myName", playerName);
+
+
+                const currentUrl = window.location.href;
+                const urlParams = new URLSearchParams(currentUrl);
+                const codeVariable = urlParams.get('code');
+
+                // Check if the codeVariable exists
+                if (codeVariable) {
+                    // Construct the new URL with the code variable
+                    let newUrl = currentUrl.replace('/invitation.html', '/waitingRoom.html');
+                    newUrl += '?code=' + encodeURIComponent(codeVariable);
+
+                    // Navigate to the new URL
+                    window.location.href = newUrl;
+                } else {
+                    // Navigate to waitingRoom.html
+                    window.location.href = 'waitingRoom.html';
+                }
+
+
+
               }
               return response.json();
             })
@@ -119,7 +161,8 @@
         })
         .then(response => {
             if (response.ok) {
-                // If user is logged in, navigate to waitingRoom.html
+              var playerName = prompt("Please enter your player name:");
+              localStorage.setItem("myName", playerName);
                 window.location.href = 'waitingRoom.html';
             } else {
                 // If user is not logged in, navigate to invitation.html

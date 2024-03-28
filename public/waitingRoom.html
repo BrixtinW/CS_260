@@ -76,11 +76,10 @@
 
     <script>
 
-    const currentUrl = window.location.href;
-
     async function fetchQRCode(url) {
         try {
-            const response = await fetch(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=%3C%22${currentUrl}%22%3E`);
+          let newUrl = url.replace('/waitingRoom.html', '/invitation.html');
+            const response = await fetch(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=%3C%22${newUrl}%22%3E`);
             if (!response.ok) {
                 throw new Error('Failed to fetch QR code');
             }
@@ -92,7 +91,7 @@
         }
     }
 
-    async function displayQRCode() {
+    async function displayQRCode(currentUrl) {
         const qrCodeUrl = await fetchQRCode(currentUrl);
         if (qrCodeUrl) {
             document.getElementById("qrcode").innerHTML = `<img src="${qrCodeUrl}" alt="QR Code" />`;
@@ -101,7 +100,7 @@
         }
     }
 
-    displayQRCode();
+    // displayQRCode(currentUrl);
 
         
 
@@ -109,20 +108,51 @@
 
 document.addEventListener("DOMContentLoaded", async function() {
  
-  await displayGameRoomCode().then(code => {
+  const currentUrl = window.location.href;
 
-    localStorage.setItem("code", code);
+// Create a URLSearchParams object from the URL query string
+const urlParams = new URLSearchParams(currentUrl);
 
-    var playerName = prompt("Please enter your player name:");
-    console.log("myName: ", playerName)
-    localStorage.setItem("myName", playerName);
+// Get the value of the 'code' parameter
+const codeVariable = urlParams.get('code');
+
+if (codeVariable) {
+    // The 'code' parameter was found in the URL
+    console.log('Value of code parameter:', codeVariable);
+
+    localStorage.setItem("code", codeVariable);
+    
+    localStorage.getItem('myName');
     addName(playerName, code);
-    addName("Other Player 1", code);
-    addName("Other Player 2", code);
-    addName("Other Player 3", code);
-}).catch(error => {
-    console.error("An error occurred:", error);
-});
+    displayQRCode(window.location.href);
+
+} else {
+    // The 'code' parameter was not found in the URL
+    console.log('The code parameter was not found in the URL');
+
+
+
+    await displayGameRoomCode().then(code => {
+    
+      localStorage.setItem("code", code);
+
+      // Get the current URL
+      let url = new URL(currentUrl);
+
+      // Add a parameter to the URL
+      url.searchParams.set('code', code);
+
+      // Replace the current URL with the modified URL
+      window.history.replaceState({}, '', url);
+    
+      const playerName = localStorage.getItem('myName');
+      addName(playerName, code);
+      displayQRCode(window.location.href);
+    }).catch(error => {
+      console.error("An error occurred:", error);
+    });
+}
+
 
 
 });
@@ -178,6 +208,8 @@ async function addName(playerName, gameRoomCode) {
         console.error('Error adding player:', error);
       });
 
+
+      // do this to all other players!!!!!!!!!
       var newItem = document.createElement("div");
       newItem.classList.add("item"); 
       newItem.textContent = playerName; 
@@ -276,10 +308,12 @@ function configureWebSocket() {
       const msg = JSON.parse(await event.data.text());
 
 
-      if (msg.type === GameEndEvent) {
-        this.displayMsg('player', msg.from, `scored ${msg.value.score}`);
-      } else if (msg.type === GameStartEvent) {
-        this.displayMsg('player', msg.from, `started a new game`);
+      if (msg.type === "Player Joined Room") {
+        
+
+      } else if (msg.type === "Game Started") {
+        
+
       }
     };
   };

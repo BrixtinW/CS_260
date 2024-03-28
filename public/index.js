@@ -29,8 +29,8 @@
         })
         .then(response => {
             if (response.ok) {
-                console.log(response.status);
-                // If user is logged in, navigate to waitingRoom.html
+                var playerName = prompt("Please enter your player name:");
+                localStorage.setItem("myName", playerName);
                 window.location.href = 'waitingRoom.html';
             } else {
                 // If user is not logged in, navigate to invitation.html
