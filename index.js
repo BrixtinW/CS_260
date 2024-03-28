@@ -1,10 +1,10 @@
-const { group } = require('console');
+// const { group } = require('console');
 const { randomUUID } = require('crypto');
 const express = require('express');
 const uuid = require('uuid');
 const bcrypt = require('bcrypt');
 const cookieParser = require('cookie-parser');
-// import { insertUser, findUser } from './database.mjs';
+const { WebSocketServer } = require('ws');
 const app = express();
 
 // The service port. In production the frontend code is statically hosted by the service on the same port.
@@ -114,9 +114,12 @@ app.use((_req, res) => {
   res.sendFile('index.html', { root: 'public' });
 });
 
-app.listen(port, () => {
+const httpService = app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
+
+//////////////////////////////////////////// GAME LOGIC /////////////////////////////////////////////////
+
 
 class GameRoom {
 
@@ -278,7 +281,7 @@ function readTheVotes(code){
     return winners.length === 1 ? winners[0] : winners;
 }
 
-// ///////////////////////////////////////// DATABASE CODE /////////////////////////////////////////////////
+//////////////////////////////////////////// DATABASE CODE /////////////////////////////////////////////////
 
 
 
@@ -300,21 +303,6 @@ const collection = db.collection('Users');
 
 // THE PREVIOUS CODE PINGS THE DATABASE TO TEST AND SEE IF THERE IS A CONNECTION. "If that fails then either the connection string is incorrect, the credentials are invalid, or the network is not working. "
 
-// async function insertUser(username, password) {
-//   const user = {
-//     username: username,
-//     password: password
-//   }
-
-//   await collection.insertOne(user);
-// }
-
-
-//   const cursor = collection.find(query, options);
-//   const rentals = await cursor.toArray();
-//   rentals.forEach((i) => console.log(i));
-
-// }
 
 function setAuthCookie(res, authToken) {
     res.cookie('token', authToken, {
@@ -324,6 +312,60 @@ function setAuthCookie(res, authToken) {
     });
   }
 
-//   async function getAuthenticatedUser(authToken){
-//     return collection.findOne({ token: authToken });
-//   }
+//////////////////////////////////////////// WEBSOCKET CODE /////////////////////////////////////////////////
+
+// function peerProxy(httpServer) {
+  // Create a websocket object
+  const wss = new WebSocketServer({ noServer: true });
+
+  // Handle the protocol upgrade from HTTP to WebSocket
+  httpServer.on('upgrade', (request, socket, head) => {
+    wss.handleUpgrade(request, socket, head, function done(ws) {
+      wss.emit('connection', ws, request);
+    });
+  });
+
+  // Keep track of all the connections so we can forward messages
+  let connections = {};
+
+  wss.on('connection', (ws) => {
+    const connection = { id: uuid.v4(), alive: true, ws: ws };
+    connections.push(connection);
+
+    // Forward messages to everyone except the sender
+    ws.on('message', function message(data) {
+      connections.forEach((c) => {
+        if (c.id !== connection.id) {
+          c.ws.send(data);
+        }
+      });
+    });
+
+    // Remove the closed connection so we don't try to forward anymore
+    ws.on('close', () => {
+      const pos = connections.findIndex((o, i) => o.id === connection.id);
+
+      if (pos >= 0) {
+        connections.splice(pos, 1);
+      }
+    });
+
+    // Respond to pong messages by marking the connection alive
+    ws.on('pong', () => {
+      connection.alive = true;
+    });
+  });
+
+  // Keep active connections alive
+  setInterval(() => {
+    connections.forEach((c) => {
+      // Kill any connection that didn't respond to the ping last time
+      if (!c.alive) {
+        c.ws.terminate();
+      } else {
+        c.alive = false;
+        c.ws.ping();
+      }
+    });
+  }, 10000);
+// }
