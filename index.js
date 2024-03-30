@@ -311,8 +311,9 @@ class GameRoom {
     game.players.push(name);
 
     // game.createConnection(name);
-    const message = { type: "addedPlayer", playerName: "John" }; // Example message
-    wss.send(JSON.stringify(message));
+    
+    // const message = { type: "addedPlayer", playerName: "John" }; // Example message
+    // wss.send(JSON.stringify(message));
 
 
     console.log(game.toString());

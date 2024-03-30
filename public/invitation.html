@@ -73,23 +73,25 @@
 
 
                 const currentUrl = window.location.href;
-                const urlParams = new URLSearchParams(currentUrl);
-                const codeVariable = urlParams.get('code');
+                let newUrl = currentUrl.replace('/invitation.html', '/waitingRoom.html');
+                window.location.href = newUrl;
+                // const urlParams = new URLSearchParams(currentUrl);
+                // const codeVariable = urlParams.get('code');
 
                 // Check if the codeVariable exists
-                if (codeVariable) {
-                    // Construct the new URL with the code variable
-                    let newUrl = currentUrl.replace('/invitation.html', '/waitingRoom.html');
-                    newUrl += '?code=' + encodeURIComponent(codeVariable);
+                // if (codeVariable) {
+                //     // Construct the new URL with the code variable
+                //     let newUrl = currentUrl.replace('/invitation.html', '/waitingRoom.html');
+                //     newUrl += '?code=' + encodeURIComponent(codeVariable);
 
-                    // Navigate to the new URL
-                    window.location.href = newUrl;
-                } else {
-                    // Navigate to waitingRoom.html
-                    window.location.href = 'waitingRoom.html';
-                }
+                //     // Navigate to the new URL
+                //     window.location.href = newUrl;
+                // } else {
+                //     // Navigate to waitingRoom.html
+                //     window.location.href = 'waitingRoom.html';
+                // }
 
-                
+
             } else {
                 alert("Invalid username or password");
             }
@@ -125,22 +127,27 @@
                 localStorage.setItem("myName", playerName);
 
 
+
+
                 const currentUrl = window.location.href;
-                const urlParams = new URLSearchParams(currentUrl);
-                const codeVariable = urlParams.get('code');
+                let newUrl = currentUrl.replace('/invitation.html', '/waitingRoom.html');
+                window.location.href = newUrl;
+                // const currentUrl = window.location.href;
+                // const urlParams = new URLSearchParams(currentUrl);
+                // const codeVariable = urlParams.get('code');
 
-                // Check if the codeVariable exists
-                if (codeVariable) {
-                    // Construct the new URL with the code variable
-                    let newUrl = currentUrl.replace('/invitation.html', '/waitingRoom.html');
-                    newUrl += '?code=' + encodeURIComponent(codeVariable);
+                // // Check if the codeVariable exists
+                // if (codeVariable) {
+                //     // Construct the new URL with the code variable
+                //     let newUrl = currentUrl.replace('/invitation.html', '/waitingRoom.html');
+                //     newUrl += '?code=' + encodeURIComponent(codeVariable);
 
-                    // Navigate to the new URL
-                    window.location.href = newUrl;
-                } else {
-                    // Navigate to waitingRoom.html
-                    window.location.href = 'waitingRoom.html';
-                }
+                //     // Navigate to the new URL
+                //     window.location.href = newUrl;
+                // } else {
+                //     // Navigate to waitingRoom.html
+                //     window.location.href = 'waitingRoom.html';
+                // }
 
 
 

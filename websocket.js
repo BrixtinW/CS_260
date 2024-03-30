@@ -38,12 +38,15 @@ function peerProxy(httpServer, games) {
             connection.name = msg.name;
             // Store code and name in the connection object
             console.log(`User ${connection.name} wants to join room with code: ${connection.code}`);
+            console.log(games)
+            console.log(games.get(connection.code).connections)
+            const connections = games.get(msg.code).connections;
+            connections[msg.name] = connection;
+            console.log(connections);
 
-            games.get(connection.code).sessions[connection.name] = connection;
-            console.log(games.get(connection.code).sessions);
-
-            Object.values(games.get(connection.code).sessions).forEach( connection => {
-                connection.ws.send({type: 'addedPlayer', name: connection.name});
+            Object.values(connections).forEach( connection => {
+                const message = { type: 'addedPlayer', name: msg.name };
+                connection.ws.send(JSON.stringify(message));
             })
             
             // Handle room joining logic, if needed

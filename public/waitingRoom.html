@@ -114,6 +114,7 @@ const urlParams = new URLSearchParams(currentUrl);
 
 // Get the value of the 'code' parameter
 const codeVariable = urlParams.get('code');
+console.log(codeVariable);
 
 if (codeVariable) {
     // The 'code' parameter was found in the URL
@@ -122,7 +123,7 @@ if (codeVariable) {
     localStorage.setItem("code", codeVariable);
     
     localStorage.getItem('myName');
-    configureWebSocket(socket, codeVariable, playerName)
+    configureWebSocket(socket, codeVariable, playerName);
     addName(playerName, codeVariable);
     displayQRCode(window.location.href);
 
@@ -140,13 +141,13 @@ if (codeVariable) {
       let url = new URL(currentUrl);
 
       // Add a parameter to the URL
-      url.searchParams.set('code', code);
+      url.searchParams.set('code', encodeURIComponent(code));
 
       // Replace the current URL with the modified URL
       window.history.replaceState({}, '', url);
     
       const playerName = localStorage.getItem('myName');
-      configureWebSocket(socket, code, playerName)
+      configureWebSocket(socket, code, playerName);
       addName(playerName, code);
       displayQRCode(window.location.href);
     }).catch(error => {
@@ -287,22 +288,24 @@ function playGame() {
     // const socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
 
 function configureWebSocket(socket, code, name) {
-    socket.onopen = (event) => {
-      console.log("connected sucessfully to WebSocket!");
-      socket.send(JSON.stringify({ type: "joinRoom", code: code, name: name }));
-    };
+    console.log("connected sucessfully to WebSocket!");
+    socket.send(JSON.stringify({ type: "joinRoom", code: code, name: name }));
+    // socket.onopen = (event) => {
+    // };
     socket.onclose = (event) => {
       console.log("disconnected from the WebSocket!");
     };
     socket.onmessage = async (event) => {
       console.log("hey THIS WAS CALLED YOU DIDN't kmnpw what would daca;lkj;alsdf;j");
-      const msg = JSON.parse(await event.data.text());
+      console.log(event)
+      console.log(event.data)
+      const msg = JSON.parse(await event.data);
       if (msg.type === "addedPlayer") {
         
       // do this to all other players!!!!!!!!!
       var newItem = document.createElement("div");
       newItem.classList.add("item"); 
-      newItem.textContent = msg.playerName; 
+      newItem.textContent = msg.name; 
 
       var carousel = document.getElementById("carousel");
 
