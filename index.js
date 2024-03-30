@@ -5,7 +5,7 @@ const uuid = require('uuid');
 const bcrypt = require('bcrypt');
 const cookieParser = require('cookie-parser');
 const app = express();
-const { peerProxy } = require('websocket.js');
+const { peerProxy } = require('./websocket.js');
 
 // The service port. In production the frontend code is statically hosted by the service on the same port.
 const port = process.argv.length > 2 ? process.argv[2] : 3000;
@@ -31,7 +31,7 @@ apiRouter.get('/gameroom', (req, res) => {
   });
 
   apiRouter.post('/addPlayer', (req, res) => {
-    addPlayer(req.body, req.header);
+    addPlayer(req.body);
   });
 
   apiRouter.post('/players', (req, res) => {
@@ -301,7 +301,7 @@ class GameRoom {
     return code;
   }
   
-  function addPlayer(reqBody, reqHeaders) {
+  function addPlayer(reqBody) {
     console.log(reqBody);
     const code = reqBody.code;
     const name = reqBody.name;
@@ -310,29 +310,11 @@ class GameRoom {
     const game = games.get(code);
     game.players.push(name);
 
-    game.createConnection(name);
+    // game.createConnection(name);
+    const message = { type: "addedPlayer", playerName: "John" }; // Example message
+    wss.send(JSON.stringify(message));
 
-    
-    // const ws = new WebSocket(`ws://${reqHeaders.host}`);
-    
-    // ws.on('message', function message(data) {
-    //   Object.entries(game.connections).forEach(([playerName, c]) => {
-    //     if (playerName !== name) {
-    //       c.send(data);
-    //     }
-    //   });
-    // });
-    // ws.on('close', () => {
-    //   console.log(`Connection closed for player ${name}`);
-    //   delete game.connections[name];
-    // });
-    
-    // game.connections[name] = ws;
-    
-    // Object.values(game.connections).forEach((connection) => {
-    //   connection.send(JSON.stringify({ type: 'addedPlayer', playerName: name }));
-    // });
-    
+
     console.log(game.toString());
     console.log(game.connections);
   }
@@ -497,4 +479,4 @@ function setAuthCookie(res, authToken) {
 
 //   return wss;
 // }
-peerProxy(httpServer, games);
+const wss = peerProxy(httpServer, games);

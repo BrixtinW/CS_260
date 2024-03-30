@@ -100,11 +100,13 @@
         }
     }
 
-    const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-    const socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
+    
+    document.addEventListener("DOMContentLoaded", async function() {
+      
+      const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+      const socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
 
-document.addEventListener("DOMContentLoaded", async function() {
- 
+
   const currentUrl = window.location.href;
 
 // Create a URLSearchParams object from the URL query string
@@ -120,9 +122,9 @@ if (codeVariable) {
     localStorage.setItem("code", codeVariable);
     
     localStorage.getItem('myName');
+    configureWebSocket(socket, codeVariable, playerName)
     addName(playerName, codeVariable);
     displayQRCode(window.location.href);
-    configureWebSocket(codeVariable, playerName)
 
 } else {
     // The 'code' parameter was not found in the URL
@@ -144,9 +146,9 @@ if (codeVariable) {
       window.history.replaceState({}, '', url);
     
       const playerName = localStorage.getItem('myName');
+      configureWebSocket(socket, code, playerName)
       addName(playerName, code);
       displayQRCode(window.location.href);
-      configureWebSocket(code, playerName)
     }).catch(error => {
       console.error("An error occurred:", error);
     });
@@ -284,13 +286,10 @@ function playGame() {
     // const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
     // const socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
 
-    // const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-    // const socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
-
-function configureWebSocket(code, name) {
+function configureWebSocket(socket, code, name) {
     socket.onopen = (event) => {
       console.log("connected sucessfully to WebSocket!");
-      socket.send(JSON.stringify({ code: code, name: name }));
+      socket.send(JSON.stringify({ type: "joinRoom", code: code, name: name }));
     };
     socket.onclose = (event) => {
       console.log("disconnected from the WebSocket!");
@@ -298,7 +297,6 @@ function configureWebSocket(code, name) {
     socket.onmessage = async (event) => {
       console.log("hey THIS WAS CALLED YOU DIDN't kmnpw what would daca;lkj;alsdf;j");
       const msg = JSON.parse(await event.data.text());
-      conso
       if (msg.type === "addedPlayer") {
         
       // do this to all other players!!!!!!!!!
@@ -316,6 +314,7 @@ function configureWebSocket(code, name) {
       } 
     };
     // socket.emit('joinRoom', code, name);
+    // return socket;
   }
 
 
