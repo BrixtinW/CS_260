@@ -100,31 +100,41 @@
         }
     }
 
+    let socket;
     
-    document.addEventListener("DOMContentLoaded", async function() {
+    // document.addEventListener("DOMContentLoaded", async function() {
       
-      const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-      const socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
+      // const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+      // const socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
+      
 
-
-  const currentUrl = window.location.href;
+  const urlQueries = window.location.search;
 
 // Create a URLSearchParams object from the URL query string
-const urlParams = new URLSearchParams(currentUrl);
+const urlParams = new URLSearchParams(urlQueries);
 
 // Get the value of the 'code' parameter
-const codeVariable = urlParams.get('code');
-console.log(codeVariable);
+const code = urlParams.get('code');
+console.log(code);
 
-if (codeVariable) {
+if (code) {
     // The 'code' parameter was found in the URL
-    console.log('Value of code parameter:', codeVariable);
-
-    localStorage.setItem("code", codeVariable);
+    console.log('Value of code parameter:', code);
+    document.getElementById("gameRoomCode").textContent = code;
+    sessionStorage.setItem("code", code);
     
-    localStorage.getItem('myName');
-    configureWebSocket(socket, codeVariable, playerName);
-    addName(playerName, codeVariable);
+    const playerName = sessionStorage.getItem('myName');
+
+
+    addName(playerName, code).then(() => configureWebSocket(socket, code, playerName));
+
+    window.addEventListener('beforeunload', function(event) {
+          alert("before unload called!");
+          const message = { type: "leaveRoom", code: code, name: playerName }
+          socket.send(JSON.stringify(message));
+          alert("this should ahve a stop");
+    });
+    // configureWebSocket(socket, codeVariable, playerName);
     displayQRCode(window.location.href);
 
 } else {
@@ -133,12 +143,12 @@ if (codeVariable) {
 
 
 
-    await displayGameRoomCode().then(code => {
+    displayGameRoomCode().then(code => {
     
-      localStorage.setItem("code", code);
+      sessionStorage.setItem("code", code);
 
       // Get the current URL
-      let url = new URL(currentUrl);
+      let url = new URL(window.location.href);
 
       // Add a parameter to the URL
       url.searchParams.set('code', encodeURIComponent(code));
@@ -146,10 +156,17 @@ if (codeVariable) {
       // Replace the current URL with the modified URL
       window.history.replaceState({}, '', url);
     
-      const playerName = localStorage.getItem('myName');
-      configureWebSocket(socket, code, playerName);
-      addName(playerName, code);
+      const playerName = sessionStorage.getItem('myName');
+      addName(playerName, code).then(() => configureWebSocket(socket, code, playerName));
       displayQRCode(window.location.href);
+
+      window.addEventListener('beforeunload', function(event) {
+        alert("before unload called!");
+          const message = { type: "leaveRoom", code: code, name: playerName }
+          socket.send(JSON.stringify(message));
+          alert("this should ahve a stop");
+    });
+
     }).catch(error => {
       console.error("An error occurred:", error);
     });
@@ -157,7 +174,7 @@ if (codeVariable) {
 
 
 
-});
+// });
 
 async function fetchGameRoomCode() {
   try {
@@ -213,35 +230,39 @@ async function addName(playerName, gameRoomCode) {
     }
 
 
-  function loadGameRoom() {
+  function loadGameRoom(socket) {
+    const postData = { type: "loadRoom", code: `${sessionStorage.getItem('code')}`};
+    socket.send(JSON.stringify(postData));
 
-console.log("BUTTON PRESSED BUT NOTHING HAPPENED?????")
-
-
-const postData = {
-              "code": `${localStorage.getItem('code')}`,
-            };
-
-            fetch('/api/generateOddOneOut', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(postData)
-            })
-            .then(response => {
-              if (!response.ok) {
-                throw new Error('Network response was not ok');
-              }
-              return response.json();
-            })
-            .catch(error => {
-              console.error('Error adding player:', error);
-            });
+// console.log("BUTTON PRESSED BUT NOTHING HAPPENED?????")
 
 
+// const postData = {
+//               "code": `${sessionStorage.getItem('code')}`,
+//             };
 
-    window.location.href = "gameRoom.html";
+//             fetch('/api/generateOddOneOut', {
+//               method: 'POST',
+//               headers: {
+//                 'Content-Type': 'application/json'
+//               },
+//               body: JSON.stringify(postData)
+//             })
+//             .then(response => {
+//               if (!response.ok) {
+//                 throw new Error('Network response was not ok');
+//               }
+//               return response.json();
+//             })
+//             .catch(error => {
+//               console.error('Error adding player:', error);
+//             });
+
+
+
+//             const currentUrl = window.location.href;
+//                 let newUrl = currentUrl.replace('/waitingRoom.html', '/gameRoom.html');
+//                 window.location.href = newUrl;
 };
 
 
@@ -253,7 +274,8 @@ function playGame() {
         })
         .then(response => {
             if (response.ok) {
-                // If user is logged in, navigate to waitingRoom.html
+                var playerName = prompt("Please enter your player name:");
+                sessionStorage.setItem("myName", playerName);
                 window.location.href = 'waitingRoom.html';
             } else {
                 // If user is not logged in, navigate to invitation.html
@@ -288,36 +310,52 @@ function playGame() {
     // const socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
 
 function configureWebSocket(socket, code, name) {
-    console.log("connected sucessfully to WebSocket!");
-    socket.send(JSON.stringify({ type: "joinRoom", code: code, name: name }));
+    const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+    socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
+
+    socket.addEventListener('open', () => {
+      console.log("connected sucessfully to WebSocket!");
+      socket.send(JSON.stringify({ type: "joinRoom", code: code, name: name }));
+});
     // socket.onopen = (event) => {
     // };
-    socket.onclose = (event) => {
-      console.log("disconnected from the WebSocket!");
-    };
+    
+    // socket.onclose = (event) => {
+    //   console.log("disconnected from the WebSocket!");
+    //   alert("disconnected!!!");
+    //   socket.send(JSON.stringify({ type: "leaveRoom", code: code, name: name }));
+    // };
+
     socket.onmessage = async (event) => {
       console.log("hey THIS WAS CALLED YOU DIDN't kmnpw what would daca;lkj;alsdf;j");
       console.log(event)
       console.log(event.data)
       const msg = JSON.parse(await event.data);
-      if (msg.type === "addedPlayer") {
-        
-      // do this to all other players!!!!!!!!!
-      var newItem = document.createElement("div");
-      newItem.classList.add("item"); 
-      newItem.textContent = msg.name; 
-
+      if (msg.type === "updatePlayers") {
       var carousel = document.getElementById("carousel");
 
-      carousel.appendChild(newItem);
+      // Remove all existing child elements of the carousel
+      while (carousel.firstChild) {
+          carousel.removeChild(carousel.firstChild);
+      }
+
+      // Iterate through each player name in the players list
+      for (let playerName of msg.players) {
+          // Create a new div element for the player
+          var newItem = document.createElement("div");
+          newItem.classList.add("item");
+          newItem.textContent = playerName;
+          carousel.appendChild(newItem);
+      }
 
       } else if (msg.type === "Game Started") {
         
+        const currentUrl = window.location.href;
+        let newUrl = currentUrl.replace('/waitingRoom.html', '/gameRoom.html');
+        window.location.href = newUrl;
 
       } 
     };
-    // socket.emit('joinRoom', code, name);
-    // return socket;
   }
 
 

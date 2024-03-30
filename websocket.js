@@ -38,19 +38,39 @@ function peerProxy(httpServer, games) {
             connection.name = msg.name;
             // Store code and name in the connection object
             console.log(`User ${connection.name} wants to join room with code: ${connection.code}`);
-            console.log(games)
-            console.log(games.get(connection.code).connections)
             const connections = games.get(msg.code).connections;
             connections[msg.name] = connection;
-            console.log(connections);
 
             Object.values(connections).forEach( connection => {
-                const message = { type: 'addedPlayer', name: msg.name };
+                const message = { type: 'updatePlayers', players: games.get(msg.code).players };
                 connection.ws.send(JSON.stringify(message));
             })
             
             // Handle room joining logic, if needed
+        } else if (msg.type == 'leaveRoom'){
+
+            delete games.get(msg.code).connections[msg.name];
+            games.get(msg.code).players.filter(player => player != msg.name);
+            console.log(games.get(msg.code).connections);
+            console.log(games.get(msg.code).players);
+            const connections = games.get(msg.code).connections;
+
+            Object.values(connections).forEach( connection => {
+                const message = { type: 'updatePlayers', players: games.get(msg.code).players };
+                connection.ws.send(JSON.stringify(message));
+            })
+        } else if (msg.type == 'loadRoom'){
+            const connections = games.get(msg.code).connections;
+
+            Object.values(connections).forEach( connection => {
+                const message = { type: 'Game Started' };
+                // const message2 = { type: 'updatePlayers', players: games.get(msg.code).players };
+                connection.ws.send(JSON.stringify(message));
+                // connection.ws.send(JSON.stringify(message2));
+
+            })
         }
+
     });
   
       // Remove the closed connection so we don't try to forward anymore

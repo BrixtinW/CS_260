@@ -53,10 +53,62 @@
 
 // implement vote, votes, secretWord and players API
 
-    const code = localStorage.getItem('code')
-    var myName = localStorage.getItem("myName");
+    const code = sessionStorage.getItem('code')
+    var myName = sessionStorage.getItem("myName");
     console.log(myName);
     let currentVote = null;
+    const socket = createGameSocket(code, myName);
+
+
+
+
+    function createGameSocket(code, name) {
+    const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
+    socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
+
+    socket.addEventListener('open', () => {
+      console.log("connected sucessfully to WebSocket!");
+      socket.send(JSON.stringify({ type: "joinRoom", code: code, name: name }));
+});
+    // socket.onopen = (event) => {
+    // };
+    
+    // socket.onclose = (event) => {
+    //   console.log("disconnected from the WebSocket!");
+    //   alert("disconnected!!!");
+    //   socket.send(JSON.stringify({ type: "leaveRoom", code: code, name: name }));
+    // };
+
+    socket.onmessage = async (event) => {
+      console.log("hey THIS WAS CALLED YOU DIDN't kmnpw what would daca;lkj;alsdf;j");
+      console.log(event)
+      console.log(event.data)
+      const msg = JSON.parse(await event.data);
+      if (msg.type === "updatePlayers") {
+      var carousel = document.getElementById("carousel");
+
+      // Remove all existing child elements of the carousel
+      while (carousel.firstChild) {
+          carousel.removeChild(carousel.firstChild);
+      }
+
+      // Iterate through each player name in the players list
+      for (let playerName of msg.players) {
+          // Create a new div element for the player
+          var newItem = document.createElement("div");
+          newItem.classList.add("item");
+          newItem.textContent = playerName;
+          carousel.appendChild(newItem);
+      }
+
+      } else if (msg.type === "Game Started") {
+        
+
+      } 
+    };
+
+    return socket;
+  }
 
 
     async function loadPlayers() {
@@ -160,6 +212,8 @@ async function loadSecretWord() {
     
       let players = loadPlayers();
       loadSecretWord();
+
+
 
 
 
@@ -289,7 +343,8 @@ async function loadSecretWord() {
         })
         .then(response => {
             if (response.ok) {
-                // If user is logged in, navigate to waitingRoom.html
+                var playerName = prompt("Please enter your player name:");
+                sessionStorage.setItem("myName", playerName);
                 window.location.href = 'waitingRoom.html';
             } else {
                 // If user is not logged in, navigate to invitation.html

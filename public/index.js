@@ -1,4 +1,4 @@
-    localStorage.clear();
+sessionStorage.clear();
 
 
 
@@ -10,7 +10,7 @@
         let word2 = document.getElementById("word2").value;
 
         // secretWordPairs.push([word1, word2])
-        localStorage.setItem("secretWordPairs", JSON.stringify(secretWordPairs));
+        sessionStorage.setItem("secretWordPairs", JSON.stringify(secretWordPairs));
 
         
 
@@ -30,7 +30,7 @@
         .then(response => {
             if (response.ok) {
                 var playerName = prompt("Please enter your player name:");
-                localStorage.setItem("myName", playerName);
+                sessionStorage.setItem("myName", playerName);
                 window.location.href = 'waitingRoom.html';
             } else {
                 // If user is not logged in, navigate to invitation.html
