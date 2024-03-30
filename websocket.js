@@ -48,9 +48,10 @@ function peerProxy(httpServer, games) {
             
             // Handle room joining logic, if needed
         } else if (msg.type == 'leaveRoom'){
-
             delete games.get(msg.code).connections[msg.name];
-            games.get(msg.code).players.filter(player => player != msg.name);
+            if (!msg.startGame){
+            games.get(msg.code).players =games.get(msg.code).players.filter(player => player != msg.name);
+        }
             console.log(games.get(msg.code).connections);
             console.log(games.get(msg.code).players);
             const connections = games.get(msg.code).connections;
@@ -60,6 +61,11 @@ function peerProxy(httpServer, games) {
                 connection.ws.send(JSON.stringify(message));
             })
         } else if (msg.type == 'loadRoom'){
+
+          const code = msg.code;
+          games.get(code).generateOddOneOutIndex();
+          games.get(code).readyToStartGame = true;
+
             const connections = games.get(msg.code).connections;
 
             Object.values(connections).forEach( connection => {
@@ -69,6 +75,24 @@ function peerProxy(httpServer, games) {
                 // connection.ws.send(JSON.stringify(message2));
 
             })
+        } else if (msg.type == "Get Secret Word"){
+          const code = msg.code;
+          const name = msg.name;
+          console.log(games.get(code).oddOneOutIndex);
+          if( games.get(code).readyToStartGame == true){
+            console.log(games.get(code).players[games.get(code).oddOneOutIndex])
+            if (games.get(code).players[games.get(code).oddOneOutIndex] == name){
+              console.log(games.get(code).oddWord);
+              
+              const message = { type: 'Recieve Secret Word', secretWord: games.get(code).oddWord };
+              connection.ws.send(JSON.stringify(message));
+            } else {
+              console.log(games.get(code).groupWord)
+
+              const message = { type: 'Recieve Secret Word', secretWord: games.get(code).groupWord };
+              connection.ws.send(JSON.stringify(message));
+            }
+          }
         }
 
     });

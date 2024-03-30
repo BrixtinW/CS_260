@@ -101,7 +101,7 @@
     }
 
     let socket;
-    
+    let startGame = false;
     // document.addEventListener("DOMContentLoaded", async function() {
       
       // const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
@@ -126,11 +126,13 @@ if (code) {
     const playerName = sessionStorage.getItem('myName');
 
 
-    addName(playerName, code).then(() => configureWebSocket(socket, code, playerName));
+    addName(playerName, code).then(() => {
+      socket = configureWebSocket(socket, code, playerName)
+    });
 
     window.addEventListener('beforeunload', function(event) {
           alert("before unload called!");
-          const message = { type: "leaveRoom", code: code, name: playerName }
+          const message = { type: "leaveRoom", code: code, name: playerName, startGame: startGame}
           socket.send(JSON.stringify(message));
           alert("this should ahve a stop");
     });
@@ -157,12 +159,14 @@ if (code) {
       window.history.replaceState({}, '', url);
     
       const playerName = sessionStorage.getItem('myName');
-      addName(playerName, code).then(() => configureWebSocket(socket, code, playerName));
+      addName(playerName, code).then(() => {
+      socket = configureWebSocket(socket, code, playerName)
+    });
       displayQRCode(window.location.href);
 
       window.addEventListener('beforeunload', function(event) {
         alert("before unload called!");
-          const message = { type: "leaveRoom", code: code, name: playerName }
+          const message = { type: "leaveRoom", code: code, name: playerName, startGame: startGame}
           socket.send(JSON.stringify(message));
           alert("this should ahve a stop");
     });
@@ -171,6 +175,13 @@ if (code) {
       console.error("An error occurred:", error);
     });
 }
+
+// window.addEventListener('beforeunload', function(event) {
+//         alert("before unload called!");
+//           const message = { type: "leaveRoom", code: code, name: playerName }
+//           socket.send(JSON.stringify(message));
+//           alert("this should ahve a stop");
+//     });
 
 
 
@@ -230,7 +241,8 @@ async function addName(playerName, gameRoomCode) {
     }
 
 
-  function loadGameRoom(socket) {
+  function loadGameRoom() {
+    startGame = true;
     const postData = { type: "loadRoom", code: `${sessionStorage.getItem('code')}`};
     socket.send(JSON.stringify(postData));
 
@@ -321,9 +333,7 @@ function configureWebSocket(socket, code, name) {
     // };
     
     // socket.onclose = (event) => {
-    //   console.log("disconnected from the WebSocket!");
-    //   alert("disconnected!!!");
-    //   socket.send(JSON.stringify({ type: "leaveRoom", code: code, name: name }));
+    //   socket.send(JSON.stringify({ type: "leaveRoom", code: code, name: name, startGame: true }));
     // };
 
     socket.onmessage = async (event) => {
@@ -356,6 +366,7 @@ function configureWebSocket(socket, code, name) {
 
       } 
     };
+    return socket;
   }
 
 

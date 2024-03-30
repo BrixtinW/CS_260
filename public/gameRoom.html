@@ -54,21 +54,23 @@
 // implement vote, votes, secretWord and players API
 
     const code = sessionStorage.getItem('code')
-    var myName = sessionStorage.getItem("myName");
+    const myName = sessionStorage.getItem("myName");
     console.log(myName);
     let currentVote = null;
     const socket = createGameSocket(code, myName);
+    // loadSecretWord();
 
 
 
 
     function createGameSocket(code, name) {
     const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-    socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
+    const socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
 
     socket.addEventListener('open', () => {
       console.log("connected sucessfully to WebSocket!");
       socket.send(JSON.stringify({ type: "joinRoom", code: code, name: name }));
+      socket.send(JSON.stringify({ type: "Get Secret Word", code: code, name: myName }));
 });
     // socket.onopen = (event) => {
     // };
@@ -88,21 +90,75 @@
       var carousel = document.getElementById("carousel");
 
       // Remove all existing child elements of the carousel
-      while (carousel.firstChild) {
-          carousel.removeChild(carousel.firstChild);
+      // while (carousel.firstChild) {
+      //     carousel.removeChild(carousel.firstChild);
+      // }
+
+      // // Iterate through each player name in the players list
+      // for (let playerName of msg.players) {
+      //     // Create a new div element for the player
+      //     var newItem = document.createElement("div");
+      //     newItem.classList.add("item");
+      //     newItem.textContent = playerName;
+      //     carousel.appendChild(newItem);
+      // }
+
+
+
+
+
+      console.log(msg.players)
+
+// var targetDiv = document.getElementById("carousel");
+
+msg.players.forEach(function(playerName) {
+var newItem = document.createElement("div");
+newItem.classList.add("item"); 
+newItem.textContent = playerName; 
+newItem.dataset.selected = "false"; 
+
+newItem.addEventListener("click", function() {
+  if (newItem.dataset.selected == "false") {
+    var allDivs = document.querySelectorAll(".item div")
+
+    allDivs.forEach(function(div){
+      if (div.dataset.selected = "true"){
+        div.classList.toggle("selected");
+        vote = div.textContent;
       }
 
-      // Iterate through each player name in the players list
-      for (let playerName of msg.players) {
-          // Create a new div element for the player
-          var newItem = document.createElement("div");
-          newItem.classList.add("item");
-          newItem.textContent = playerName;
-          carousel.appendChild(newItem);
-      }
+    })
+        currentVote = newItem.textContent;
+        newItem.classList.toggle("selected")
+        newItem.dataset.selected = "true";
+    } else {
+        currentVote = newItem.textContent;
+        newItem.dataset.selected = "false";
+        newItem.classList.toggle("selected");
+    }
+});
 
-      } else if (msg.type === "Game Started") {
+    carousel.appendChild(newItem);
+
+});
+
+// return players
+// } catch {
+// console.log("there was an error. Unable to connect to the server!!!")
+// return myName;
+// }
+
+
+
+
+
+      } else if (msg.type === "Recieve Secret Word") {
         
+        const secretWord = msg.secretWord; 
+
+        console.log('Secret word obtained:', secretWord);
+        var secretWordDisplay = document.getElementById("secretWordDisplay");
+        secretWordDisplay.textContent = secretWord; 
 
       } 
     };
@@ -111,107 +167,108 @@
   }
 
 
-    async function loadPlayers() {
-      try {
+    // async function loadPlayers() {
+    //   try {
 
-        const postData = {
-        code: code
-      };
+    //     const postData = {
+    //     code: code
+    //   };
 
-       const players = await fetch('/api/players', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(postData)
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .catch(error => {
-        console.error('Error adding player:', error);
-      });
+    //    const players = await fetch('/api/players', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify(postData)
+    //   })
+    //   .then(response => {
+    //     if (!response.ok) {
+    //       throw new Error('Network response was not ok');
+    //     }
+    //     return response.json();
+    //   })
+    //   .catch(error => {
+    //     console.error('Error adding player:', error);
+    //   });
 
 
-        console.log(players)
+    //     console.log(players)
 
-        var targetDiv = document.getElementById("carousel");
+    //     var targetDiv = document.getElementById("carousel");
 
-        players.forEach(function(playerName) {
-        var newItem = document.createElement("div");
-        newItem.classList.add("item"); 
-        newItem.textContent = playerName; 
-        newItem.dataset.selected = "false"; 
+    //     players.forEach(function(playerName) {
+    //     var newItem = document.createElement("div");
+    //     newItem.classList.add("item"); 
+    //     newItem.textContent = playerName; 
+    //     newItem.dataset.selected = "false"; 
 
-        newItem.addEventListener("click", function() {
-          if (newItem.dataset.selected == "false") {
-            var allDivs = document.querySelectorAll(".item div")
+    //     newItem.addEventListener("click", function() {
+    //       if (newItem.dataset.selected == "false") {
+    //         var allDivs = document.querySelectorAll(".item div")
 
-            allDivs.forEach(function(div){
-              if (div.dataset.selected = "true"){
-                div.classList.toggle("selected");
-                vote = div.textContent;
-              }
+    //         allDivs.forEach(function(div){
+    //           if (div.dataset.selected = "true"){
+    //             div.classList.toggle("selected");
+    //             vote = div.textContent;
+    //           }
 
-            })
-                currentVote = newItem.textContent;
-                newItem.classList.toggle("selected")
-                newItem.dataset.selected = "true";
-            } else {
-                currentVote = newItem.textContent;
-                newItem.dataset.selected = "false";
-                newItem.classList.toggle("selected");
-            }
-        });
+    //         })
+    //             currentVote = newItem.textContent;
+    //             newItem.classList.toggle("selected")
+    //             newItem.dataset.selected = "true";
+    //         } else {
+    //             currentVote = newItem.textContent;
+    //             newItem.dataset.selected = "false";
+    //             newItem.classList.toggle("selected");
+    //         }
+    //     });
 
-            targetDiv.appendChild(newItem);
+    //         targetDiv.appendChild(newItem);
 
-        });
+    //     });
 
-        return players
-      } catch {
-        console.log("there was an error. Unable to connect to the server!!!")
-        return myName;
-      }
+    //     return players
+    //   } catch {
+    //     console.log("there was an error. Unable to connect to the server!!!")
+    //     return myName;
+    //   }
 
-    }
+    // }
 
-async function loadSecretWord() {
-    try {
-      const postData = {
-          name: myName,
-          code: code
-      };
+// async function loadSecretWord() {
+//   socket.send(JSON.stringify({ type: "Get Secret Word", code: code, name: myName }));
+  //   try {
+  //     const postData = {
+  //         name: myName,
+  //         code: code
+  //     };
 
-      const response = await fetch('/api/secretWord', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(postData)
-      });
+  //     const response = await fetch('/api/secretWord', {
+  //         method: 'POST',
+  //         headers: {
+  //             'Content-Type': 'application/json'
+  //         },
+  //         body: JSON.stringify(postData)
+  //     });
 
-      if (!response.ok) {
-          throw new Error('Network response was not ok');
-      }
+  //     if (!response.ok) {
+  //         throw new Error('Network response was not ok');
+  //     }
 
-      const secretWord = await response.text(); 
+  //     const secretWord = await response.text(); 
 
-      console.log('Secret word obtained:', secretWord);
-      var secretWordDisplay = document.getElementById("secretWordDisplay");
-      secretWordDisplay.textContent = secretWord; 
-  } catch (error) {
-      console.error('Error loading secret word:', error);
-  }
-}
+  //     console.log('Secret word obtained:', secretWord);
+  //     var secretWordDisplay = document.getElementById("secretWordDisplay");
+  //     secretWordDisplay.textContent = secretWord; 
+  // } catch (error) {
+  //     console.error('Error loading secret word:', error);
+  // }
+// }
 
 
     
-      let players = loadPlayers();
-      loadSecretWord();
+      // let players = loadPlayers();
+      // loadSecretWord();
 
 
 

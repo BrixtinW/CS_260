@@ -24,6 +24,10 @@ const apiRouter = express.Router();
 app.use(`/api`, apiRouter);
 
 
+//  put breakoints on all the apis to make sure that they are actually called. if they are never called, then delete them!!
+///////////////////////////////////////////////////////////////////
+
+
 
 apiRouter.get('/gameroom', (req, res) => {
     gameRoomCode = createGameRoom();
@@ -277,12 +281,12 @@ class GameRoom {
     }
   }
   
-  function generateOddOneOut(reqBody){
-    console.log(reqBody)
-    const code = reqBody.code;
-    games.get(code).generateOddOneOutIndex();
-    games.get(code).readyToStartGame = true;
-  }
+  // function generateOddOneOut(reqBody){
+  //   console.log(reqBody)
+  //   const code = reqBody.code;
+  //   games.get(code).generateOddOneOutIndex();
+  //   games.get(code).readyToStartGame = true;
+  // }
   
   function createGameRoom() {
     const code = generateGameRoomCode()
@@ -311,7 +315,7 @@ class GameRoom {
     game.players.push(name);
 
     // game.createConnection(name);
-    
+
     // const message = { type: "addedPlayer", playerName: "John" }; // Example message
     // wss.send(JSON.stringify(message));
 
