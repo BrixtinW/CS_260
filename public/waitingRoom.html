@@ -360,6 +360,7 @@ function configureWebSocket(socket, code, name) {
 
       } else if (msg.type === "Game Started") {
         
+        startGame = true;
         const currentUrl = window.location.href;
         let newUrl = currentUrl.replace('/waitingRoom.html', '/gameRoom.html');
         window.location.href = newUrl;

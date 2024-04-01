@@ -36,7 +36,7 @@
               <!-- DIV ELEMENTS INSERTED HERE -->
             </div>
       
-            <form><button class="button" onclick="readTheVotes()" >Submit Vote</button></form>
+            <form><button class="button" id="voteButton" onclick="readTheVotes()" >Submit Vote</button></form>
     </main>
     <!-- /////////////////////////////////////////////////////////////////////////////// -->
     <footer>
@@ -60,6 +60,12 @@
     const socket = createGameSocket(code, myName);
     // loadSecretWord();
 
+    window.addEventListener('beforeunload', function(event) {
+        alert("before unload called!");
+          const message = { type: "leaveRoom", code: code, name: myName, startGame: false}
+          socket.send(JSON.stringify(message));
+          alert("this should ahve a stop");
+    });
 
 
 
@@ -90,9 +96,9 @@
       var carousel = document.getElementById("carousel");
 
       // Remove all existing child elements of the carousel
-      // while (carousel.firstChild) {
-      //     carousel.removeChild(carousel.firstChild);
-      // }
+      while (carousel.firstChild) {
+          carousel.removeChild(carousel.firstChild);
+      }
 
       // // Iterate through each player name in the players list
       // for (let playerName of msg.players) {
@@ -119,20 +125,37 @@ newItem.dataset.selected = "false";
 
 newItem.addEventListener("click", function() {
   if (newItem.dataset.selected == "false") {
-    var allDivs = document.querySelectorAll(".item div")
 
-    allDivs.forEach(function(div){
-      if (div.dataset.selected = "true"){
-        div.classList.toggle("selected");
-        vote = div.textContent;
+    var children = carousel.children;
+
+    for (var i = 0; i < children.length; i++) {
+        var child = children[i];
+        if (child.dataset.selected == "true"){
+        child.classList.toggle("selected");
+        child.dataset.selected = "false";
+        console.log(child);
+        // vote = div.textContent;
       }
+        // Perform your logic for each child here
+        // For example:
+    }
+    // var allDivs = document.querySelectorAll(".item div")
 
-    })
+    // allDivs.forEach(function(div){
+    //   if (div.dataset.selected = "true"){
+    //     div.classList.toggle("selected");
+    //     div.classList.selected = false;
+    //     // vote = div.textContent;
+    //   }
+
+    // })
         currentVote = newItem.textContent;
-        newItem.classList.toggle("selected")
+        console.log(currentVote);
+        newItem.classList.toggle("selected");
         newItem.dataset.selected = "true";
     } else {
-        currentVote = newItem.textContent;
+        currentVote = null;
+        console.log(currentVote);
         newItem.dataset.selected = "false";
         newItem.classList.toggle("selected");
     }
@@ -160,7 +183,41 @@ newItem.addEventListener("click", function() {
         var secretWordDisplay = document.getElementById("secretWordDisplay");
         secretWordDisplay.textContent = secretWord; 
 
-      } 
+      } else if (msg.type == "Verdict") {
+
+
+        if (msg.gameOver == true){
+          alert("Game Over");
+          const currentUrl = window.location.href;
+          let newUrl = currentUrl.replace('/gameRoom.html', '/index.html');
+          window.location.href = newUrl;
+        } else if (msg.winners != null ){
+
+        const carousel = document.getElementById('carousel');
+
+        for (const winner of msg.winners){
+
+          carousel.childNodes.forEach(child => {
+
+              if (child.nodeType === 1 && child.tagName.toLowerCase() === 'div' && child.textContent == winner) {
+                  console.log(child.textContent);
+                  child.remove();
+              }
+          });
+
+          if (winner == myName){
+            alert("you were voted out!");
+            const currentUrl = window.location.href;
+            let newUrl = currentUrl.replace('/gameRoom.html', '/index.html');
+            window.location.href = newUrl;
+          }
+
+          // make the button 
+
+        }
+        }
+        
+      }
     };
 
     return socket;
@@ -274,58 +331,71 @@ newItem.addEventListener("click", function() {
 
 
 
-  async function readTheVotes(){
+function readTheVotes(){
+  event.preventDefault();
 
-    event.preventDefault();
+    if(currentVote == null) {
+      return;
+    }
+
+    document.getElementById('voteButton').disabled = true;
 
     const postData = {
+          type: "Submit Vote",
           vote: currentVote,
           voter: myName,
           code: code
       };
+    socket.send(JSON.stringify(postData))
 
-      const response = await fetch('/api/vote', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(postData)
-      });
+    // const postData = {
+    //       vote: currentVote,
+    //       voter: myName,
+    //       code: code
+    //   };
 
-      if (!response.ok) {
-          throw new Error('Network response was not ok');
-      }
+      // const response = await fetch('/api/vote', {
+      //     method: 'POST',
+      //     headers: {
+      //         'Content-Type': 'application/json'
+      //     },
+      //     body: JSON.stringify(postData)
+      // });
 
-      let verdict = await response.json();
+      // if (!response.ok) {
+      //     throw new Error('Network response was not ok');
+      // }
 
-      if (verdict.gameOver == true){
-        alert("Game Over");
-        window.location.href = "waitingRoom.html";
-      } else if (verdict.winners == null ){
-        return 
-      } else {
-      const carousel = document.getElementById('carousel');
+    //   let verdict = await response.json();
 
-      for (const winner of verdict.winners){
+    //   if (verdict.gameOver == true){
+    //     alert("Game Over");
+    //     window.location.href = "waitingRoom.html";
+    //   } else if (verdict.winners == null ){
+    //     return 
+    //   } else {
+    //   const carousel = document.getElementById('carousel');
 
-        carousel.childNodes.forEach(child => {
+    //   for (const winner of verdict.winners){
 
-            if (child.nodeType === 1 && child.tagName.toLowerCase() === 'div' && child.textContent == winner) {
+    //     carousel.childNodes.forEach(child => {
 
-                console.log(child.textContent);
-                child.remove();
-            }
-        });
+    //         if (child.nodeType === 1 && child.tagName.toLowerCase() === 'div' && child.textContent == winner) {
 
-        if (winner == myName){
-          alert("you were voted out!");
-          window.location.href = "waitingRoom.html";
-        }
+    //             console.log(child.textContent);
+    //             child.remove();
+    //         }
+    //     });
 
-        // make the button 
+    //     if (winner == myName){
+    //       alert("you were voted out!");
+    //       window.location.href = "waitingRoom.html";
+    //     }
 
-      }
-    }
+    //     // make the button 
+
+    //   }
+    // }
 
 
 

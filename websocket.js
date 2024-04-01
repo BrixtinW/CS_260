@@ -50,11 +50,11 @@ function peerProxy(httpServer, games) {
         } else if (msg.type == 'leaveRoom'){
             delete games.get(msg.code).connections[msg.name];
             if (!msg.startGame){
-            games.get(msg.code).players =games.get(msg.code).players.filter(player => player != msg.name);
-        }
+              games.get(msg.code).players =games.get(msg.code).players.filter(player => player != msg.name);
+            } 
+            const connections = games.get(msg.code).connections;
             console.log(games.get(msg.code).connections);
             console.log(games.get(msg.code).players);
-            const connections = games.get(msg.code).connections;
 
             Object.values(connections).forEach( connection => {
                 const message = { type: 'updatePlayers', players: games.get(msg.code).players };
@@ -93,6 +93,24 @@ function peerProxy(httpServer, games) {
               connection.ws.send(JSON.stringify(message));
             }
           }
+        } else if(msg.type == "Submit Vote"){
+          const winners = updateVotes(msg, games);
+          console.log(winners);
+          console.log(games.get(msg.code).gameOver);
+
+          if (winners != null){
+          jsonObj = {type: "Verdict", winners: winners, gameOver: games.get(msg.code).gameOver}
+          console.log(jsonObj)
+
+
+          const connections = games.get(msg.code).connections;
+
+          Object.values(connections).forEach( connection => {
+              // const message2 = { type: 'updatePlayers', players: games.get(msg.code).players };
+              connection.ws.send(JSON.stringify(jsonObj));
+              // connection.ws.send(JSON.stringify(message2));
+          })
+        }
         }
 
     });
@@ -127,6 +145,67 @@ function peerProxy(httpServer, games) {
     return connections;
 
   }
+
+
+
+
+
+
+  function updateVotes(msg, games){
+    let winners = null;
+    const voter = msg.voter;
+    const vote = msg.vote;
+    const code = msg.code;
+    games.get(code).votes.set(voter, vote);
+    console.log(games.get(code).votes);
+    if (games.get(code).players.length == games.get(code).votes.size){
+      winners = readTheVotes(code, games);
+      for (const winner of winners) {
+        if (games.get(code).players[games.get(code).oddOneOutIndex] == winner) { 
+          games.get(code).gameOver = true; 
+        } else {
+          const oddOneOut = games.get(code).players[games.get(code).oddOneOutIndex]
+          games.get(code).players = games.get(code).filter(value => value !== winner);
+          games.get(code).vote.clear();
+          for (let i = 0; i < games.get(code).players.size; i++){
+            if (games.get(code).players[i] == oddOneOut){
+              games.get(code).oddOneOutIndex = i;
+            }
+          }
+        }
+      }
+    }
+    return winners;
+  }
+
+
+  function readTheVotes(code, games){
+    const voteCounts = new Map();
+    
+    
+    for (const [player, votedFor] of games.get(code).votes) {
+      for (const votedPlayer of votedFor.values()) {
+        const count = voteCounts.get(votedPlayer);
+        voteCounts.set(votedPlayer, count + 1);
+      }
+    }
+    
+    
+    const maxVotes = Math.max(...voteCounts.values());
+    const winners = [];
+    for (const [player, votes] of voteCounts) {
+      if (votes === maxVotes) {
+        winners.push(player);
+      }
+    }
+    
+    // Return the winner(s)
+    // return winners.length === 1 ? winners[0] : winners;
+    return winners;
+}
+
+
+
   
   module.exports = { peerProxy };
   

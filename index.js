@@ -26,7 +26,8 @@ app.use(`/api`, apiRouter);
 
 //  put breakoints on all the apis to make sure that they are actually called. if they are never called, then delete them!!
 ///////////////////////////////////////////////////////////////////
-
+// if you insert an old url with a code to a game that doesnt exist, it will crash the server because the game doesnt exist. 
+// the odd one out is always the first player. it needs to be randomized. 
 
 
 apiRouter.get('/gameroom', (req, res) => {
@@ -99,14 +100,14 @@ app.get('/logout', (req, res) => {
     res.send(secretWord);
   });
 
-apiRouter.post('/vote', (req, res) => {
-  const winners = updateVotes(req.body);
-  console.log(winners);
-  console.log(games.get(req.body.code).gameOver);
-  jsonObj = JSON.stringify({"winners": winners, "gameOver": games.get(req.body.code).gameOver})
-  console.log(jsonObj)
-  res.send(jsonObj)
-});
+// apiRouter.post('/vote', (req, res) => {
+//   const winners = updateVotes(req.body);
+//   console.log(winners);
+//   console.log(games.get(req.body.code).gameOver);
+//   jsonObj = JSON.stringify({"winners": winners, "gameOver": games.get(req.body.code).gameOver})
+//   console.log(jsonObj)
+//   res.send(jsonObj)
+// });
 
 apiRouter.post('/generateOddOneOut', (req, res) => {
     generateOddOneOut(req.body);
