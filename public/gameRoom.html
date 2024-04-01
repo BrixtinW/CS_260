@@ -185,9 +185,10 @@ newItem.addEventListener("click", function() {
 
       } else if (msg.type == "Verdict") {
 
+        document.getElementById('voteButton').disabled = false;
 
         if (msg.gameOver == true){
-          alert("Game Over");
+          alert("The odd one out was voted! The group wins!!");
           const currentUrl = window.location.href;
           let newUrl = currentUrl.replace('/gameRoom.html', '/index.html');
           window.location.href = newUrl;

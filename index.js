@@ -27,8 +27,7 @@ app.use(`/api`, apiRouter);
 //  put breakoints on all the apis to make sure that they are actually called. if they are never called, then delete them!!
 ///////////////////////////////////////////////////////////////////
 // if you insert an old url with a code to a game that doesnt exist, it will crash the server because the game doesnt exist. 
-// the odd one out is always the first player. it needs to be randomized. 
-
+// make sure the odd one out is not always the first player!!
 
 apiRouter.get('/gameroom', (req, res) => {
     gameRoomCode = createGameRoom();

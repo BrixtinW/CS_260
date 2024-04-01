@@ -53,8 +53,8 @@ function peerProxy(httpServer, games) {
               games.get(msg.code).players =games.get(msg.code).players.filter(player => player != msg.name);
             } 
             const connections = games.get(msg.code).connections;
-            console.log(games.get(msg.code).connections);
-            console.log(games.get(msg.code).players);
+            // console.log(games.get(msg.code).connections);
+            // console.log(games.get(msg.code).players);
 
             Object.values(connections).forEach( connection => {
                 const message = { type: 'updatePlayers', players: games.get(msg.code).players };
@@ -78,16 +78,16 @@ function peerProxy(httpServer, games) {
         } else if (msg.type == "Get Secret Word"){
           const code = msg.code;
           const name = msg.name;
-          console.log(games.get(code).oddOneOutIndex);
+          // console.log(games.get(code).oddOneOutIndex);
           if( games.get(code).readyToStartGame == true){
-            console.log(games.get(code).players[games.get(code).oddOneOutIndex])
+            // console.log(games.get(code).players[games.get(code).oddOneOutIndex])
             if (games.get(code).players[games.get(code).oddOneOutIndex] == name){
-              console.log(games.get(code).oddWord);
+              // console.log(games.get(code).oddWord);
               
               const message = { type: 'Recieve Secret Word', secretWord: games.get(code).oddWord };
               connection.ws.send(JSON.stringify(message));
             } else {
-              console.log(games.get(code).groupWord)
+              // console.log(games.get(code).groupWord)
 
               const message = { type: 'Recieve Secret Word', secretWord: games.get(code).groupWord };
               connection.ws.send(JSON.stringify(message));
@@ -95,12 +95,12 @@ function peerProxy(httpServer, games) {
           }
         } else if(msg.type == "Submit Vote"){
           const winners = updateVotes(msg, games);
-          console.log(winners);
-          console.log(games.get(msg.code).gameOver);
+          // console.log(winners);
+          // console.log(games.get(msg.code).gameOver);
 
           if (winners != null){
           jsonObj = {type: "Verdict", winners: winners, gameOver: games.get(msg.code).gameOver}
-          console.log(jsonObj)
+          // console.log(jsonObj)
 
 
           const connections = games.get(msg.code).connections;
@@ -157,7 +157,7 @@ function peerProxy(httpServer, games) {
     const vote = msg.vote;
     const code = msg.code;
     games.get(code).votes.set(voter, vote);
-    console.log(games.get(code).votes);
+    // console.log(games.get(code).votes);
     if (games.get(code).players.length == games.get(code).votes.size){
       winners = readTheVotes(code, games);
       for (const winner of winners) {
@@ -165,8 +165,8 @@ function peerProxy(httpServer, games) {
           games.get(code).gameOver = true; 
         } else {
           const oddOneOut = games.get(code).players[games.get(code).oddOneOutIndex]
-          games.get(code).players = games.get(code).filter(value => value !== winner);
-          games.get(code).vote.clear();
+          games.get(code).players = games.get(code).players.filter(value => value !== winner);
+          games.get(code).votes = new Map();
           for (let i = 0; i < games.get(code).players.size; i++){
             if (games.get(code).players[i] == oddOneOut){
               games.get(code).oddOneOutIndex = i;
@@ -179,29 +179,31 @@ function peerProxy(httpServer, games) {
   }
 
 
-  function readTheVotes(code, games){
-    const voteCounts = new Map();
-    
-    
-    for (const [player, votedFor] of games.get(code).votes) {
-      for (const votedPlayer of votedFor.values()) {
-        const count = voteCounts.get(votedPlayer);
-        voteCounts.set(votedPlayer, count + 1);
-      }
+  function readTheVotes(code, games) {
+    // Create an object to store the count of each voted player
+    const voteCounts = {};
+
+    // Iterate through the values of the map and count the votes for each player
+    for (const votedPlayer of games.get(code).votes.values()) {
+        if (voteCounts[votedPlayer]) {
+            voteCounts[votedPlayer]++;
+        } else {
+            voteCounts[votedPlayer] = 1;
+        }
     }
-    
-    
-    const maxVotes = Math.max(...voteCounts.values());
-    const winners = [];
-    for (const [player, votes] of voteCounts) {
-      if (votes === maxVotes) {
-        winners.push(player);
-      }
+
+    // Find the maximum count
+    const maxCount = Math.max(...Object.values(voteCounts));
+
+    // Find all players with the maximum count
+    const highestVotedPlayers = [];
+    for (const [player, count] of Object.entries(voteCounts)) {
+        if (count === maxCount) {
+            highestVotedPlayers.push(player);
+        }
     }
-    
-    // Return the winner(s)
-    // return winners.length === 1 ? winners[0] : winners;
-    return winners;
+
+    return highestVotedPlayers;
 }
 
 
