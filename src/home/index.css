@@ -1,4 +1,4 @@
-    h1, h2 {
+    /* h1, h2 {
     padding: 30px;
     margin: 0;
     display: flex;
@@ -86,13 +86,13 @@
     text-decoration: none;
     color: white;
     cursor: pointer; /* Change cursor to pointer on hover */
-}
+/* } */
 
 /* a:not([href]):not([class]):hover {
   color: white;
   text-decoration: none;
   cursor: pointer; /* Change cursor to pointer on hover */ 
-  
+/*   
   p {
     padding: 3vw;
     display: flex;
@@ -114,7 +114,7 @@
     justify-content: center;
    background-color: #453721;
     color: #f0bf7f;
-  /*   width: 30%; */
+
     border: 2px solid #453721; 
     padding: 30px;
   }
@@ -204,7 +204,7 @@
   
   /* background #f0bf7f */
   /* darkerBackground #d9a35d */
-  
+/*   
   .tab {
     background-color: #d9a35d;
     margin-bottom: 0;
@@ -343,9 +343,7 @@
   
     font-size: 2em;
     text-align: center;
-    /* display: flex; 
-    justify-content: center; 
-    align-items: flex-end; */
+ 
 
     line-height: 300px;
     background-color: #d9a35d;
@@ -376,4 +374,4 @@
   #gameRoomCode {
     display: flex;
     align-items: center;
-  }
+  } */ 
