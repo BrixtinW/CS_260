@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Home } from './home/home';
 import { Login } from './login/login';
@@ -9,9 +8,9 @@ import './app.css';
 
 export default function App() {
 
+    const [authorized, setAuthState] = React.useState(false);
 
-
-    function playGame(navigate) {
+    // function playGame() {
 
         // Make a GET request to the /user endpoint
         fetch('/user', {
@@ -20,20 +19,15 @@ export default function App() {
         })
         .then(response => {
             if (response.ok) {
-                var playerName = prompt("Please enter your player name:");
-                sessionStorage.setItem("myName", playerName);
-                // window.location.href = 'waitingRoom.html';
-                navigate('/waitingRoom');
+                setAuthState(true);
             } else {
-                // If user is not logged in, navigate to invitation.html
-                // window.location.href = 'invitation.html';
-                navigate('/login');
+                setAuthState(false);
             }
         })
         .catch(error => {
             console.error('Error checking user login status:', error);
         });
-    }
+    // }
 
 
 
@@ -77,10 +71,17 @@ export default function App() {
                 </NavLink>
               </li>
                 <li className='nav-item'>
-                  <NavLink className='nav-link' onClick={() => playGame(navigate)}>
+                  <NavLink className='nav-link' onClick="login">
+                    Login
+                  </NavLink>
+                </li>
+                {authorized === true && (
+                <li className='nav-item'>
+                  <NavLink className='nav-link' to='waitingRoom'>
                     Play Game
                   </NavLink>
                 </li>
+              )}
             </menu>
           </nav>
         </header>
@@ -115,9 +116,8 @@ export default function App() {
         </footer> */}
 
 </div>
-// </html>
-)
-}
+
+)}
 
 
 function NotFound() {

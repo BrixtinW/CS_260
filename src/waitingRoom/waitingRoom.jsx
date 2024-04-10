@@ -1,7 +1,9 @@
 import React from 'react';
+import '/./src/app.css';
+
 
 export function WaitingRoom() {
-    
+
 
     async function fetchQRCode(url) {
         try {
@@ -27,12 +29,11 @@ export function WaitingRoom() {
         }
     }
 
+    const playerName = prompt("Please enter your player name:");
+    sessionStorage.setItem("myName", playerName);
     let socket;
     let startGame = false;
-    // document.addEventListener("DOMContentLoaded", async function() {
-      
-      // const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-      // const socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
+
       
 
   const urlQueries = window.location.search;
@@ -50,7 +51,7 @@ if (code) {
     document.getElementById("gameRoomCode").textContent = code;
     sessionStorage.setItem("code", code);
     
-    const playerName = sessionStorage.getItem('myName');
+    // const playerName = sessionStorage.getItem('myName');
 
 
     addName(playerName, code).then(() => {
@@ -85,7 +86,7 @@ if (code) {
       // Replace the current URL with the modified URL
       window.history.replaceState({}, '', url);
     
-      const playerName = sessionStorage.getItem('myName');
+    //   const playerName = sessionStorage.getItem('myName');
       addName(playerName, code).then(() => {
       socket = configureWebSocket(socket, code, playerName)
     });
@@ -103,16 +104,6 @@ if (code) {
     });
 }
 
-// window.addEventListener('beforeunload', function(event) {
-//         alert("before unload called!");
-//           const message = { type: "leaveRoom", code: code, name: playerName }
-//           socket.send(JSON.stringify(message));
-//           alert("this should ahve a stop");
-//     });
-
-
-
-// });
 
 async function fetchGameRoomCode() {
   try {
@@ -172,59 +163,8 @@ async function addName(playerName, gameRoomCode) {
     startGame = true;
     const postData = { type: "loadRoom", code: `${sessionStorage.getItem('code')}`};
     socket.send(JSON.stringify(postData));
-
-// console.log("BUTTON PRESSED BUT NOTHING HAPPENED?????")
-
-
-// const postData = {
-//               "code": `${sessionStorage.getItem('code')}`,
-//             };
-
-//             fetch('/api/generateOddOneOut', {
-//               method: 'POST',
-//               headers: {
-//                 'Content-Type': 'application/json'
-//               },
-//               body: JSON.stringify(postData)
-//             })
-//             .then(response => {
-//               if (!response.ok) {
-//                 throw new Error('Network response was not ok');
-//               }
-//               return response.json();
-//             })
-//             .catch(error => {
-//               console.error('Error adding player:', error);
-//             });
-
-
-
-//             const currentUrl = window.location.href;
-//                 let newUrl = currentUrl.replace('/waitingRoom.html', '/gameRoom.html');
-//                 window.location.href = newUrl;
 };
 
-
-function playGame() {
-        // Make a GET request to the /user endpoint
-        fetch('/user', {
-            method: 'GET',
-            credentials: 'same-origin' // Include cookies in the request
-        })
-        .then(response => {
-            if (response.ok) {
-                var playerName = prompt("Please enter your player name:");
-                sessionStorage.setItem("myName", playerName);
-                window.location.href = 'waitingRoom.html';
-            } else {
-                // If user is not logged in, navigate to invitation.html
-                window.location.href = 'invitation.html';
-            }
-        })
-        .catch(error => {
-            console.error('Error checking user login status:', error);
-        });
-    }
 
     function logout() {
     fetch('/logout', {
@@ -256,12 +196,7 @@ function configureWebSocket(socket, code, name) {
       console.log("connected sucessfully to WebSocket!");
       socket.send(JSON.stringify({ type: "joinRoom", code: code, name: name }));
 });
-    // socket.onopen = (event) => {
-    // };
-    
-    // socket.onclose = (event) => {
-    //   socket.send(JSON.stringify({ type: "leaveRoom", code: code, name: name, startGame: true }));
-    // };
+
 
     socket.onmessage = async (event) => {
       console.log("hey THIS WAS CALLED YOU DIDN't kmnpw what would daca;lkj;alsdf;j");
