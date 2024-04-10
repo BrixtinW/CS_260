@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { GameRoom } from './gameRoom/gameRoom';
 import { Home } from './home/home';
@@ -8,38 +9,120 @@ import { WaitingRoom } from './waitingRoom/waitingRoom';
 import './app.css';
 
 export default function App() {
-  return (
-  <div class="app">
 
-        <header>
+
+
+    function playGame() {
+        const navigate = useNavigate();
+
+        // Make a GET request to the /user endpoint
+        fetch('/user', {
+            method: 'GET',
+            credentials: 'same-origin' // Include cookies in the request
+        })
+        .then(response => {
+            if (response.ok) {
+                var playerName = prompt("Please enter your player name:");
+                sessionStorage.setItem("myName", playerName);
+                // window.location.href = 'waitingRoom.html';
+                navigate('/waitingRoom');
+            } else {
+                // If user is not logged in, navigate to invitation.html
+                // window.location.href = 'invitation.html';
+                navigate('/login');
+            }
+        })
+        .catch(error => {
+            console.error('Error checking user login status:', error);
+        });
+    }
+
+
+
+
+  return (
+
+  <div className="app">
+
+
+    <meta charSet="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    
+    
+    
+    {/* <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap"> */}
+
+    <title>Odd One Out</title>
+    <link rel="icon" href="spy_icon_205840.ico" />
+    {/* </head> */}
+
+        {/* <header>
             <h1 id= "logo">Odd One Out</h1>
             <nav>
             <a href="index.html">Home</a>
             <a onclick="playGame()">Play Game</a>
             </nav>
+        </header> */}
+
+
+  <BrowserRouter>
+      <div>
+        <header >
+        <h1 id= "logo">Odd One Out</h1>
+          <nav >
+            <menu className='navbar-nav'>
+              <li className='nav-item'>
+                <NavLink className='nav-link' to=''>
+                  Home
+                </NavLink>
+              </li>
+                <li className='nav-item'>
+                  <NavLink className='nav-link' onClick={playGame}>
+                    Play Game
+                  </NavLink>
+                </li>
+            </menu>
+          </nav>
         </header>
 
-  <main>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/waitingRoom' element={<WaitingRoom />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='*' element={<NotFound />} />
+        </Routes>
 
 
-    Components go here
-
-    <GameRoom />
-    <Home />
-    <Login />
-    <WaitingRoom />
-
-
-  </main>
 
         <footer>
+            <span className="footer-info">Brixtin Walker</span>
+            <span className="footer-info">brixtinlwalker@gmail.com</span>
+            <span className="footer-info">CS 260</span>
+            <br />
+            <a href="https://github.com/BrixtinW/CS_260">GitHub</a>
+        </footer>
+
+      </div>
+    </BrowserRouter>
+
+
+        {/* <footer>
             <span class="footer-info">Brixtin Walker</span>
             <span class="footer-info">brixtinlwalker@gmail.com</span>
             <span class="footer-info">CS 260</span>
             <br />
             <a href="https://github.com/BrixtinW/CS_260">GitHub</a>
-        </footer>
+        </footer> */}
 
 </div>
+// </html>
 )
 }
+
+
+function NotFound() {
+    return <main className='container-fluid bg-secondary text-center'>404: Return to sender. Address unknown.</main>;
+  }
+  
