@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter, NavLink, Route, Routes } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { GameRoom } from './gameRoom/gameRoom';
 import { Home } from './home/home';
 import { Login } from './login/login';
 import { WaitingRoom } from './waitingRoom/waitingRoom';

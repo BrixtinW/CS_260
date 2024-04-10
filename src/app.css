@@ -76,7 +76,7 @@ h1, h2 {
     font-size: calc(1vw + 1vh);
   }
   
-  header a {
+  .nav-link {
     text-decoration: none;
     color: white;
     padding-right: 30px;

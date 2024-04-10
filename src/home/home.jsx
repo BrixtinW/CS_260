@@ -36,10 +36,10 @@ export function Home() {
             if (response.ok) {
                 var playerName = prompt("Please enter your player name:");
                 sessionStorage.setItem("myName", playerName);
-                window.location.href = 'waitingRoom.html';
+                navigate('/waitingRoom');
             } else {
                 // If user is not logged in, navigate to invitation.html
-                window.location.href = 'invitation.html';
+                navigate('/login');
             }
         })
         .catch(error => {
@@ -55,7 +55,7 @@ export function Home() {
         <p id="pitch">Odd One Out is a game of deception, strategy and espionage. Do you have what it takes to survive being the Odd One Out?</p>
         
       <form method="get">
-        <a className="button" onClick="playGame()">Play Game</a>      
+        <a className="button" onClick={playGame}>Play Game</a>      
       </form>
         
         <p id="guide">If you're ready to join in the fun, click Sign in to sign up or register</p>
@@ -67,7 +67,7 @@ export function Home() {
          <h2 className="tab" id="SSWP">Submit Secret Word Pairs</h2>
         <p className="folder" id="wordPairInstructions">You have the chance to submit your own secret word pairs and help the Odd One Out community! Simply enter your word pair in the boxes below.</p>
         <form>
-          <button className="button" onClick="submitSecretWords()">Submit Words</button>
+          <button className="button" onClick={submitSecretWords}>Submit Words</button>
           <input type="text" className="textbox" id="word1" placeholder="Enter first word" /> 
           <input type="text" className="textbox" id="word2" placeholder="Enter second word" /> 
         </form>
