@@ -11,8 +11,7 @@ export default function App() {
 
 
 
-    function playGame() {
-        const navigate = useNavigate();
+    function playGame(navigate) {
 
         // Make a GET request to the /user endpoint
         fetch('/user', {
@@ -78,7 +77,7 @@ export default function App() {
                 </NavLink>
               </li>
                 <li className='nav-item'>
-                  <NavLink className='nav-link' onClick={playGame}>
+                  <NavLink className='nav-link' onClick={() => playGame(navigate)}>
                     Play Game
                   </NavLink>
                 </li>

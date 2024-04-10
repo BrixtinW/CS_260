@@ -76,7 +76,7 @@ h1, h2 {
     font-size: calc(1vw + 1vh);
   }
   
-  .nav-link {
+  .nav-item {
     text-decoration: none;
     color: white;
     padding-right: 30px;
