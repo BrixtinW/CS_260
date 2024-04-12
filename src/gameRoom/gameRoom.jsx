@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { useRef } from 'react';
 import '/./src/app.css';
 
 export function GameRoom() {
@@ -11,28 +12,31 @@ const toggleSelectedClass = (name) => {
     setSelectedPlayer(name === selectedPlayer ? null : name);
   };
 
-  const [selectedPlayer, setSelectedPlayer] = useState(null);
+  let [selectedPlayer, setSelectedPlayer] = useState(null);
   const [players, setPlayers] = useState([]);
-  const [secretWord, setSecretWord] = useState("");
-  const [voteButton, setVoteButton] = useState(false);
+  let [secretWord, setSecretWord] = useState("");
+  let [voteButton, setVoteButton] = useState(false);
   const [currentVote, setCurrentVote] = useState(null);
   const [socket, setSocket] = useState();
-  const [code, setCode] = useState();
-  const [myName, setMyName] = useState();
+  const code = sessionStorage.getItem('code');
+  const myName = sessionStorage.getItem("myName");
+
+//   const [code, setCode] = useState();
+//   const [myName, setMyName] = useState();
   
 
   useEffect(() => {
-    const gameCode = sessionStorage.getItem('code');
-    const newName = sessionStorage.getItem("myName")
+    // const gameCode = sessionStorage.getItem('code');
+    // const newName = sessionStorage.getItem("myName")
 
-    setCode(gameCode);
-    setMyName(newName);
+    // setCode(gameCode);
+    // setMyName(newName);
 
 
 
 setSocket(createGameSocket(code, myName));
 
-
+}, []);
 window.addEventListener('beforeunload', function(event) {
     alert("before unload called!");
     logout();
@@ -40,7 +44,7 @@ window.addEventListener('beforeunload', function(event) {
       socket.send(JSON.stringify(message));
       alert("this should ahve a stop");
 });
-}, []);
+
 
 
 function createGameSocket(code, name) {
@@ -75,35 +79,39 @@ socket.onmessage = async (event) => {
     if (msg.gameOver == true){
       alert("The odd one out was voted! The group wins!!");
       const currentUrl = window.location.href;
-      let newUrl = currentUrl.replace('gameRoom', 'home');
+      let newUrl = currentUrl.replace(/gameRoom*/, '');
       window.location.href = newUrl;
     } else if (msg.winners != null ){
-
-
-
+        alert(`${msg.winners} voted out!`)
     for (const winner of msg.winners){
 
       players.forEach(player => {
 
           if (player.name == winner) {
             //   console.log(child.textContent);
-              setPlayers(players.filter(player => player.name !== winner))
+            const newSet = players.filter(player => player.name !== winner);
+              setPlayers(newSet);
           }
       });
 
       if (winner == myName){
         alert("you were voted out!");
         const currentUrl = window.location.href;
-        let newUrl = currentUrl.replace('gameRoom', 'home');
+        let newUrl = currentUrl.replace(/gameRoom*/, '');
         window.location.href = newUrl;
       }
 
 
     }
-    }
+}
     
   }
-};
+}
+
+
+
+
+
 
 return socket;
 }
