@@ -8,7 +8,7 @@
 - [x] Service Deliverable
 - [x] Database/Login Deliverable
 - [x] WebSocket Deliverable
-- [ ] React Deliverable
+- [x] React Deliverable
 
 ## Specification Deliverable
 
@@ -74,14 +74,14 @@ I will implement the following technologies:
 - **DataBase** - User information, as well as game state (voting, number of players) will be stored in the DataBase
 - **WebSocket** - This will be very important later. For now, I just included 3 default players in the waiting room and the game room. Eventually, it will display everyone together in a session. 
 - **Voting Logic** - In the game room you can click on players to vote them out. The player with the highest votes will be voted out, and the round will continue. When you select your own name, you are kicked out of the session.  
-- **Local Storage** - Local storge is cleaned when you access the home page, and the Submit Secret Words button and the textboxes on the home page help determine the words that show up in the gameroom.
+- **Local Storage** - Local storage is cleaned when you access the home page, and the Submit Secret Words button and the textboxes on the home page help determine the words that show up in the gameroom.
 
 ## Service Deliverable
 - **Prerequisites** - All prerequisites completed.
 - **Node.js and Express** - Node.js and Express HTTP service created to allow hosting on a server and backend/frontend design.
 - **Express Static Middleware** - Used to serve up static HTML, CSS and JavaScript files to the frontend.
 - **Third Party Endpoints** - WaitingRoom.HTML calls a third-party API to generate a QR code with the current URL so that people can join the game by scanning it.
-- **Backend Endpoints** - Endpoints created for creating a game room, adding a player, getting a list of all players in the game instance, logging in, getting the final votes, getting the secret words, submitting a vote, generating the OddOneOut, and registering. Voting is no longer fully funcitonal because you need Websocket to run through all players' votes, but the endpoint is prepped for that step.
+- **Backend Endpoints** - Endpoints created for creating a game room, adding a player, getting a list of all players in the game instance, logging in, getting the final votes, getting the secret words, submitting a vote, generating the OddOneOut, and registering. Voting is no longer fully functional because you need Websocket to run through all players' votes, but the endpoint is prepped for that step.
 - **Frontend Calls Endpoints** - All the endpoints are called from the frontend using the fetch function.
 
 ## Database Deliverable
@@ -99,11 +99,12 @@ I will implement the following technologies:
 - **Data Sent over WebSocket** - When a player is added, or a vote is made, data is sent through the WebSocket's message handler to all other players in each game room.
 - **Data Displayed on Application Interface** - When a player joins, their card appears on the screen with their name on it. When a verdict has been reached after voting, the chosen player is removed from the screen.
 
-
-<!--
-
-## React Deliverable --!>
-
+## React Deliverable
+- **Prerequisites** - All prerequisites completed.
+- **Vite** - Vite was used for a fast and efficient build toolchain.
+- **React Components** - Home, Login, WaitingRoom, and GameRoom React components implemented to display the user interface.
+- **React Router** - React Router included to navigate from the Home component to the Login or WaitingRoom components.
+- **React Hooks** - useState implemented to track and display current players in the game, as well as track various other variables. useEffect implemented to limit the setting of variables whenever the DOM is re-rendered.
 
 <!-- 
 The game is called odd one out or something
