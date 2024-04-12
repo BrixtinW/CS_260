@@ -7,11 +7,8 @@ import '/./src/app.css';
 export function WaitingRoom() {
 
     function addPlayer(newName) {
-        // Find the maximum id value in the players array
-        const maxId = players.reduce((max, player) => (player.id > max ? player.id : max), 0);
-      
         // Generate a unique identifier for the new player
-        const playerId = maxId + 1;
+        const playerId = players.length + 1;
       
         // Create the new player object
         const newPlayer = { id: playerId, name: newName };

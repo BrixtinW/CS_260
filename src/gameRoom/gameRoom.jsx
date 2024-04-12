@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import { useEffect } from 'react';
 import '/./src/app.css';
 
 export function GameRoom() {
@@ -10,13 +11,26 @@ const toggleSelectedClass = (name) => {
     setSelectedPlayer(name === selectedPlayer ? null : name);
   };
 
-const [selectedPlayer, setSelectedPlayer] = useState(null);
-const [players, setPlayers] = useState([]);
-const code = sessionStorage.getItem('code')
-const myName = sessionStorage.getItem("myName");
+  const [selectedPlayer, setSelectedPlayer] = useState(null);
+  const [players, setPlayers] = useState([]);
+  const [secretWord, setSecretWord] = useState("");
+  const [voteButton, setVoteButton] = useState(false);
+  const [currentVote, setCurrentVote] = useState(null);
+  const [socket, setSocket] = useState();
+  const [code, setCode] = useState();
+  const [myName, setMyName] = useState();
+  
 
-let currentVote = null;
-const socket = createGameSocket(code, myName);
+  useEffect(() => {
+    const gameCode = sessionStorage.getItem('code');
+    const newName = sessionStorage.getItem("myName")
+
+    setCode(gameCode);
+    setMyName(newName);
+
+
+
+setSocket(createGameSocket(code, myName));
 
 
 window.addEventListener('beforeunload', function(event) {
@@ -26,7 +40,7 @@ window.addEventListener('beforeunload', function(event) {
       socket.send(JSON.stringify(message));
       alert("this should ahve a stop");
 });
-
+}, []);
 
 
 function createGameSocket(code, name) {
@@ -50,42 +64,37 @@ socket.onmessage = async (event) => {
       addPlayer(playerName);
   }
 
-
-
   } else if (msg.type === "Recieve Secret Word") {
     
-    const secretWord = msg.secretWord; 
-
-    var secretWordDisplay = document.getElementById("secretWordDisplay");
-    secretWordDisplay.textContent = secretWord; 
+    setSecretWord(msg.secretWord);
 
   } else if (msg.type == "Verdict") {
 
-    document.getElementById('voteButton').disabled = false;
+    setVoteButton(false);
 
     if (msg.gameOver == true){
       alert("The odd one out was voted! The group wins!!");
       const currentUrl = window.location.href;
-      let newUrl = currentUrl.replace('/gameRoom.html', '/index.html');
+      let newUrl = currentUrl.replace('gameRoom', 'home');
       window.location.href = newUrl;
     } else if (msg.winners != null ){
 
-    const carousel = document.getElementById('carousel');
+
 
     for (const winner of msg.winners){
 
-      carousel.childNodes.forEach(child => {
+      players.forEach(player => {
 
-          if (child.nodeType === 1 && child.tagName.toLowerCase() === 'div' && child.textContent == winner) {
-              console.log(child.textContent);
-              child.remove();
+          if (player.name == winner) {
+            //   console.log(child.textContent);
+              setPlayers(players.filter(player => player.name !== winner))
           }
       });
 
       if (winner == myName){
         alert("you were voted out!");
         const currentUrl = window.location.href;
-        let newUrl = currentUrl.replace('/gameRoom.html', '/index.html');
+        let newUrl = currentUrl.replace('gameRoom', 'home');
         window.location.href = newUrl;
       }
 
@@ -98,6 +107,7 @@ socket.onmessage = async (event) => {
 
 return socket;
 }
+
 
 
 function selectPlayer(playerName) {
@@ -115,12 +125,12 @@ function selectPlayer(playerName) {
           }
       });
 
-        currentVote = playerObject.name;
+        setCurrentVote(playerObject.name);
         console.log(currentVote);
         playerObject.selected = true;
         toggleSelectedClass(playerObject.name);
     } else {
-        currentVote = null;
+        setCurrentVote(null);
         console.log(currentVote);
         playerObject.selected = false;
         toggleSelectedClass(playerObject.name);
@@ -144,7 +154,7 @@ if(currentVote == null) {
   return;
 }
 
-document.getElementById('voteButton').disabled = true;
+setVoteButton(true);
 
 const postData = {
       type: "Submit Vote",
@@ -195,7 +205,7 @@ fetch('/logout', {
                     Your Secret Word:
                 </th>
                  <td id="secretWordDisplay">
-                      {/* <!-- Secret Word Generated Here --> */}
+                      {secretWord}
                     </td>
             </tr>
             </tbody>
@@ -213,7 +223,11 @@ fetch('/logout', {
                 ))}
             </div>
       
-            <form><button className="button" id="voteButton" onClick={readTheVotes}>Submit Vote</button></form>
+            <form>
+                <button className="button" id="voteButton" onClick={readTheVotes} disabled={voteButton}>
+                    Submit Vote
+                </button>
+            </form>
     </main>
     );
   }
