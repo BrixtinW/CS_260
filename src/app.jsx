@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Home } from './home/home';
 import { Login } from './login/login';
 import { WaitingRoom } from './waitingRoom/waitingRoom';
+import { GameRoom } from './gameRoom/gameRoom';
 import './app.css';
 
 export default function App() {
@@ -27,37 +28,22 @@ export default function App() {
         .catch(error => {
             console.error('Error checking user login status:', error);
         });
-    // }
 
-
-
+        const favicon = document.querySelector('link[rel="icon"]');
+        favicon.href = 'spy_icon_205840.ico';
 
   return (
 
   <div className="app">
 
-
     <meta charSet="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap"></link>
 
-    
-    
-    
-    {/* <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap"> */}
 
     <title>Odd One Out</title>
+    
     <link rel="icon" href="spy_icon_205840.ico" />
-    {/* </head> */}
-
-        {/* <header>
-            <h1 id= "logo">Odd One Out</h1>
-            <nav>
-            <a href="index.html">Home</a>
-            <a onclick="playGame()">Play Game</a>
-            </nav>
-        </header> */}
-
 
   <BrowserRouter>
       <div>
@@ -71,7 +57,7 @@ export default function App() {
                 </NavLink>
               </li>
                 <li className='nav-item'>
-                  <NavLink className='nav-link' onClick="login">
+                  <NavLink className='nav-link' to="login">
                     Login
                   </NavLink>
                 </li>
@@ -90,10 +76,9 @@ export default function App() {
           <Route path='/' element={<Home />} />
           <Route path='/waitingRoom' element={<WaitingRoom />} />
           <Route path='/login' element={<Login />} />
+          <Route path='/gameRoom' element={<GameRoom />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
-
-
 
         <footer>
             <span className="footer-info">Brixtin Walker</span>
@@ -105,15 +90,6 @@ export default function App() {
 
       </div>
     </BrowserRouter>
-
-
-        {/* <footer>
-            <span class="footer-info">Brixtin Walker</span>
-            <span class="footer-info">brixtinlwalker@gmail.com</span>
-            <span class="footer-info">CS 260</span>
-            <br />
-            <a href="https://github.com/BrixtinW/CS_260">GitHub</a>
-        </footer> */}
 
 </div>
 

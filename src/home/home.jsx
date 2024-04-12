@@ -26,26 +26,7 @@ export function Home() {
         
     }
 
-    function playGame() {
-        // Make a GET request to the /user endpoint
-        fetch('/user', {
-            method: 'GET',
-            credentials: 'same-origin' // Include cookies in the request
-        })
-        .then(response => {
-            if (response.ok) {
-                var playerName = prompt("Please enter your player name:");
-                sessionStorage.setItem("myName", playerName);
-                navigate('/waitingRoom');
-            } else {
-                // If user is not logged in, navigate to invitation.html
-                navigate('/login');
-            }
-        })
-        .catch(error => {
-            console.error('Error checking user login status:', error);
-        });
-    }
+
 
 
 
@@ -55,7 +36,7 @@ export function Home() {
         <p id="pitch">Odd One Out is a game of deception, strategy and espionage. Do you have what it takes to survive being the Odd One Out?</p>
         
       <form method="get">
-        <a className="button" onClick={playGame}>Play Game</a>      
+        <a className="button" to="login">Play Game</a>      
       </form>
         
         <p id="guide">If you're ready to join in the fun, click Sign in to sign up or register</p>

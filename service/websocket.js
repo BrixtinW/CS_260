@@ -36,8 +36,7 @@ function peerProxy(httpServer, games) {
         if (msg.type === 'joinRoom') {
             connection.code = msg.code;
             connection.name = msg.name;
-            // Store code and name in the connection object
-            console.log(`User ${connection.name} wants to join room with code: ${connection.code}`);
+            // console.log(`User ${connection.name} wants to join room with code: ${connection.code}`);
             const connections = games.get(msg.code).connections;
             connections[msg.name] = connection;
 

@@ -1,13 +1,29 @@
 import React from 'react';
+import { useState } from 'react';
+import { useEffect } from 'react';
 import '/./src/app.css';
 
 
 export function WaitingRoom() {
 
+    function addPlayer(newName) {
+        // Find the maximum id value in the players array
+        const maxId = players.reduce((max, player) => (player.id > max ? player.id : max), 0);
+      
+        // Generate a unique identifier for the new player
+        const playerId = maxId + 1;
+      
+        // Create the new player object
+        const newPlayer = { id: playerId, name: newName };
+      
+        // Update the players state by adding the new player to the list
+        setPlayers(prevPlayers => [...prevPlayers, newPlayer]);
+      }
+
 
     async function fetchQRCode(url) {
         try {
-          let newUrl = url.replace('/waitingRoom.html', '/invitation.html');
+          let newUrl = url.replace('waitingRoom', 'login');
             const response = await fetch(`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=%3C%22${newUrl}%22%3E`);
             if (!response.ok) {
                 throw new Error('Failed to fetch QR code');
@@ -29,12 +45,17 @@ export function WaitingRoom() {
         }
     }
 
+
+    const [gameRoomCode, setGameRoomCode] = useState('');
+    const [players, setPlayers] = useState([]);
+    const [startGame, setStartGame] = useState(false);
+    const [socket, setSocket] = useState();
+
+
+    useEffect(() => {
+
     const playerName = prompt("Please enter your player name:");
     sessionStorage.setItem("myName", playerName);
-    let socket;
-    let startGame = false;
-
-      
 
   const urlQueries = window.location.search;
 
@@ -48,14 +69,14 @@ console.log(code);
 if (code) {
     // The 'code' parameter was found in the URL
     console.log('Value of code parameter:', code);
-    document.getElementById("gameRoomCode").textContent = code;
+    setGameRoomCode(code);
     sessionStorage.setItem("code", code);
     
     // const playerName = sessionStorage.getItem('myName');
 
 
     addName(playerName, code).then(() => {
-      socket = configureWebSocket(socket, code, playerName)
+      setSocket(configureWebSocket(socket, code, playerName));
     });
 
     window.addEventListener('beforeunload', function(event) {
@@ -73,7 +94,7 @@ if (code) {
 
 
 
-    displayGameRoomCode().then(code => {
+    fetchGameRoomCode().then(code => {
     
       sessionStorage.setItem("code", code);
 
@@ -81,6 +102,9 @@ if (code) {
       let url = new URL(window.location.href);
 
       // Add a parameter to the URL
+        console.log(code);
+
+
       url.searchParams.set('code', encodeURIComponent(code));
 
       // Replace the current URL with the modified URL
@@ -88,12 +112,13 @@ if (code) {
     
     //   const playerName = sessionStorage.getItem('myName');
       addName(playerName, code).then(() => {
-      socket = configureWebSocket(socket, code, playerName)
+      setSocket(configureWebSocket(socket, code, playerName));
     });
       displayQRCode(window.location.href);
 
       window.addEventListener('beforeunload', function(event) {
         alert("before unload called!");
+        logout();
           const message = { type: "leaveRoom", code: code, name: playerName, startGame: startGame}
           socket.send(JSON.stringify(message));
           alert("this should ahve a stop");
@@ -103,6 +128,7 @@ if (code) {
       console.error("An error occurred:", error);
     });
 }
+}, []);
 
 
 async function fetchGameRoomCode() {
@@ -111,21 +137,11 @@ async function fetchGameRoomCode() {
     if (!response.ok) {
       throw new Error('Failed to fetch game room code');
     }
-    const gameRoomCode = await response.json();
-    return gameRoomCode;
+    const code = await response.json();
+    setGameRoomCode(code);
+    return code;
   } catch (error) {
     console.error('Error fetching game room code:', error);
-    return null;
-  }
-}
-
-async function displayGameRoomCode() {
-  const gameRoomCode = await fetchGameRoomCode();
-  if (gameRoomCode) {
-    document.getElementById("gameRoomCode").textContent = gameRoomCode;
-    return gameRoomCode;
-  } else {
-    document.getElementById("gameRoomCode").textContent = 'Failed to fetch game room code';
   }
 }
 
@@ -160,8 +176,8 @@ async function addName(playerName, gameRoomCode) {
 
 
   function loadGameRoom() {
-    startGame = true;
-    const postData = { type: "loadRoom", code: `${sessionStorage.getItem('code')}`};
+    setStartGame(true);
+    const postData = { type: "loadRoom", code: gameRoomCode};
     socket.send(JSON.stringify(postData));
 };
 
@@ -174,10 +190,10 @@ async function addName(playerName, gameRoomCode) {
     .then(response => {
         if (response.ok) {
             // Redirect user to the homepage or login page upon successful logout
-            window.location.href = 'index.html';
+            console.log("logout successful")
         } else {
             // Handle logout error, e.g., display error message to user
-            console.error('Logout failed:', response.statusText);
+            console.log("logout unsuccessful")
         }
     })
     .catch(error => {
@@ -185,8 +201,6 @@ async function addName(playerName, gameRoomCode) {
     });
 }
 
-    // const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
-    // const socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
 
 function configureWebSocket(socket, code, name) {
     const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
@@ -199,32 +213,23 @@ function configureWebSocket(socket, code, name) {
 
 
     socket.onmessage = async (event) => {
-      console.log("hey THIS WAS CALLED YOU DIDN't kmnpw what would daca;lkj;alsdf;j");
-      console.log(event)
-      console.log(event.data)
       const msg = JSON.parse(await event.data);
       if (msg.type === "updatePlayers") {
-      var carousel = document.getElementById("carousel");
 
-      // Remove all existing child elements of the carousel
-      while (carousel.firstChild) {
-          carousel.removeChild(carousel.firstChild);
-      }
+        setPlayers([]);
 
-      // Iterate through each player name in the players list
+
       for (let playerName of msg.players) {
-          // Create a new div element for the player
-          var newItem = document.createElement("div");
-          newItem.classList.add("item");
-          newItem.textContent = playerName;
-          carousel.appendChild(newItem);
+
+          addPlayer(playerName);
+ 
       }
 
       } else if (msg.type === "Game Started") {
         
-        startGame = true;
+        setStartGame(true);
         const currentUrl = window.location.href;
-        let newUrl = currentUrl.replace('/waitingRoom.html', '/gameRoom.html');
+        let newUrl = currentUrl.replace('waitingRoom', 'gameRoom');
         window.location.href = newUrl;
 
       } 
@@ -235,48 +240,51 @@ function configureWebSocket(socket, code, name) {
 
 
 
-
     return (
         <main>
-        <div class="waiting">
+        <div className="waiting">
           <h1>Waiting For Players...</h1>
-          <h3 id="gameRoomCode"></h3>
+          <h3 id="gameRoomCode">{gameRoomCode}</h3>
           <div id="qrcode"></div>
         </div>
     
     <div id="carousel">
-      {/* <!-- DIV ELEMENTS INSERTED HERE --> */}
+        {players.map(player => (
+          <div key={player.id} className="item">
+            {player.name}
+          </div>
+        ))}
     </div>
       
   
         <form>
-          <a class="button" id="startGame" onclick="loadGameRoom()">Start Game</a>
+          <a className="button" id="startGame" onClick={loadGameRoom}>Start Game</a>
     
         </form>
   
         <h2>Instructions</h2>
-        <li class="instructions">
+        <li className="instructions">
           The game begins with a randomly chosen player and continues clockwise. Each player takes a turn to describe their secret word with a one or two-word clue, such as “Crunchy” for “Apple.”
         </li>
         <li>
           After all players have given their clues, engage in a brief discussion period. Here, players exchange suspicions and opinions about who they think is the Odd One Out based on the clues given.
         </li>
-        <li class="instructions">
+        <li className="instructions">
           Next, each player casts a vote on their suspect for the Odd One Out by selecting that player's icon in the voting section. After the voting has finished, the player with the most votes is accused of being the Odd One Out.
         </li>
-        <li class="instructions">
+        <li className="instructions">
           If the majority correctly identifies the Odd One Out, the accused has one chance to guess the common secret word of the other players. If the Odd One Out guesses correctly, they win; if not, the group wins.
         </li>
-        <li class="instructions">
+        <li className="instructions">
           However, if the majority is incorrect, often likely in the first round, the wrongly accused player is eliminated from the game. The remaining players continue, giving new descriptions for the same word in subsequent rounds and voting again.
         </li>
-        <li class="instructions">
+        <li className="instructions">
           In each new round, players provide fresh clues for the same secret word.
         </li>
-        <li class="instructions">
+        <li className="instructions">
           This continues with players giving new, one or two-word descriptions. The rounds of clue-giving and voting repeat, with players being eliminated for incorrect accusations of being the Odd One Out.
         </li>
-        <li class="instructions">
+        <li className="instructions">
           The game continues in this manner until the Odd One Out is either caught or successfully guesses the common secret word when caught.
         </li>
         <p>Note: The aim for the Odd One Out is to remain undetected until they are the last person remaining. However, if the Odd One Out is sure they know the common word, they could opt to get caught and then correctly guess the common word, thereby winning the game.</p>

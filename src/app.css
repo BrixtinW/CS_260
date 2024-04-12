@@ -76,7 +76,9 @@ h1, h2 {
     font-size: calc(1vw + 1vh);
   }
   
-  .nav-item {
+  .navbar-nav {
+    /* display: flex; */
+    flex-direction: row;
     text-decoration: none;
     color: white;
     padding-right: 30px;
@@ -87,11 +89,6 @@ h1, h2 {
     color: white;
     cursor: pointer; /* Change cursor to pointer on hover */
 }
-
-/* a:not([href]):not([class]):hover {
-  color: white;
-  text-decoration: none;
-  cursor: pointer; /* Change cursor to pointer on hover */ 
   
   p {
     padding: 3vw;
@@ -138,7 +135,7 @@ h1, h2 {
     background-color: transparent; 
     text-decoration: none;
     color: #c41616; 
-    font-family: 'Special Elite', cursive;
+    font-family: 'Special Elite';
     padding: 10px 20px; 
     font-size: 18px; 
     cursor: pointer; 
