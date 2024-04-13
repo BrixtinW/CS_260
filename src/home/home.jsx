@@ -14,7 +14,6 @@ export function Home() {
         let word1 = document.getElementById("word1").value;
         let word2 = document.getElementById("word2").value;
 
-        // secretWordPairs.push([word1, word2])
         sessionStorage.setItem("secretWordPairs", JSON.stringify(secretWordPairs));
 
         
@@ -27,6 +26,13 @@ export function Home() {
     }
 
 
+    function login(){
+        const currentUrl = window.location.href;
+        let newUrl = currentUrl + "login";
+        window.location.href = newUrl;
+    }
+
+
 
 
 
@@ -36,7 +42,7 @@ export function Home() {
         <p id="pitch">Odd One Out is a game of deception, strategy and espionage. Do you have what it takes to survive being the Odd One Out?</p>
         
       <form method="get">
-        <a className="button" to="login">Play Game</a>      
+        <a className="button" onClick={login}>Play Game</a>      
       </form>
         
         <p id="guide">If you're ready to join in the fun, click Sign in to sign up or register</p>

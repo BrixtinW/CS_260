@@ -78,9 +78,9 @@ socket.onmessage = async (event) => {
 
     if (msg.gameOver == true){
       alert("The odd one out was voted! The group wins!!");
-      const currentUrl = window.location.href;
-      let newUrl = currentUrl.replace(/gameRoom*/, '');
-      window.location.href = newUrl;
+    //   const currentUrl = window.location.href;
+    //   let newUrl = currentUrl.replace(/gameRoom\?code=*/, '');
+      window.location.href = "https://startup.odd-one-out.click/";
     } else if (msg.winners != null ){
         alert(`${msg.winners} voted out!`)
     for (const winner of msg.winners){
@@ -96,9 +96,9 @@ socket.onmessage = async (event) => {
 
       if (winner == myName){
         alert("you were voted out!");
-        const currentUrl = window.location.href;
-        let newUrl = currentUrl.replace(/gameRoom*/, '');
-        window.location.href = newUrl;
+        // const currentUrl = window.location.href;
+        // let newUrl = currentUrl.replace(/gameRoom\?code=*/, '');
+        window.location.href = "https://startup.odd-one-out.click/";
       }
 
 
